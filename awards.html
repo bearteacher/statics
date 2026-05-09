@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>花蓮高中資訊科技競賽表現</title>
+<style>
+
+:root {
+  --slide-w: 210mm;
+  --slide-h: auto;
+  --slide-min-h: 240mm;
+  --slide-padding: 3rem 3.5rem;
+  --body-bg: #d0d0d0;
+  --slide-bg: #ffffff;
+  --accent: #1d4ed8;
+  --accent2: #6d28d9;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --border: #cbd5e1;
+  --code-bg: #1e2433;
+  --slide-radius: 3px;
+  --slide-shadow: 0 1px 4px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10);
+  --font-body: 'Noto Sans TC', 'Noto Serif TC', sans-serif;
+  --font-mono: 'Monaco', 'Cascadia Code', 'Cascadia Mono', 'Consolas', 'Menlo', monospace;
+  --font-display: 'Noto Sans TC', sans-serif;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  background: var(--body-bg);
+  font-family: var(--font-body);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* ── Slide container ─────────────────────────────── */
+.slide-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+}
+
+.slide {
+  width: var(--slide-w);
+  min-height: var(--slide-min-h);
+  background: var(--slide-bg);
+  border-radius: var(--slide-radius);
+  box-shadow: var(--slide-shadow);
+  padding: var(--slide-padding);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Typography ───────────────────────────────────── */
+.slide h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.slide h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.5rem 0 0.75rem;
+}
+
+.slide h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.slide p {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.slide ul, .slide ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.slide li {
+  font-size: clamp(0.88rem, 1.5vw, 0.98rem);
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+
+.slide li::marker { color: var(--accent); }
+
+.slide strong { font-weight: 700; color: var(--text); }
+.slide em { color: var(--text-muted); font-style: italic; }
+
+/* portrait: strong stays dark for readability */
+body.portrait .slide strong { color: var(--text); }
+body.portrait .slide h3 { color: #1d4ed8; }
+body.portrait .slide blockquote {
+  background: #f1f5f9;
+  border-left-color: #1d4ed8;
+}
+body.portrait .slide blockquote p { color: #334155; }
+body.portrait .slide tr:nth-child(even) td { background: #f8fafc; }
+
+/* portrait: light code block */
+body.portrait .slide pre.code-block {
+  background: #f8f8f8;
+  border: 1px solid #e2e8f0;
+  color: #1a1a1a;
+}
+body.portrait .slide code:not(.language-text):not([class*="language-"]) {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+/* ── Inline code ──────────────────────────────────── */
+.slide code:not(.language-text):not([class*="language-"]) {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: rgba(99,102,241,0.12);
+  color: var(--accent);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+
+/* ── Code block ───────────────────────────────────── */
+.slide pre.code-block {
+  background: var(--code-bg);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-style: normal;
+  text-decoration: none;
+}
+.slide pre.code-block code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  font-style: normal;
+  text-decoration: none;
+}
+/* ensure all spans inside code blocks are never italic/underlined by accident */
+.slide pre.code-block span,
+.slide .ln-wrap span {
+  font-style: normal !important;
+  text-decoration: none !important;
+}
+
+/* ── Blockquote ───────────────────────────────────── */
+.slide blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.5rem 1rem;
+  margin: 0.75rem 0;
+  background: rgba(99,102,241,0.05);
+  border-radius: 0 4px 4px 0;
+}
+.slide blockquote p { color: var(--text-muted); font-style: italic; margin: 0; }
+
+/* ── Tables ───────────────────────────────────────── */
+.slide table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin: 0.75rem 0;
+}
+.slide th {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-weight: 500;
+}
+.slide td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.slide tr:nth-child(even) td { background: rgba(99,102,241,0.04); }
+
+/* ── Slide number ─────────────────────────────────── */
+.slide-number {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+}
+
+/* ── Cover slide ──────────────────────────────────── */
+.slide.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 200mm;
+}
+.slide.cover h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  border-bottom: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+.slide.cover .cover-meta {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.slide.cover .cover-meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+/* accent bar top of every slide */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+/* ── Landscape overrides ──────────────────────────── */
+body.landscape .slide-wrapper {
+  padding: 0;
+  height: 100vh;
+}
+body.landscape .slide {
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+body.landscape .slide-number {
+  bottom: 1.25rem;
+  right: 1.75rem;
+}
+body.landscape .slide h1 { font-size: clamp(2rem, 4vw, 3rem); }
+body.landscape .slide p,
+body.landscape .slide li { font-size: clamp(0.95rem, 1.8vw, 1.1rem); }
+
+/* ── Print / PDF ──────────────────────────────────── */
+@media print {
+  html { scroll-snap-type: none; }
+  body { background: white !important; }
+  .slide-wrapper {
+    padding: 0 !important;
+    page-break-after: always;
+    break-after: page;
+  }
+  .slide {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+  }
+  .slide::before { display: none; }
+  .toolbar { display: none !important; }
+}
+
+/* ── Toolbar ──────────────────────────────────────── */
+.toolbar {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.toolbar button {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+.toolbar button:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.toolbar .sep { width: 1px; background: rgba(255,255,255,0.15); margin: 0.2rem 0; }
+.toolbar .slide-counter { color: rgba(255,255,255,0.45); font-size: 0.72rem; align-self: center; padding: 0 0.4rem; font-family: var(--font-mono); }
+
+/* ── TOC dropdown ─────────────────────────────────── */
+.toc-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+#btn-toc {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+  font-family: var(--font-mono);
+}
+#btn-toc:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.toc-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 220px;
+  max-width: 320px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: rgba(15,15,25,0.96);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 0.4rem 0;
+  z-index: 200;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.toc-wrap:hover .toc-menu,
+.toc-menu:hover { display: block; }
+.toc-menu a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.45rem 1rem;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  transition: background 0.1s, color 0.1s;
+  cursor: pointer;
+}
+.toc-menu a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.toc-menu a .toc-num {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.35);
+  min-width: 1.8em;
+  text-align: right;
+  flex-shrink: 0;
+}
+.toc-menu a .toc-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Code wrap (with/without line numbers) ────────── */
+.slide .code-wrap {
+  position: relative;
+  margin: 0.75rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* copy button */
+.slide .code-wrap .copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.78rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+  font-family: var(--font-mono);
+}
+.slide .code-wrap:hover .copy-btn { opacity: 1; }
+.slide .code-wrap .copy-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+.slide .code-wrap .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+body.portrait .slide .code-wrap .copy-btn {
+  background: rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.15);
+  color: rgba(0,0,0,0.45);
+}
+body.portrait .slide .code-wrap .copy-btn:hover { background: rgba(0,0,0,0.1); color: #1d4ed8; }
+body.portrait .slide .code-wrap .copy-btn.copied { color: #16a34a; border-color: #16a34a; }
+
+/* no-lineno: dark default, hide light */
+.slide .code-wrap .code-block.code-dark  { display: block; }
+.slide .code-wrap .code-block.code-light { display: none; }
+
+/* portrait: show light, hide dark */
+body.portrait .slide .code-wrap .code-block.code-dark  { display: none; }
+body.portrait .slide .code-wrap .code-block.code-light { display: block; }
+
+.slide .code-wrap .code-block {
+  margin: 0;
+  border-radius: 0;
+}
+body.portrait .slide .code-wrap .code-block.code-light {
+  background: #f8f8f8;
+  border: 1px solid #e2e8f0;
+}
+
+/* with line numbers: dark default, light for portrait */
+.slide .code-wrap .ln-wrap { display: block; }
+.slide .code-wrap .code-light.ln-wrap { display: none; }
+body.portrait .slide .code-wrap .code-dark.ln-wrap  { display: none; }
+body.portrait .slide .code-wrap .code-light.ln-wrap { display: block; }
+
+.slide .code-wrap .ln-wrap .highlight {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+.slide .code-wrap .code-dark.ln-wrap  .highlight { background: #0d1117; }
+.slide .code-wrap .code-light.ln-wrap .highlight { background: #f8f8f8; border: 1px solid #e2e8f0; }
+
+/* Pygments inline lineno spans */
+.slide .code-wrap span.linenos {
+  user-select: none;
+  padding-right: 1.2em;
+  padding-left: 0.4em;
+  min-width: 2em;
+  text-align: right;
+  font-size: 0.78rem;
+  opacity: 0.4;
+}
+
+
+
+/* ── Admonition blocks ────────────────────────────── */
+.slide .adm {
+  border-radius: 8px;
+  margin: 0.75rem 0;
+  overflow: hidden;
+  font-size: 0.92rem;
+}
+.slide .adm-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 1rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+}
+.slide .adm-body {
+  padding: 0.6rem 1rem 0.7rem;
+}
+.slide .adm-body p { margin-bottom: 0.4rem; font-size: 0.9rem; }
+.slide .adm-body p:last-child { margin-bottom: 0; }
+.slide .adm-body ul, .slide .adm-body ol { margin-bottom: 0.4rem; }
+
+/* info — blue */
+.slide .adm-info { background: #eff6ff; border: 1px solid #bfdbfe; }
+.slide .adm-info .adm-header { background: #dbeafe; color: #1e40af; }
+
+/* warning — amber */
+.slide .adm-warning { background: #fffbeb; border: 1px solid #fde68a; }
+.slide .adm-warning .adm-header { background: #fef3c7; color: #92400e; }
+
+/* danger — red */
+.slide .adm-danger { background: #fff1f2; border: 1px solid #fecdd3; }
+.slide .adm-danger .adm-header { background: #ffe4e6; color: #9f1239; }
+
+/* success — green */
+.slide .adm-success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.slide .adm-success .adm-header { background: #dcfce7; color: #166534; }
+
+/* tip — purple */
+.slide .adm-tip { background: #faf5ff; border: 1px solid #e9d5ff; }
+.slide .adm-tip .adm-header { background: #f3e8ff; color: #6b21a8; }
+
+/* ── Images ───────────────────────────────────────── */
+.slide img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+.slide figure.slide-figure {
+  margin: 0.75rem 0;
+  text-align: center;
+}
+
+.slide figure.slide-figure img {
+  margin: 0 auto;
+  max-height: 55vh;
+  object-fit: contain;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.slide figure.slide-figure figcaption {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+/* half-width image: ![alt|50%](path) — use title for width hint */
+.slide figure.slide-figure.w-half img { max-width: 50%; }
+.slide figure.slide-figure.w-third img { max-width: 33%; }
+
+
+/* Pygments syntax highlight */
+pre { line-height: 125%; }
+td.linenos .normal { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+.code-block.code-dark .hll { background-color: #6e7681 }
+.code-block.code-dark { background: #0d1117; color: #e6edf3 }
+.code-block.code-dark .c { color: #8b949e; font-style: italic } /* Comment */
+.code-block.code-dark .err { color: #f85149 } /* Error */
+.code-block.code-dark .esc { color: #e6edf3 } /* Escape */
+.code-block.code-dark .g { color: #e6edf3 } /* Generic */
+.code-block.code-dark .k { color: #ff7b72 } /* Keyword */
+.code-block.code-dark .l { color: #a5d6ff } /* Literal */
+.code-block.code-dark .n { color: #e6edf3 } /* Name */
+.code-block.code-dark .o { color: #ff7b72; font-weight: bold } /* Operator */
+.code-block.code-dark .x { color: #e6edf3 } /* Other */
+.code-block.code-dark .p { color: #e6edf3 } /* Punctuation */
+.code-block.code-dark .ch { color: #8b949e; font-style: italic } /* Comment.Hashbang */
+.code-block.code-dark .cm { color: #8b949e; font-style: italic } /* Comment.Multiline */
+.code-block.code-dark .cp { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Preproc */
+.code-block.code-dark .cpf { color: #8b949e; font-style: italic } /* Comment.PreprocFile */
+.code-block.code-dark .c1 { color: #8b949e; font-style: italic } /* Comment.Single */
+.code-block.code-dark .cs { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Special */
+.code-block.code-dark .gd { color: #ffa198; background-color: #490202 } /* Generic.Deleted */
+.code-block.code-dark .ge { color: #e6edf3; font-style: italic } /* Generic.Emph */
+.code-block.code-dark .ges { color: #e6edf3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.code-block.code-dark .gr { color: #ffa198 } /* Generic.Error */
+.code-block.code-dark .gh { color: #79c0ff; font-weight: bold } /* Generic.Heading */
+.code-block.code-dark .gi { color: #56d364; background-color: #0f5323 } /* Generic.Inserted */
+.code-block.code-dark .go { color: #8b949e } /* Generic.Output */
+.code-block.code-dark .gp { color: #8b949e } /* Generic.Prompt */
+.code-block.code-dark .gs { color: #e6edf3; font-weight: bold } /* Generic.Strong */
+.code-block.code-dark .gu { color: #79c0ff } /* Generic.Subheading */
+.code-block.code-dark .gt { color: #ff7b72 } /* Generic.Traceback */
+.code-block.code-dark .g-Underline { color: #e6edf3; text-decoration: underline } /* Generic.Underline */
+.code-block.code-dark .kc { color: #79c0ff } /* Keyword.Constant */
+.code-block.code-dark .kd { color: #ff7b72 } /* Keyword.Declaration */
+.code-block.code-dark .kn { color: #ff7b72 } /* Keyword.Namespace */
+.code-block.code-dark .kp { color: #79c0ff } /* Keyword.Pseudo */
+.code-block.code-dark .kr { color: #ff7b72 } /* Keyword.Reserved */
+.code-block.code-dark .kt { color: #ff7b72 } /* Keyword.Type */
+.code-block.code-dark .ld { color: #79c0ff } /* Literal.Date */
+.code-block.code-dark .m { color: #a5d6ff } /* Literal.Number */
+.code-block.code-dark .s { color: #a5d6ff } /* Literal.String */
+.code-block.code-dark .na { color: #e6edf3 } /* Name.Attribute */
+.code-block.code-dark .nb { color: #e6edf3 } /* Name.Builtin */
+.code-block.code-dark .nc { color: #f0883e; font-weight: bold } /* Name.Class */
+.code-block.code-dark .no { color: #79c0ff; font-weight: bold } /* Name.Constant */
+.code-block.code-dark .nd { color: #d2a8ff; font-weight: bold } /* Name.Decorator */
+.code-block.code-dark .ni { color: #ffa657 } /* Name.Entity */
+.code-block.code-dark .ne { color: #f0883e; font-weight: bold } /* Name.Exception */
+.code-block.code-dark .nf { color: #d2a8ff; font-weight: bold } /* Name.Function */
+.code-block.code-dark .nl { color: #79c0ff; font-weight: bold } /* Name.Label */
+.code-block.code-dark .nn { color: #ff7b72 } /* Name.Namespace */
+.code-block.code-dark .nx { color: #e6edf3 } /* Name.Other */
+.code-block.code-dark .py { color: #79c0ff } /* Name.Property */
+.code-block.code-dark .nt { color: #7ee787 } /* Name.Tag */
+.code-block.code-dark .nv { color: #79c0ff } /* Name.Variable */
+.code-block.code-dark .ow { color: #ff7b72; font-weight: bold } /* Operator.Word */
+.code-block.code-dark .pm { color: #e6edf3 } /* Punctuation.Marker */
+.code-block.code-dark .w { color: #6e7681 } /* Text.Whitespace */
+.code-block.code-dark .mb { color: #a5d6ff } /* Literal.Number.Bin */
+.code-block.code-dark .mf { color: #a5d6ff } /* Literal.Number.Float */
+.code-block.code-dark .mh { color: #a5d6ff } /* Literal.Number.Hex */
+.code-block.code-dark .mi { color: #a5d6ff } /* Literal.Number.Integer */
+.code-block.code-dark .mo { color: #a5d6ff } /* Literal.Number.Oct */
+.code-block.code-dark .sa { color: #79c0ff } /* Literal.String.Affix */
+.code-block.code-dark .sb { color: #a5d6ff } /* Literal.String.Backtick */
+.code-block.code-dark .sc { color: #a5d6ff } /* Literal.String.Char */
+.code-block.code-dark .dl { color: #79c0ff } /* Literal.String.Delimiter */
+.code-block.code-dark .sd { color: #a5d6ff } /* Literal.String.Doc */
+.code-block.code-dark .s2 { color: #a5d6ff } /* Literal.String.Double */
+.code-block.code-dark .se { color: #79c0ff } /* Literal.String.Escape */
+.code-block.code-dark .sh { color: #79c0ff } /* Literal.String.Heredoc */
+.code-block.code-dark .si { color: #a5d6ff } /* Literal.String.Interpol */
+.code-block.code-dark .sx { color: #a5d6ff } /* Literal.String.Other */
+.code-block.code-dark .sr { color: #79c0ff } /* Literal.String.Regex */
+.code-block.code-dark .s1 { color: #a5d6ff } /* Literal.String.Single */
+.code-block.code-dark .ss { color: #a5d6ff } /* Literal.String.Symbol */
+.code-block.code-dark .bp { color: #e6edf3 } /* Name.Builtin.Pseudo */
+.code-block.code-dark .fm { color: #d2a8ff; font-weight: bold } /* Name.Function.Magic */
+.code-block.code-dark .vc { color: #79c0ff } /* Name.Variable.Class */
+.code-block.code-dark .vg { color: #79c0ff } /* Name.Variable.Global */
+.code-block.code-dark .vi { color: #79c0ff } /* Name.Variable.Instance */
+.code-block.code-dark .vm { color: #79c0ff } /* Name.Variable.Magic */
+.code-block.code-dark .il { color: #a5d6ff } /* Literal.Number.Integer.Long */
+pre { line-height: 125%; }
+td.linenos .normal { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+.code-dark.ln-wrap .hll { background-color: #6e7681 }
+.code-dark.ln-wrap { background: #0d1117; color: #e6edf3 }
+.code-dark.ln-wrap .c { color: #8b949e; font-style: italic } /* Comment */
+.code-dark.ln-wrap .err { color: #f85149 } /* Error */
+.code-dark.ln-wrap .esc { color: #e6edf3 } /* Escape */
+.code-dark.ln-wrap .g { color: #e6edf3 } /* Generic */
+.code-dark.ln-wrap .k { color: #ff7b72 } /* Keyword */
+.code-dark.ln-wrap .l { color: #a5d6ff } /* Literal */
+.code-dark.ln-wrap .n { color: #e6edf3 } /* Name */
+.code-dark.ln-wrap .o { color: #ff7b72; font-weight: bold } /* Operator */
+.code-dark.ln-wrap .x { color: #e6edf3 } /* Other */
+.code-dark.ln-wrap .p { color: #e6edf3 } /* Punctuation */
+.code-dark.ln-wrap .ch { color: #8b949e; font-style: italic } /* Comment.Hashbang */
+.code-dark.ln-wrap .cm { color: #8b949e; font-style: italic } /* Comment.Multiline */
+.code-dark.ln-wrap .cp { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Preproc */
+.code-dark.ln-wrap .cpf { color: #8b949e; font-style: italic } /* Comment.PreprocFile */
+.code-dark.ln-wrap .c1 { color: #8b949e; font-style: italic } /* Comment.Single */
+.code-dark.ln-wrap .cs { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Special */
+.code-dark.ln-wrap .gd { color: #ffa198; background-color: #490202 } /* Generic.Deleted */
+.code-dark.ln-wrap .ge { color: #e6edf3; font-style: italic } /* Generic.Emph */
+.code-dark.ln-wrap .ges { color: #e6edf3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.code-dark.ln-wrap .gr { color: #ffa198 } /* Generic.Error */
+.code-dark.ln-wrap .gh { color: #79c0ff; font-weight: bold } /* Generic.Heading */
+.code-dark.ln-wrap .gi { color: #56d364; background-color: #0f5323 } /* Generic.Inserted */
+.code-dark.ln-wrap .go { color: #8b949e } /* Generic.Output */
+.code-dark.ln-wrap .gp { color: #8b949e } /* Generic.Prompt */
+.code-dark.ln-wrap .gs { color: #e6edf3; font-weight: bold } /* Generic.Strong */
+.code-dark.ln-wrap .gu { color: #79c0ff } /* Generic.Subheading */
+.code-dark.ln-wrap .gt { color: #ff7b72 } /* Generic.Traceback */
+.code-dark.ln-wrap .g-Underline { color: #e6edf3; text-decoration: underline } /* Generic.Underline */
+.code-dark.ln-wrap .kc { color: #79c0ff } /* Keyword.Constant */
+.code-dark.ln-wrap .kd { color: #ff7b72 } /* Keyword.Declaration */
+.code-dark.ln-wrap .kn { color: #ff7b72 } /* Keyword.Namespace */
+.code-dark.ln-wrap .kp { color: #79c0ff } /* Keyword.Pseudo */
+.code-dark.ln-wrap .kr { color: #ff7b72 } /* Keyword.Reserved */
+.code-dark.ln-wrap .kt { color: #ff7b72 } /* Keyword.Type */
+.code-dark.ln-wrap .ld { color: #79c0ff } /* Literal.Date */
+.code-dark.ln-wrap .m { color: #a5d6ff } /* Literal.Number */
+.code-dark.ln-wrap .s { color: #a5d6ff } /* Literal.String */
+.code-dark.ln-wrap .na { color: #e6edf3 } /* Name.Attribute */
+.code-dark.ln-wrap .nb { color: #e6edf3 } /* Name.Builtin */
+.code-dark.ln-wrap .nc { color: #f0883e; font-weight: bold } /* Name.Class */
+.code-dark.ln-wrap .no { color: #79c0ff; font-weight: bold } /* Name.Constant */
+.code-dark.ln-wrap .nd { color: #d2a8ff; font-weight: bold } /* Name.Decorator */
+.code-dark.ln-wrap .ni { color: #ffa657 } /* Name.Entity */
+.code-dark.ln-wrap .ne { color: #f0883e; font-weight: bold } /* Name.Exception */
+.code-dark.ln-wrap .nf { color: #d2a8ff; font-weight: bold } /* Name.Function */
+.code-dark.ln-wrap .nl { color: #79c0ff; font-weight: bold } /* Name.Label */
+.code-dark.ln-wrap .nn { color: #ff7b72 } /* Name.Namespace */
+.code-dark.ln-wrap .nx { color: #e6edf3 } /* Name.Other */
+.code-dark.ln-wrap .py { color: #79c0ff } /* Name.Property */
+.code-dark.ln-wrap .nt { color: #7ee787 } /* Name.Tag */
+.code-dark.ln-wrap .nv { color: #79c0ff } /* Name.Variable */
+.code-dark.ln-wrap .ow { color: #ff7b72; font-weight: bold } /* Operator.Word */
+.code-dark.ln-wrap .pm { color: #e6edf3 } /* Punctuation.Marker */
+.code-dark.ln-wrap .w { color: #6e7681 } /* Text.Whitespace */
+.code-dark.ln-wrap .mb { color: #a5d6ff } /* Literal.Number.Bin */
+.code-dark.ln-wrap .mf { color: #a5d6ff } /* Literal.Number.Float */
+.code-dark.ln-wrap .mh { color: #a5d6ff } /* Literal.Number.Hex */
+.code-dark.ln-wrap .mi { color: #a5d6ff } /* Literal.Number.Integer */
+.code-dark.ln-wrap .mo { color: #a5d6ff } /* Literal.Number.Oct */
+.code-dark.ln-wrap .sa { color: #79c0ff } /* Literal.String.Affix */
+.code-dark.ln-wrap .sb { color: #a5d6ff } /* Literal.String.Backtick */
+.code-dark.ln-wrap .sc { color: #a5d6ff } /* Literal.String.Char */
+.code-dark.ln-wrap .dl { color: #79c0ff } /* Literal.String.Delimiter */
+.code-dark.ln-wrap .sd { color: #a5d6ff } /* Literal.String.Doc */
+.code-dark.ln-wrap .s2 { color: #a5d6ff } /* Literal.String.Double */
+.code-dark.ln-wrap .se { color: #79c0ff } /* Literal.String.Escape */
+.code-dark.ln-wrap .sh { color: #79c0ff } /* Literal.String.Heredoc */
+.code-dark.ln-wrap .si { color: #a5d6ff } /* Literal.String.Interpol */
+.code-dark.ln-wrap .sx { color: #a5d6ff } /* Literal.String.Other */
+.code-dark.ln-wrap .sr { color: #79c0ff } /* Literal.String.Regex */
+.code-dark.ln-wrap .s1 { color: #a5d6ff } /* Literal.String.Single */
+.code-dark.ln-wrap .ss { color: #a5d6ff } /* Literal.String.Symbol */
+.code-dark.ln-wrap .bp { color: #e6edf3 } /* Name.Builtin.Pseudo */
+.code-dark.ln-wrap .fm { color: #d2a8ff; font-weight: bold } /* Name.Function.Magic */
+.code-dark.ln-wrap .vc { color: #79c0ff } /* Name.Variable.Class */
+.code-dark.ln-wrap .vg { color: #79c0ff } /* Name.Variable.Global */
+.code-dark.ln-wrap .vi { color: #79c0ff } /* Name.Variable.Instance */
+.code-dark.ln-wrap .vm { color: #79c0ff } /* Name.Variable.Magic */
+.code-dark.ln-wrap .il { color: #a5d6ff } /* Literal.Number.Integer.Long */
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+body.portrait .code-block.code-light .hll { background-color: #ffffcc }
+body.portrait .code-block.code-light { background: #ffffff; }
+body.portrait .code-block.code-light .c { color: #177500 } /* Comment */
+body.portrait .code-block.code-light .err { color: #000000 } /* Error */
+body.portrait .code-block.code-light .k { color: #A90D91 } /* Keyword */
+body.portrait .code-block.code-light .l { color: #1C01CE } /* Literal */
+body.portrait .code-block.code-light .n { color: #000000 } /* Name */
+body.portrait .code-block.code-light .o { color: #000000 } /* Operator */
+body.portrait .code-block.code-light .ch { color: #177500 } /* Comment.Hashbang */
+body.portrait .code-block.code-light .cm { color: #177500 } /* Comment.Multiline */
+body.portrait .code-block.code-light .cp { color: #633820 } /* Comment.Preproc */
+body.portrait .code-block.code-light .cpf { color: #177500 } /* Comment.PreprocFile */
+body.portrait .code-block.code-light .c1 { color: #177500 } /* Comment.Single */
+body.portrait .code-block.code-light .cs { color: #177500 } /* Comment.Special */
+body.portrait .code-block.code-light .kc { color: #A90D91 } /* Keyword.Constant */
+body.portrait .code-block.code-light .kd { color: #A90D91 } /* Keyword.Declaration */
+body.portrait .code-block.code-light .kn { color: #A90D91 } /* Keyword.Namespace */
+body.portrait .code-block.code-light .kp { color: #A90D91 } /* Keyword.Pseudo */
+body.portrait .code-block.code-light .kr { color: #A90D91 } /* Keyword.Reserved */
+body.portrait .code-block.code-light .kt { color: #A90D91 } /* Keyword.Type */
+body.portrait .code-block.code-light .ld { color: #1C01CE } /* Literal.Date */
+body.portrait .code-block.code-light .m { color: #1C01CE } /* Literal.Number */
+body.portrait .code-block.code-light .s { color: #C41A16 } /* Literal.String */
+body.portrait .code-block.code-light .na { color: #836C28 } /* Name.Attribute */
+body.portrait .code-block.code-light .nb { color: #A90D91 } /* Name.Builtin */
+body.portrait .code-block.code-light .nc { color: #3F6E75 } /* Name.Class */
+body.portrait .code-block.code-light .no { color: #000000 } /* Name.Constant */
+body.portrait .code-block.code-light .nd { color: #000000 } /* Name.Decorator */
+body.portrait .code-block.code-light .ni { color: #000000 } /* Name.Entity */
+body.portrait .code-block.code-light .ne { color: #000000 } /* Name.Exception */
+body.portrait .code-block.code-light .nf { color: #000000 } /* Name.Function */
+body.portrait .code-block.code-light .nl { color: #000000 } /* Name.Label */
+body.portrait .code-block.code-light .nn { color: #000000 } /* Name.Namespace */
+body.portrait .code-block.code-light .nx { color: #000000 } /* Name.Other */
+body.portrait .code-block.code-light .py { color: #000000 } /* Name.Property */
+body.portrait .code-block.code-light .nt { color: #000000 } /* Name.Tag */
+body.portrait .code-block.code-light .nv { color: #000000 } /* Name.Variable */
+body.portrait .code-block.code-light .ow { color: #000000 } /* Operator.Word */
+body.portrait .code-block.code-light .mb { color: #1C01CE } /* Literal.Number.Bin */
+body.portrait .code-block.code-light .mf { color: #1C01CE } /* Literal.Number.Float */
+body.portrait .code-block.code-light .mh { color: #1C01CE } /* Literal.Number.Hex */
+body.portrait .code-block.code-light .mi { color: #1C01CE } /* Literal.Number.Integer */
+body.portrait .code-block.code-light .mo { color: #1C01CE } /* Literal.Number.Oct */
+body.portrait .code-block.code-light .sa { color: #C41A16 } /* Literal.String.Affix */
+body.portrait .code-block.code-light .sb { color: #C41A16 } /* Literal.String.Backtick */
+body.portrait .code-block.code-light .sc { color: #2300CE } /* Literal.String.Char */
+body.portrait .code-block.code-light .dl { color: #C41A16 } /* Literal.String.Delimiter */
+body.portrait .code-block.code-light .sd { color: #C41A16 } /* Literal.String.Doc */
+body.portrait .code-block.code-light .s2 { color: #C41A16 } /* Literal.String.Double */
+body.portrait .code-block.code-light .se { color: #C41A16 } /* Literal.String.Escape */
+body.portrait .code-block.code-light .sh { color: #C41A16 } /* Literal.String.Heredoc */
+body.portrait .code-block.code-light .si { color: #C41A16 } /* Literal.String.Interpol */
+body.portrait .code-block.code-light .sx { color: #C41A16 } /* Literal.String.Other */
+body.portrait .code-block.code-light .sr { color: #C41A16 } /* Literal.String.Regex */
+body.portrait .code-block.code-light .s1 { color: #C41A16 } /* Literal.String.Single */
+body.portrait .code-block.code-light .ss { color: #C41A16 } /* Literal.String.Symbol */
+body.portrait .code-block.code-light .bp { color: #5B269A } /* Name.Builtin.Pseudo */
+body.portrait .code-block.code-light .fm { color: #000000 } /* Name.Function.Magic */
+body.portrait .code-block.code-light .vc { color: #000000 } /* Name.Variable.Class */
+body.portrait .code-block.code-light .vg { color: #000000 } /* Name.Variable.Global */
+body.portrait .code-block.code-light .vi { color: #000000 } /* Name.Variable.Instance */
+body.portrait .code-block.code-light .vm { color: #000000 } /* Name.Variable.Magic */
+body.portrait .code-block.code-light .il { color: #1C01CE } /* Literal.Number.Integer.Long */
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+body.portrait .code-light.ln-wrap .hll { background-color: #ffffcc }
+body.portrait .code-light.ln-wrap { background: #ffffff; }
+body.portrait .code-light.ln-wrap .c { color: #177500 } /* Comment */
+body.portrait .code-light.ln-wrap .err { color: #000000 } /* Error */
+body.portrait .code-light.ln-wrap .k { color: #A90D91 } /* Keyword */
+body.portrait .code-light.ln-wrap .l { color: #1C01CE } /* Literal */
+body.portrait .code-light.ln-wrap .n { color: #000000 } /* Name */
+body.portrait .code-light.ln-wrap .o { color: #000000 } /* Operator */
+body.portrait .code-light.ln-wrap .ch { color: #177500 } /* Comment.Hashbang */
+body.portrait .code-light.ln-wrap .cm { color: #177500 } /* Comment.Multiline */
+body.portrait .code-light.ln-wrap .cp { color: #633820 } /* Comment.Preproc */
+body.portrait .code-light.ln-wrap .cpf { color: #177500 } /* Comment.PreprocFile */
+body.portrait .code-light.ln-wrap .c1 { color: #177500 } /* Comment.Single */
+body.portrait .code-light.ln-wrap .cs { color: #177500 } /* Comment.Special */
+body.portrait .code-light.ln-wrap .kc { color: #A90D91 } /* Keyword.Constant */
+body.portrait .code-light.ln-wrap .kd { color: #A90D91 } /* Keyword.Declaration */
+body.portrait .code-light.ln-wrap .kn { color: #A90D91 } /* Keyword.Namespace */
+body.portrait .code-light.ln-wrap .kp { color: #A90D91 } /* Keyword.Pseudo */
+body.portrait .code-light.ln-wrap .kr { color: #A90D91 } /* Keyword.Reserved */
+body.portrait .code-light.ln-wrap .kt { color: #A90D91 } /* Keyword.Type */
+body.portrait .code-light.ln-wrap .ld { color: #1C01CE } /* Literal.Date */
+body.portrait .code-light.ln-wrap .m { color: #1C01CE } /* Literal.Number */
+body.portrait .code-light.ln-wrap .s { color: #C41A16 } /* Literal.String */
+body.portrait .code-light.ln-wrap .na { color: #836C28 } /* Name.Attribute */
+body.portrait .code-light.ln-wrap .nb { color: #A90D91 } /* Name.Builtin */
+body.portrait .code-light.ln-wrap .nc { color: #3F6E75 } /* Name.Class */
+body.portrait .code-light.ln-wrap .no { color: #000000 } /* Name.Constant */
+body.portrait .code-light.ln-wrap .nd { color: #000000 } /* Name.Decorator */
+body.portrait .code-light.ln-wrap .ni { color: #000000 } /* Name.Entity */
+body.portrait .code-light.ln-wrap .ne { color: #000000 } /* Name.Exception */
+body.portrait .code-light.ln-wrap .nf { color: #000000 } /* Name.Function */
+body.portrait .code-light.ln-wrap .nl { color: #000000 } /* Name.Label */
+body.portrait .code-light.ln-wrap .nn { color: #000000 } /* Name.Namespace */
+body.portrait .code-light.ln-wrap .nx { color: #000000 } /* Name.Other */
+body.portrait .code-light.ln-wrap .py { color: #000000 } /* Name.Property */
+body.portrait .code-light.ln-wrap .nt { color: #000000 } /* Name.Tag */
+body.portrait .code-light.ln-wrap .nv { color: #000000 } /* Name.Variable */
+body.portrait .code-light.ln-wrap .ow { color: #000000 } /* Operator.Word */
+body.portrait .code-light.ln-wrap .mb { color: #1C01CE } /* Literal.Number.Bin */
+body.portrait .code-light.ln-wrap .mf { color: #1C01CE } /* Literal.Number.Float */
+body.portrait .code-light.ln-wrap .mh { color: #1C01CE } /* Literal.Number.Hex */
+body.portrait .code-light.ln-wrap .mi { color: #1C01CE } /* Literal.Number.Integer */
+body.portrait .code-light.ln-wrap .mo { color: #1C01CE } /* Literal.Number.Oct */
+body.portrait .code-light.ln-wrap .sa { color: #C41A16 } /* Literal.String.Affix */
+body.portrait .code-light.ln-wrap .sb { color: #C41A16 } /* Literal.String.Backtick */
+body.portrait .code-light.ln-wrap .sc { color: #2300CE } /* Literal.String.Char */
+body.portrait .code-light.ln-wrap .dl { color: #C41A16 } /* Literal.String.Delimiter */
+body.portrait .code-light.ln-wrap .sd { color: #C41A16 } /* Literal.String.Doc */
+body.portrait .code-light.ln-wrap .s2 { color: #C41A16 } /* Literal.String.Double */
+body.portrait .code-light.ln-wrap .se { color: #C41A16 } /* Literal.String.Escape */
+body.portrait .code-light.ln-wrap .sh { color: #C41A16 } /* Literal.String.Heredoc */
+body.portrait .code-light.ln-wrap .si { color: #C41A16 } /* Literal.String.Interpol */
+body.portrait .code-light.ln-wrap .sx { color: #C41A16 } /* Literal.String.Other */
+body.portrait .code-light.ln-wrap .sr { color: #C41A16 } /* Literal.String.Regex */
+body.portrait .code-light.ln-wrap .s1 { color: #C41A16 } /* Literal.String.Single */
+body.portrait .code-light.ln-wrap .ss { color: #C41A16 } /* Literal.String.Symbol */
+body.portrait .code-light.ln-wrap .bp { color: #5B269A } /* Name.Builtin.Pseudo */
+body.portrait .code-light.ln-wrap .fm { color: #000000 } /* Name.Function.Magic */
+body.portrait .code-light.ln-wrap .vc { color: #000000 } /* Name.Variable.Class */
+body.portrait .code-light.ln-wrap .vg { color: #000000 } /* Name.Variable.Global */
+body.portrait .code-light.ln-wrap .vi { color: #000000 } /* Name.Variable.Instance */
+body.portrait .code-light.ln-wrap .vm { color: #000000 } /* Name.Variable.Magic */
+body.portrait .code-light.ln-wrap .il { color: #1C01CE } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body class="portrait">
+
+<nav class="toolbar">
+  <button id="btn-prev" title="上一頁">&#8592;</button>
+  <span class="slide-counter">— / 4</span>
+  <button id="btn-next" title="下一頁">&#8594;</button>
+  <div class="sep"></div>
+  <div class="toc-wrap">
+    <button id="btn-toc" title="目錄">☰</button>
+    <div class="toc-menu" id="toc-menu"><a onclick="goSlide(1)" title="科展相關"><span class="toc-num">2</span><span class="toc-title">科展相關</span></a><a onclick="goSlide(2)" title="資訊學科競賽"><span class="toc-num">3</span><span class="toc-title">資訊學科競賽</span></a><a onclick="goSlide(3)" title="系統設計相關"><span class="toc-num">4</span><span class="toc-title">系統設計相關</span></a></div>
+  </div>
+</nav>
+
+<div class="slide-wrapper" id="slide-0"><div class="slide cover"><h1>花蓮高中資訊科技競賽表現</h1>
+<h1>資訊科技歷屆表現</h1>
+<div class="slide-number">1 / 4</div></div></div>
+<div class="slide-wrapper" id="slide-1"><div class="slide"><h1>科展相關</h1>
+<h3>全國科展</h3>
+<ul>
+<li><p>61屆全國科展 (<a href="https://twsf.ntsec.gov.tw/activity/race-1/61/pdf/NPHSF2021-052501.pdf?0.6969908884332192" target="_blank" rel="noopener">原音重現-太魯閣族語語音評分系統</a>)</p>
+<ul>
+<li>鄉土教材獎</li>
+<li>王宇森、顏鈺峰</li>
+</ul>
+</li>
+<li><p>63屆全國科展(<a href="https://twsf.ntsec.gov.tw/activity/race-1/63/pdf/NPHSF2023-052507.pdf?0.37032845405396" target="_blank" rel="noopener">影片情境化實現探討</a>)</p>
+<ul>
+<li>團隊合作獎、聯發科創造無限可能獎特優</li>
+<li>陳恩泓、闕以諾、顧懷允</li>
+</ul>
+</li>
+<li><p>64屆全國科展(<a href="https://twsf.ntsec.gov.tw/activity/race-1/64/pdf/NPHSF2024-052503.pdf?0.7248307492594364" target="_blank" rel="noopener">語音模型逆向攻擊實現與分析</a>)</p>
+<ul>
+<li>佳作、D-Link友訊智慧生活創意獎</li>
+<li>林炫宇、莊家瑋</li>
+</ul>
+</li>
+<li><p>65屆全國科展(以多項人工智慧實現失語症溝通系統)</p>
+<ul>
+<li>第三名、微軟少年英雄獎、台灣康寧創新獎特優</li>
+<li>林鉉宇、莊家瑋</li>
+</ul>
+</li>
+<li><p>66屆全國科展</p>
+<ul>
+<li>即將參賽</li>
+<li>石謙信、李泓毅、趙振翃</li>
+</ul>
+</li>
+</ul>
+<h3>國際科展</h3>
+<ul>
+<li>2022年國際科展<ul>
+<li><a href="https://twsf.ntsec.gov.tw/activity/race-2/2022/pdf/TISF2022-010030.pdf" target="_blank" rel="noopener">多人循環賽局策略之研究</a><ul>
+<li>入圍複審</li>
+<li>蔡平樂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2023年國際科展<ul>
+<li><a href="https://twsf.ntsec.gov.tw/tisf/tisf2023/pdf/TISF2023-190001.pdf" target="_blank" rel="noopener">以機器學習增強無人機飛行準確度</a><ul>
+<li>三等獎、巴西出國正選代表</li>
+<li>林郁軒</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2025年國際科展<ul>
+<li>基於LLM的互動式口述影像系統<ul>
+<li>入圍複審</li>
+<li>楊知叡、沈祐睿、黃堉軒</li>
+</ul>
+</li>
+<li>語音模型逆向攻擊架構分析與防禦策略探討 - 正選代表<ul>
+<li>三等獎、印尼出國正選代表</li>
+<li>林炫宇、莊家瑋</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2026年台灣國際科展<ul>
+<li>基於大語言模型之互動式口述影像系統<ul>
+<li>一等獎、美國ISEF正選代表</li>
+<li>林炫宇、莊家瑋</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>旺宏科學獎</h3>
+<ul>
+<li><p>20屆</p>
+<ul>
+<li><a href="https://www.mxeduc.org.tw/scienceaward/history/projectDoc/20th/doc/SA20-450_final.pdf" target="_blank" rel="noopener">多人循環賽局策略研究</a><ul>
+<li>優等</li>
+<li>蔡平樂</li>
+</ul>
+</li>
+<li>低資源語言之太魯閣族語自動語音評分系統 - 佳作<ul>
+<li>顏鈺峰</li>
+</ul>
+</li>
+<li>不完全資訊賽局對局策略實現之探討 - 佳作<ul>
+<li>王宇森</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>21屆</p>
+<ul>
+<li>聽音辨「液」—用AI分辨液體種類 - 佳作<ul>
+<li>陳恩泓、闕以諾、顧懷允</li>
+</ul>
+</li>
+<li>以機器學習加強無人機飛行準確度 - 佳作<ul>
+<li>林郁軒</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>22屆</p>
+<ul>
+<li><a href="https://www.mxeduc.org.tw/scienceaward/history/projectDoc/22th/doc/SA22-307_final.pdf" target="_blank" rel="noopener">輔助聽障人士之影片情境化字幕實現探討</a><ul>
+<li>銀牌</li>
+<li>陳恩泓、闕以諾、顧懷允</li>
+</ul>
+</li>
+<li><a href="https://www.mxeduc.org.tw/scienceaward/history/projectDoc/22th/doc/SA22-239_final.pdf" target="_blank" rel="noopener">實現強化學習於多人吹牛骰子遊戲之探討</a> - 優等<ul>
+<li>優等</li>
+<li>周宗穎</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>23屆</p>
+<ul>
+<li><a href="https://www.mxeduc.org.tw/scienceaward/history/projectDoc/23th/doc/SA23-033_final.pdf" target="_blank" rel="noopener">使用LLM實現視障者互動式口述影像服務</a> -<ul>
+<li>優等</li>
+<li>楊知叡、林靖洋</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>24屆</p>
+<ul>
+<li>以增強式大語言模型實現影片摘要與有效問答<ul>
+<li>佳作</li>
+<li>楊知叡、沈祐睿</li>
+</ul>
+</li>
+<li>實現多模態人工智慧輔助失語症流暢溝通系統<ul>
+<li>佳作</li>
+<li>林炫宇、莊家瑋</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="slide-number">2 / 4</div></div></div>
+<div class="slide-wrapper" id="slide-2"><div class="slide"><h1>資訊學科競賽</h1>
+<ul>
+<li>2021 東區競賽第一(參加全國競賽-清大)<ul>
+<li>蔡平樂</li>
+</ul>
+</li>
+<li>2024 東區競賽第二(參加全國競賽-政大)<ul>
+<li>沈祐睿</li>
+</ul>
+</li>
+<li>2025 東區競賽第一(參加全國競賽-政大)<ul>
+<li>沈祐睿</li>
+</ul>
+</li>
+</ul>
+<div class="slide-number">3 / 4</div></div></div>
+<div class="slide-wrapper" id="slide-3"><div class="slide"><h1>系統設計相關</h1>
+<ul>
+<li><p>第一屆育秀盃高中職AI競賽(2025)</p>
+<ul>
+<li>作品：語通Copilot<ul>
+<li>金牌</li>
+<li>林炫宇、莊家瑋、沈祐睿</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>2026神通AI數位學院扶輪盃(2026)</p>
+<ul>
+<li>作品：自適應輔助學習系統<ul>
+<li>第一名</li>
+<li>葉陽甫、林昕佑、蔡昕諾</li>
+</ul>
+</li>
+<li>作品：針對教育現場之AI 圖文鑑識系統<ul>
+<li>第二名、最佳人氣獎</li>
+<li>趙振翃、石謙信、李泓毅</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>第二屆育秀盃高中職AI競賽(2026)</p>
+<ul>
+<li>作品：自適應輔助學習系統<ul>
+<li>金牌</li>
+<li>葉陽甫、林昕佑、蔡昕諾</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="slide-number">4 / 4</div></div></div>
+
+<script>
+(function() {
+  const wrappers = document.querySelectorAll('.slide-wrapper');
+  const counter = document.querySelector('.slide-counter');
+  const total = wrappers.length;
+
+  function currentIndex() {
+    let best = 0, bestY = Infinity;
+    wrappers.forEach((el, i) => {
+      const rect = el.getBoundingClientRect();
+      const dist = Math.abs(rect.top);
+      if (dist < bestY) { bestY = dist; best = i; }
+    });
+    return best;
+  }
+
+  function updateCounter() {
+    if (counter) counter.textContent = (currentIndex() + 1) + ' / ' + total;
+  }
+
+  window.addEventListener('scroll', updateCounter, { passive: true });
+  updateCounter();
+
+  document.addEventListener('keydown', function(e) {
+    const idx = currentIndex();
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') && idx < total - 1) {
+      e.preventDefault();
+      wrappers[idx + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') && idx > 0) {
+      e.preventDefault();
+      wrappers[idx - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (e.key === 'Home') { e.preventDefault(); wrappers[0].scrollIntoView({ behavior: 'smooth' }); }
+    if (e.key === 'End') { e.preventDefault(); wrappers[total-1].scrollIntoView({ behavior: 'smooth' }); }
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    const idx = currentIndex();
+    if (idx > 0) wrappers[idx - 1].scrollIntoView({ behavior: 'smooth' });
+  });
+  document.getElementById('btn-next').addEventListener('click', () => {
+    const idx = currentIndex();
+    if (idx < total - 1) wrappers[idx + 1].scrollIntoView({ behavior: 'smooth' });
+  });
+})();
+
+function goSlide(idx) {
+  const target = document.getElementById('slide-' + idx);
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+  // close menu after click
+  document.getElementById('toc-menu').style.display = 'none';
+  setTimeout(() => document.getElementById('toc-menu').style.display = '', 300);
+}
+
+// Copy button
+function copyCode(btn) {
+  const wrap = btn.closest('.code-wrap');
+  const code = wrap.dataset.code || '';
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+</script>
+</body>
+</html>
