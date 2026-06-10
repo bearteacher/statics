@@ -1,0 +1,745 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+    
+    :root {
+      --slide-w: 210mm;
+      --slide-h: auto;
+      --slide-min-h: auto;
+      --slide-padding: 3rem 3.5rem;
+      --body-bg: #d0d0d0;
+      --slide-bg: #ffffff;
+      --accent: #2563eb;
+      --accent2: #7c3aed;
+      --text: #1e293b;
+      --border: #cbd5e1;
+      --slide-gap: 20px;
+    }
+    
+    body.landscape {
+      --slide-w: 100vw;
+      --slide-min-h: auto;
+      --slide-padding: 4rem 5rem;
+      --body-bg: #111827;
+      --slide-bg: #1e2436;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --text: #f1f5f9;
+      --border: #2d3748;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans TC', sans-serif; line-height: 1.7; margin: 0; padding: 0; background: var(--body-bg); color: var(--text); }
+    
+    .slide-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: var(--slide-gap) 1rem; }
+    .slide { position: relative; overflow: hidden; background: var(--slide-bg); width: var(--slide-w); min-height: var(--slide-min-h); height: auto; padding: var(--slide-padding); border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); color: var(--text); }
+    
+    body.landscape .slide-wrapper { padding: var(--slide-gap) 0; }
+    body.landscape .slide { border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; }
+    
+    .slide.cover { min-height: unset !important; height: auto !important; padding-bottom: 2rem; }
+    .slide.cover h1 { font-size: 3rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border-bottom: none; }
+    
+    .slide h1 { font-size: 2.2rem; font-weight: 700; color: var(--accent); border-bottom: 2px solid var(--accent); margin-bottom: 1rem; padding-bottom: 0.5rem; }
+    .slide h2 { font-size: 1.5rem; font-weight: 600; color: var(--accent); margin: 1.5rem 0 0.75rem; border-bottom: 2px solid var(--accent); }
+    .slide p { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+    
+    .slide ul, .slide ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    .slide li { font-size: 1rem; margin-bottom: 0.35rem; color: var(--text); }
+    .slide li::marker { color: var(--accent); }
+    
+    .slide table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.9rem; }
+    .slide th { background: var(--accent); color: #fff; padding: 0.5rem; text-align: left; }
+    .slide td { padding: 0.45rem; border-bottom: 1px solid var(--border); color: var(--text); }
+    body.portrait .slide tr:nth-child(even) td { background: #f8fafc; }
+    body.landscape .slide tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+    
+    .slide-figure { text-align: center; margin: 1rem 0; }
+    .slide-figure img { max-width: 100%; border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); display: inline-block; }
+    .slide-number { position: absolute; bottom: 1rem; right: 1.25rem; font-size: 0.72rem; color: var(--text); opacity: 0.6; font-family: monospace; }
+    
+    .adm { border-radius: 8px; margin: 0.75rem 0; border: 1px solid var(--border); overflow: hidden;}
+    .adm-header { padding: 0.45rem 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.45rem; }
+    .adm-body { padding: 0.6rem 1rem; color: #1e293b; }
+    .adm-body p, .adm-body ul, .adm-body ol { margin-bottom: 0.4rem; }
+    .adm-body p:last-child { margin-bottom: 0; }
+    body.portrait .adm-info { background: #eff6ff; border-color: #bfdbfe; color: #1e3a5f; } 
+    body.portrait .adm-info .adm-header { background: #dbeafe; color: #1e40af; }
+    body.portrait .adm-warning { background: #fffbeb; border-color: #fde68a; color: #451a03; } 
+    body.portrait .adm-warning .adm-header { background: #fef3c7; color: #92400e; }
+    body.portrait .adm-danger { background: #fff1f2; border-color: #fecdd3; color: #4c0519; } 
+    body.portrait .adm-danger .adm-header { background: #ffe4e6; color: #9f1239; }
+    body.portrait .adm-success { background: #f0fdf4; border-color: #bbf7d0; color: #052e16; } 
+    body.portrait .adm-success .adm-header { background: #dcfce7; color: #166534; }
+    
+    pre.code-block { border-radius: 6px; padding: 1rem; overflow-x: auto; font-family: monospace; font-size: 0.9rem; margin:0;}
+    body.portrait pre.code-block { background: #f8f8f8; border: 1px solid #e2e8f0; }
+    body.landscape pre.code-block { background: #0d1117; border: 1px solid #2d3748; }
+    body.landscape .code-block.code-light { display: none; }
+    body.portrait .code-block.code-dark { display: none; }
+    
+    .code-wrap { position: relative; margin: 0.75rem 0; border-radius: 6px; overflow: hidden; }
+    .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 0.78rem; padding: 0.2rem 0.55rem; border-radius: 4px; cursor: pointer; opacity: 0; transition: opacity 0.15s, background 0.15s; font-family: monospace; }
+    .code-wrap:hover .copy-btn { opacity: 1; }
+    .copy-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+    .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+    body.portrait .copy-btn { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); color: rgba(0,0,0,0.45); }
+    body.portrait .copy-btn:hover { background: rgba(0,0,0,0.1); color: var(--accent); }
+    body.portrait .copy-btn.copied { color: #16a34a; border-color: #16a34a; }
+
+    /* ── Toolbar ── */
+    .toolbar { position: fixed; top: 1rem; right: 1rem; z-index: 100; display: flex; gap: 0.5rem; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 0.4rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+    .toolbar button { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.78rem; padding: 0.3rem 0.6rem; border-radius: 4px; transition: background 0.15s, color 0.15s; font-family: monospace; }
+    .toolbar button:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .toolbar .sep { width: 1px; background: rgba(255,255,255,0.15); margin: 0.2rem 0; }
+    .toolbar .slide-counter { color: rgba(255,255,255,0.45); font-size: 0.72rem; align-self: center; padding: 0 0.4rem; font-family: monospace; }
+    /* ── TOC dropdown ── */
+    .toc-wrap { position: relative; display: flex; align-items: center; }
+    #btn-toc { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.78rem; padding: 0.3rem 0.6rem; border-radius: 4px; transition: background 0.15s, color 0.15s; font-family: monospace; }
+    #btn-toc:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .toc-menu { display: none; position: absolute; top: calc(100% + 0.5rem); right: 0; min-width: 220px; max-width: 320px; max-height: 70vh; overflow-y: auto; background: rgba(15,15,25,0.96); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 0.4rem 0; z-index: 200; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .toc-menu.open { display: block; }
+    .toc-menu a { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.45rem 1rem; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.8rem; line-height: 1.4; transition: background 0.1s, color 0.1s; cursor: pointer; }
+    .toc-menu a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .toc-menu a .toc-num { font-family: monospace; font-size: 0.68rem; color: rgba(255,255,255,0.35); min-width: 1.8em; text-align: right; flex-shrink: 0; }
+    .toc-menu a .toc-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    @media print {
+        body { background: white !important; }
+        .toolbar { display: none !important; }
+        .slide-wrapper { padding: 0 !important; page-break-after: always; break-after: page; height: auto !important; min-height: auto !important;}
+        .slide { width: 100% !important; height: auto !important; min-height: auto !important; box-shadow: none !important; border-radius: 0 !important; }
+        .copy-btn { display: none !important; }
+    }
+    pre { line-height: 125%; }
+td.linenos .normal { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+.code-dark .hll { background-color: #6e7681 }
+.code-dark { background: #0d1117; color: #e6edf3 }
+.code-dark .c { color: #8b949e; font-style: italic } /* Comment */
+.code-dark .err { color: #f85149 } /* Error */
+.code-dark .esc { color: #e6edf3 } /* Escape */
+.code-dark .g { color: #e6edf3 } /* Generic */
+.code-dark .k { color: #ff7b72 } /* Keyword */
+.code-dark .l { color: #a5d6ff } /* Literal */
+.code-dark .n { color: #e6edf3 } /* Name */
+.code-dark .o { color: #ff7b72; font-weight: bold } /* Operator */
+.code-dark .x { color: #e6edf3 } /* Other */
+.code-dark .p { color: #e6edf3 } /* Punctuation */
+.code-dark .ch { color: #8b949e; font-style: italic } /* Comment.Hashbang */
+.code-dark .cm { color: #8b949e; font-style: italic } /* Comment.Multiline */
+.code-dark .cp { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Preproc */
+.code-dark .cpf { color: #8b949e; font-style: italic } /* Comment.PreprocFile */
+.code-dark .c1 { color: #8b949e; font-style: italic } /* Comment.Single */
+.code-dark .cs { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Special */
+.code-dark .gd { color: #ffa198; background-color: #490202 } /* Generic.Deleted */
+.code-dark .ge { color: #e6edf3; font-style: italic } /* Generic.Emph */
+.code-dark .ges { color: #e6edf3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.code-dark .gr { color: #ffa198 } /* Generic.Error */
+.code-dark .gh { color: #79c0ff; font-weight: bold } /* Generic.Heading */
+.code-dark .gi { color: #56d364; background-color: #0f5323 } /* Generic.Inserted */
+.code-dark .go { color: #8b949e } /* Generic.Output */
+.code-dark .gp { color: #8b949e } /* Generic.Prompt */
+.code-dark .gs { color: #e6edf3; font-weight: bold } /* Generic.Strong */
+.code-dark .gu { color: #79c0ff } /* Generic.Subheading */
+.code-dark .gt { color: #ff7b72 } /* Generic.Traceback */
+.code-dark .g-Underline { color: #e6edf3; text-decoration: underline } /* Generic.Underline */
+.code-dark .kc { color: #79c0ff } /* Keyword.Constant */
+.code-dark .kd { color: #ff7b72 } /* Keyword.Declaration */
+.code-dark .kn { color: #ff7b72 } /* Keyword.Namespace */
+.code-dark .kp { color: #79c0ff } /* Keyword.Pseudo */
+.code-dark .kr { color: #ff7b72 } /* Keyword.Reserved */
+.code-dark .kt { color: #ff7b72 } /* Keyword.Type */
+.code-dark .ld { color: #79c0ff } /* Literal.Date */
+.code-dark .m { color: #a5d6ff } /* Literal.Number */
+.code-dark .s { color: #a5d6ff } /* Literal.String */
+.code-dark .na { color: #e6edf3 } /* Name.Attribute */
+.code-dark .nb { color: #e6edf3 } /* Name.Builtin */
+.code-dark .nc { color: #f0883e; font-weight: bold } /* Name.Class */
+.code-dark .no { color: #79c0ff; font-weight: bold } /* Name.Constant */
+.code-dark .nd { color: #d2a8ff; font-weight: bold } /* Name.Decorator */
+.code-dark .ni { color: #ffa657 } /* Name.Entity */
+.code-dark .ne { color: #f0883e; font-weight: bold } /* Name.Exception */
+.code-dark .nf { color: #d2a8ff; font-weight: bold } /* Name.Function */
+.code-dark .nl { color: #79c0ff; font-weight: bold } /* Name.Label */
+.code-dark .nn { color: #ff7b72 } /* Name.Namespace */
+.code-dark .nx { color: #e6edf3 } /* Name.Other */
+.code-dark .py { color: #79c0ff } /* Name.Property */
+.code-dark .nt { color: #7ee787 } /* Name.Tag */
+.code-dark .nv { color: #79c0ff } /* Name.Variable */
+.code-dark .ow { color: #ff7b72; font-weight: bold } /* Operator.Word */
+.code-dark .pm { color: #e6edf3 } /* Punctuation.Marker */
+.code-dark .w { color: #6e7681 } /* Text.Whitespace */
+.code-dark .mb { color: #a5d6ff } /* Literal.Number.Bin */
+.code-dark .mf { color: #a5d6ff } /* Literal.Number.Float */
+.code-dark .mh { color: #a5d6ff } /* Literal.Number.Hex */
+.code-dark .mi { color: #a5d6ff } /* Literal.Number.Integer */
+.code-dark .mo { color: #a5d6ff } /* Literal.Number.Oct */
+.code-dark .sa { color: #79c0ff } /* Literal.String.Affix */
+.code-dark .sb { color: #a5d6ff } /* Literal.String.Backtick */
+.code-dark .sc { color: #a5d6ff } /* Literal.String.Char */
+.code-dark .dl { color: #79c0ff } /* Literal.String.Delimiter */
+.code-dark .sd { color: #a5d6ff } /* Literal.String.Doc */
+.code-dark .s2 { color: #a5d6ff } /* Literal.String.Double */
+.code-dark .se { color: #79c0ff } /* Literal.String.Escape */
+.code-dark .sh { color: #79c0ff } /* Literal.String.Heredoc */
+.code-dark .si { color: #a5d6ff } /* Literal.String.Interpol */
+.code-dark .sx { color: #a5d6ff } /* Literal.String.Other */
+.code-dark .sr { color: #79c0ff } /* Literal.String.Regex */
+.code-dark .s1 { color: #a5d6ff } /* Literal.String.Single */
+.code-dark .ss { color: #a5d6ff } /* Literal.String.Symbol */
+.code-dark .bp { color: #e6edf3 } /* Name.Builtin.Pseudo */
+.code-dark .fm { color: #d2a8ff; font-weight: bold } /* Name.Function.Magic */
+.code-dark .vc { color: #79c0ff } /* Name.Variable.Class */
+.code-dark .vg { color: #79c0ff } /* Name.Variable.Global */
+.code-dark .vi { color: #79c0ff } /* Name.Variable.Instance */
+.code-dark .vm { color: #79c0ff } /* Name.Variable.Magic */
+.code-dark .il { color: #a5d6ff } /* Literal.Number.Integer.Long */
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.code-light .hll { background-color: #ffffcc }
+.code-light { background: #ffffff; }
+.code-light .c { color: #177500 } /* Comment */
+.code-light .err { color: #000000 } /* Error */
+.code-light .k { color: #A90D91 } /* Keyword */
+.code-light .l { color: #1C01CE } /* Literal */
+.code-light .n { color: #000000 } /* Name */
+.code-light .o { color: #000000 } /* Operator */
+.code-light .ch { color: #177500 } /* Comment.Hashbang */
+.code-light .cm { color: #177500 } /* Comment.Multiline */
+.code-light .cp { color: #633820 } /* Comment.Preproc */
+.code-light .cpf { color: #177500 } /* Comment.PreprocFile */
+.code-light .c1 { color: #177500 } /* Comment.Single */
+.code-light .cs { color: #177500 } /* Comment.Special */
+.code-light .kc { color: #A90D91 } /* Keyword.Constant */
+.code-light .kd { color: #A90D91 } /* Keyword.Declaration */
+.code-light .kn { color: #A90D91 } /* Keyword.Namespace */
+.code-light .kp { color: #A90D91 } /* Keyword.Pseudo */
+.code-light .kr { color: #A90D91 } /* Keyword.Reserved */
+.code-light .kt { color: #A90D91 } /* Keyword.Type */
+.code-light .ld { color: #1C01CE } /* Literal.Date */
+.code-light .m { color: #1C01CE } /* Literal.Number */
+.code-light .s { color: #C41A16 } /* Literal.String */
+.code-light .na { color: #836C28 } /* Name.Attribute */
+.code-light .nb { color: #A90D91 } /* Name.Builtin */
+.code-light .nc { color: #3F6E75 } /* Name.Class */
+.code-light .no { color: #000000 } /* Name.Constant */
+.code-light .nd { color: #000000 } /* Name.Decorator */
+.code-light .ni { color: #000000 } /* Name.Entity */
+.code-light .ne { color: #000000 } /* Name.Exception */
+.code-light .nf { color: #000000 } /* Name.Function */
+.code-light .nl { color: #000000 } /* Name.Label */
+.code-light .nn { color: #000000 } /* Name.Namespace */
+.code-light .nx { color: #000000 } /* Name.Other */
+.code-light .py { color: #000000 } /* Name.Property */
+.code-light .nt { color: #000000 } /* Name.Tag */
+.code-light .nv { color: #000000 } /* Name.Variable */
+.code-light .ow { color: #000000 } /* Operator.Word */
+.code-light .mb { color: #1C01CE } /* Literal.Number.Bin */
+.code-light .mf { color: #1C01CE } /* Literal.Number.Float */
+.code-light .mh { color: #1C01CE } /* Literal.Number.Hex */
+.code-light .mi { color: #1C01CE } /* Literal.Number.Integer */
+.code-light .mo { color: #1C01CE } /* Literal.Number.Oct */
+.code-light .sa { color: #C41A16 } /* Literal.String.Affix */
+.code-light .sb { color: #C41A16 } /* Literal.String.Backtick */
+.code-light .sc { color: #2300CE } /* Literal.String.Char */
+.code-light .dl { color: #C41A16 } /* Literal.String.Delimiter */
+.code-light .sd { color: #C41A16 } /* Literal.String.Doc */
+.code-light .s2 { color: #C41A16 } /* Literal.String.Double */
+.code-light .se { color: #C41A16 } /* Literal.String.Escape */
+.code-light .sh { color: #C41A16 } /* Literal.String.Heredoc */
+.code-light .si { color: #C41A16 } /* Literal.String.Interpol */
+.code-light .sx { color: #C41A16 } /* Literal.String.Other */
+.code-light .sr { color: #C41A16 } /* Literal.String.Regex */
+.code-light .s1 { color: #C41A16 } /* Literal.String.Single */
+.code-light .ss { color: #C41A16 } /* Literal.String.Symbol */
+.code-light .bp { color: #5B269A } /* Name.Builtin.Pseudo */
+.code-light .fm { color: #000000 } /* Name.Function.Magic */
+.code-light .vc { color: #000000 } /* Name.Variable.Class */
+.code-light .vg { color: #000000 } /* Name.Variable.Global */
+.code-light .vi { color: #000000 } /* Name.Variable.Instance */
+.code-light .vm { color: #000000 } /* Name.Variable.Magic */
+.code-light .il { color: #1C01CE } /* Literal.Number.Integer.Long */</style>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true,
+        tags: 'ams'
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      svg: { fontCache: 'global' }
+    };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+    </head><body class="portrait">
+    <nav class="toolbar">
+      <button id="btn-prev" title="上一頁">&#8592;</button>
+      <span class="slide-counter">1 / 11</span>
+      <button id="btn-next" title="下一頁">&#8594;</button>
+      <div class="sep"></div>
+      <div class="toc-wrap">
+        <button id="btn-toc" title="目錄">☰</button>
+        <div class="toc-menu" id="toc-menu"><a onclick="goSlide(1)" title="APCS 觀念題"><span class="toc-num">1</span><span class="toc-title">APCS 觀念題</span></a><a onclick="goSlide(2)" title="布林運算：三個運算子"><span class="toc-num">2</span><span class="toc-title">布林運算：三個運算子</span></a><a onclick="goSlide(3)" title="短路求值（Short-circuit）"><span class="toc-num">3</span><span class="toc-title">短路求值（Short-circuit）</span></a><a onclick="goSlide(4)" title="if-else if-else：只走一條路"><span class="toc-num">4</span><span class="toc-title">if-else if-else：只走一條路</span></a><a onclick="goSlide(5)" title="無括號縮排陷阱"><span class="toc-num">5</span><span class="toc-title">無括號縮排陷阱</span></a><a onclick="goSlide(6)" title="switch：無 break 的下墜"><span class="toc-num">6</span><span class="toc-title">switch：無 break 的下墜</span></a><a onclick="goSlide(7)" title="switch vs if：精確比對 vs 範圍比較"><span class="toc-num">7</span><span class="toc-title">switch vs if：精確比對 vs 範圍比較</span></a><a onclick="goSlide(8)" title="switch vs if：APCS 考法解析"><span class="toc-num">8</span><span class="toc-title">switch vs if：APCS 考法解析</span></a><a onclick="goSlide(9)" title="本節觀念整理"><span class="toc-num">9</span><span class="toc-title">本節觀念整理</span></a><a onclick="goSlide(10)" title="隨堂練習"><span class="toc-num">10</span><span class="toc-title">隨堂練習</span></a></div>
+      </div>
+    </nav>
+    <div class="slide-wrapper" id="slide-0"><div class="slide cover"><p>title: 1-2 布林運算與條件判斷</p>
+<div class="slide-number">1 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-1"><div class="slide"><h1>APCS 觀念題</h1>
+<h2>單元一：程式基礎概念</h2>
+<h3>1-2 布林運算與條件判斷</h3>
+<div class="adm adm-info"><div class="adm-header">💡 <span>本節學習目標</span></div><div class="adm-body">
+
+<ul>
+<li>掌握 <code>&amp;&amp;</code>、<code>||</code>、<code>!</code> 的短路求值行為</li>
+<li>追蹤 <code>if-else if-else</code> 的執行分支</li>
+<li>識別 <code>switch</code> 無 <code>break</code> 的下墜（fall-through）陷阱</li>
+<li>破解無括號縮排的視覺誤導</li>
+</ul>
+</div></div>
+
+<div class="slide-number">2 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-2"><div class="slide"><h1>布林運算：三個運算子</h1>
+<h2>基本規則</h2>
+<table>
+<thead>
+<tr>
+  <th>運算子</th>
+  <th>中文</th>
+  <th>成立條件</th>
+  <th>範例（a=5, b=3）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>&amp;&amp;</code></td>
+  <td>且（AND）</td>
+  <td>兩者都為 true</td>
+  <td><code>a&gt;3 &amp;&amp; b&gt;1</code> → true</td>
+</tr>
+<tr>
+  <td><code>\|\|</code></td>
+  <td>或（OR）</td>
+  <td>至少一者為 true</td>
+  <td><code>a&gt;6 \|\| b&gt;1</code> → true</td>
+</tr>
+<tr>
+  <td><code>!</code></td>
+  <td>非（NOT）</td>
+  <td>取反</td>
+  <td><code>!(a&gt;3)</code> → false</td>
+</tr>
+</tbody>
+</table>
+<div class="code-wrap" data-code="int a = 5, b = 3;
+printf(&quot;%d\n&quot;, a &gt; 3 &amp;&amp; b &gt; 1);   // 1（true）
+printf(&quot;%d\n&quot;, a &gt; 6 || b &gt; 1);   // 1（true）
+printf(&quot;%d\n&quot;, !(a &gt; 3));          // 0（false）
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// 1（true）</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// 1（true）</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span><span class="w">          </span><span class="c1">// 0（false）</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// 1（true）</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// 1（true）</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span><span class="w">          </span><span class="c1">// 0（false）</span>
+</code></pre></div><div class="slide-number">3 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-3"><div class="slide"><h1>短路求值（Short-circuit）</h1>
+<h2>遇到確定答案就停下來</h2>
+<div class="adm adm-warning"><div class="adm-header">⚠️ <span>短路規則</span></div><div class="adm-body">
+
+<ul>
+<li><code>&amp;&amp;</code>：左側為 <strong>false</strong> → 右側<strong>不執行</strong>（反正結果是 false）</li>
+<li><code>||</code>：左側為 <strong>true</strong> → 右側<strong>不執行</strong>（反正結果是 true）</li>
+</ul>
+</div></div>
+
+<div class="code-wrap" data-code="int i = 0;
+// &amp;&amp; 短路：左側 false 就停，i++ 不執行
+if (0 &amp;&amp; (i++)) { }
+printf(&quot;%d\n&quot;, i);   // 輸出 0（i++ 沒被執行）
+
+// || 短路：左側 true 就停，i++ 不執行
+if (1 || (i++)) { }
+printf(&quot;%d\n&quot;, i);   // 輸出 0（i++ 仍沒被執行）
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">// &amp;&amp; 短路：左側 false 就停，i++ 不執行</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">++</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">   </span><span class="c1">// 輸出 0（i++ 沒被執行）</span>
+
+<span class="c1">// || 短路：左側 true 就停，i++ 不執行</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">++</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">   </span><span class="c1">// 輸出 0（i++ 仍沒被執行）</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">// &amp;&amp; 短路：左側 false 就停，i++ 不執行</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">++</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">   </span><span class="c1">// 輸出 0（i++ 沒被執行）</span>
+
+<span class="c1">// || 短路：左側 true 就停，i++ 不執行</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">++</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">   </span><span class="c1">// 輸出 0（i++ 仍沒被執行）</span>
+</code></pre></div><div class="adm adm-tip"><div class="adm-header">🔖 <span>APCS 考法</span></div><div class="adm-body">
+
+<p>在右側放有副作用的運算（如 <code>i++</code>），問最後 <code>i</code> 的值。
+短路 → <code>i</code> 不變；不短路 → <code>i</code> 加 1。</p>
+</div></div>
+
+<div class="slide-number">4 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-4"><div class="slide"><h1>if-else if-else：只走一條路</h1>
+<h2>核心特性</h2>
+<blockquote>
+<p>一旦某個條件<strong>成立</strong>，執行完對應的區塊後，後面所有 <code>else if</code> 和 <code>else</code> 全部<strong>跳過</strong>。</p>
+</blockquote>
+<div class="code-wrap" data-code="int score = 85;
+
+if (score &gt;= 90) {
+    printf(&quot;A\n&quot;);
+} else if (score &gt;= 80) {
+    printf(&quot;B\n&quot;);        // ← score=85：score&gt;=80 成立，印 B，後面跳過
+} else if (score &gt;= 70) {
+    printf(&quot;C\n&quot;);        // 不會執行
+} else {
+    printf(&quot;F\n&quot;);        // 不會執行
+}
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// ← score=85：score&gt;=80 成立，印 B，後面跳過</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;C</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// 不會執行</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;F</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// 不會執行</span>
+<span class="p">}</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// ← score=85：score&gt;=80 成立，印 B，後面跳過</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;C</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// 不會執行</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;F</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// 不會執行</span>
+<span class="p">}</span>
+</code></pre></div><div class="adm adm-warning"><div class="adm-header">⚠️ <span>邊界值陷阱</span></div><div class="adm-body">
+
+<p>APCS 最愛在邊界值（<code>90</code>、<code>80</code>、<code>70</code>）附近出題。
+<code>score = 80</code> 時，<code>&gt;= 80</code> <strong>成立</strong>，輸出 B（不是 C！）</p>
+</div></div>
+
+<div class="slide-number">5 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-5"><div class="slide"><h1>無括號縮排陷阱</h1>
+<h2>else 永遠配對最近的 if</h2>
+<div class="code-wrap" data-code="int x = 4, a = 0;
+
+if (x &gt;= 2)         // ← 條件 1
+    if (x &lt; 6)      // ← 條件 2
+        a = 1;
+    else             // ← 這個 else 配對「條件 2」，不是「條件 1」！
+        a = 2;
+else
+    a = 3;
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w">         </span><span class="c1">// ← 條件 1</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w">      </span><span class="c1">// ← 條件 2</span>
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w">             </span><span class="c1">// ← 這個 else 配對「條件 2」，不是「條件 1」！</span>
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w">         </span><span class="c1">// ← 條件 1</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w">      </span><span class="c1">// ← 條件 2</span>
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w">             </span><span class="c1">// ← 這個 else 配對「條件 2」，不是「條件 1」！</span>
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre></div><div class="adm adm-danger"><div class="adm-header">🚨 <span>視覺陷阱分析</span></div><div class="adm-body">
+
+<p><strong>縮排讓人以為 else 配對 if(x&gt;=2)</strong>，但 C/C++ 的規則是：
+<code>else</code> 永遠配對<strong>最近的、尚未配對的 <code>if</code></strong></p>
+<p>→ 中間那個 <code>else</code> 配對的是 <code>if(x &lt; 6)</code></p>
+</div></div>
+
+<table>
+<thead>
+<tr>
+  <th>x 的值</th>
+  <th>進入哪個分支</th>
+  <th>a 的結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>x = 4</td>
+  <td>條件1成立→條件2成立→ <code>a=1</code></td>
+  <td><strong>1</strong></td>
+</tr>
+<tr>
+  <td>x = 7</td>
+  <td>條件1成立→條件2不成立→中間else→ <code>a=2</code></td>
+  <td><strong>2</strong></td>
+</tr>
+<tr>
+  <td>x = 1</td>
+  <td>條件1不成立→最外層else→ <code>a=3</code></td>
+  <td><strong>3</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="slide-number">6 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-6"><div class="slide"><h1>switch：無 break 的下墜</h1>
+<h2>fall-through 是 APCS 超高頻考點</h2>
+<div class="code-wrap" data-code="int a = 2;
+switch(a) {
+    case 1+1:           // 2 == 2，進入！
+        printf(&quot;A&quot;);    // 印 A，沒有 break，繼續往下…
+    case 1+2:           // 不管條件是否符合，直接執行
+        printf(&quot;B&quot;);
+        break;          // 離開 switch
+    default:
+        printf(&quot;??&quot;);
+}
+// 輸出：AB
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="w">           </span><span class="c1">// 2 == 2，進入！</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span><span class="w">    </span><span class="c1">// 印 A，沒有 break，繼續往下…</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span><span class="w">           </span><span class="c1">// 不管條件是否符合，直接執行</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w">          </span><span class="c1">// 離開 switch</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;??&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 輸出：AB</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="w">           </span><span class="c1">// 2 == 2，進入！</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span><span class="w">    </span><span class="c1">// 印 A，沒有 break，繼續往下…</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span><span class="w">           </span><span class="c1">// 不管條件是否符合，直接執行</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w">          </span><span class="c1">// 離開 switch</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;??&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 輸出：AB</span>
+</code></pre></div><div class="adm adm-danger"><div class="adm-header">🚨 <span>fall-through 機制</span></div><div class="adm-body">
+
+<p>進入某個 <code>case</code> 後，如果沒有 <code>break</code>，會<strong>繼續執行下一個 case 的程式碼</strong>，
+不管下一個 case 的條件是否符合。</p>
+</div></div>
+
+<div class="slide-number">7 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-7"><div class="slide"><h1>switch vs if：精確比對 vs 範圍比較</h1>
+<h2>兩種寫法的本質差異</h2>
+<div class="code-wrap" data-code="// switch 版（精確比對整數）
+switch(n) {
+    case 90: printf(&quot;A&quot;); break;
+    case 80: printf(&quot;B&quot;); break;
+    case 70: printf(&quot;C&quot;); break;
+    default: printf(&quot;D&quot;);
+}
+
+// if 版（範圍比較）
+if      (n &gt;= 90) printf(&quot;A&quot;);
+else if (n &gt;= 80) printf(&quot;B&quot;);
+else if (n &gt;= 70) printf(&quot;C&quot;);
+else              printf(&quot;D&quot;);
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="c1">// switch 版（精確比對整數）</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">90</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">80</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">70</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// if 版（範圍比較）</span>
+<span class="k">if</span><span class="w">      </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w">              </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">);</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="c1">// switch 版（精確比對整數）</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">90</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">80</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">70</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// if 版（範圍比較）</span>
+<span class="k">if</span><span class="w">      </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w">              </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">);</span>
+</code></pre></div><div class="adm adm-warning"><div class="adm-header">⚠️ <span>差異在哪？</span></div><div class="adm-body">
+
+<p><code>switch</code> 的 <code>case 90</code> 只有在 <code>n</code> <strong>精確等於 90</strong> 時才成立。</p>
+<p><code>n = 85</code> 時：</p>
+<ul>
+<li><code>switch</code> 版 → <code>case 85</code> 不存在 → 輸出 <code>D</code></li>
+<li><code>if</code> 版 → <code>n &gt;= 80</code> 成立 → 輸出 <code>B</code></li>
+</ul>
+</div></div>
+
+<div class="slide-number">8 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-8"><div class="slide"><h1>switch vs if：APCS 考法解析</h1>
+<h2>「哪個值讓兩者輸出不同？」</h2>
+<div class="code-wrap" data-code="// 問：填入哪個 n 值，switch 和 if 輸出不同？
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="c1">// 問：填入哪個 n 值，switch 和 if 輸出不同？</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="c1">// 問：填入哪個 n 值，switch 和 if 輸出不同？</span>
+</code></pre></div><div class="adm adm-tip"><div class="adm-header">🔖 <span>解題步驟</span></div><div class="adm-body">
+
+<ol>
+<li><code>switch</code> 只有 <code>case 90, 80, 70</code> 三個精確值</li>
+<li>其他值都走 <code>default</code> → 輸出 D</li>
+<li><code>if</code> 版：<code>80 &lt;= n &lt; 90</code> 的值輸出 B（如 n=85）</li>
+<li>所以：任何<strong>在範圍內但不是 case 整數</strong>的值都會讓兩者輸出不同</li>
+</ol>
+<p><strong>例如 n = 85：switch 輸出 D，if 輸出 B</strong></p>
+</div></div>
+
+<div class="slide-number">9 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-9"><div class="slide"><h1>本節觀念整理</h1>
+<div class="adm adm-success"><div class="adm-header">✅ <span>四大核心規則</span></div><div class="adm-body">
+
+<ol>
+<li><strong>短路求值</strong>：<code>&amp;&amp;</code> 左側 false 或 <code>||</code> 左側 true → 右側不執行</li>
+<li><strong>if-else if</strong>：第一個成立的條件執行完後，後面全部跳過</li>
+<li><strong>else 就近原則</strong>：<code>else</code> 配對最近的未配對 <code>if</code>，縮排不算數</li>
+<li><strong>switch fall-through</strong>：沒有 <code>break</code> → 繼續執行下一個 <code>case</code></li>
+</ol>
+</div></div>
+
+<div class="adm adm-warning"><div class="adm-header">⚠️ <span>最常見 APCS 陷阱</span></div><div class="adm-body">
+
+<ul>
+<li>巢狀 if 的 else 配對方向</li>
+<li>switch 無 break 的連鎖輸出</li>
+<li>switch case 只做整數精確比對（不是範圍）</li>
+</ul>
+</div></div>
+
+<div class="slide-number">10 / 11</div></div></div>
+<div class="slide-wrapper" id="slide-10"><div class="slide"><h1>隨堂練習</h1>
+<p>請拿出今天的練習題 Quiz 1-2，作答時間 5 分鐘。</p>
+<div class="adm adm-tip"><div class="adm-header">🔖 <span>解題提示</span></div><div class="adm-body">
+
+<ul>
+<li>switch 題：標記每個 case 有沒有 <code>break</code>，沒有就畫箭頭往下</li>
+<li>巢狀 if 題：用縮線標出每個 else 配對哪個 if</li>
+<li>if-else if 題：從上往下，第一個成立就停</li>
+</ul>
+</div></div>
+
+<div class="slide-number">11 / 11</div></div></div>
+    <script>
+    // ── 前後頁導覽 ──
+    (function() {
+      const wrappers = document.querySelectorAll('.slide-wrapper');
+      const counter  = document.querySelector('.slide-counter');
+      const total    = wrappers.length;
+
+      function currentIndex() {
+        let best = 0, bestDist = Infinity;
+        wrappers.forEach((el, i) => {
+          const dist = Math.abs(el.getBoundingClientRect().top);
+          if (dist < bestDist) { bestDist = dist; best = i; }
+        });
+        return best;
+      }
+      function updateCounter() {
+        if (counter) counter.textContent = (currentIndex() + 1) + ' / ' + total;
+      }
+      window.addEventListener('scroll', updateCounter, { passive: true });
+      updateCounter();
+
+      document.addEventListener('keydown', function(e) {
+        const idx = currentIndex();
+        if (['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key) && idx < total - 1) {
+          e.preventDefault(); wrappers[idx + 1].scrollIntoView({ behavior: 'smooth' });
+        }
+        if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key) && idx > 0) {
+          e.preventDefault(); wrappers[idx - 1].scrollIntoView({ behavior: 'smooth' });
+        }
+        if (e.key === 'Home') { e.preventDefault(); wrappers[0].scrollIntoView({ behavior: 'smooth' }); }
+        if (e.key === 'End')  { e.preventDefault(); wrappers[total-1].scrollIntoView({ behavior: 'smooth' }); }
+      });
+
+      document.getElementById('btn-prev').addEventListener('click', () => {
+        const idx = currentIndex();
+        if (idx > 0) wrappers[idx - 1].scrollIntoView({ behavior: 'smooth' });
+      });
+      document.getElementById('btn-next').addEventListener('click', () => {
+        const idx = currentIndex();
+        if (idx < total - 1) wrappers[idx + 1].scrollIntoView({ behavior: 'smooth' });
+      });
+    })();
+
+    // ── 目錄跳頁 ──
+    (function() {
+      const btn  = document.getElementById('btn-toc');
+      const menu = document.getElementById('toc-menu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+      });
+      // 點選單以外的地方關閉
+      document.addEventListener('click', function(e) {
+        if (!menu.contains(e.target) && e.target !== btn) {
+          menu.classList.remove('open');
+        }
+      });
+    })();
+
+    function goSlide(idx) {
+      const target = document.getElementById('slide-' + idx);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      const menu = document.getElementById('toc-menu');
+      if (menu) menu.classList.remove('open');
+    }
+
+    // ── 複製程式碼 ──
+    function copyCode(btn) {
+      const wrap = btn.closest('.code-wrap');
+      const code = wrap.dataset.code || '';
+      function onSuccess() {
+        btn.textContent = '✓'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 1500);
+      }
+      function fallback() {
+        const ta = document.createElement('textarea');
+        ta.value = code; ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        try { document.execCommand('copy'); onSuccess(); }
+        catch (e) { btn.textContent = '✗'; setTimeout(() => btn.textContent = '⎘', 1500); }
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(onSuccess).catch(fallback);
+      } else { fallback(); }
+    }
+
+    // ── 超連結開新分頁 ──
+    document.addEventListener('click', function(e) {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#')) return;
+      e.preventDefault();
+      window.open(href, '_blank', 'noopener,noreferrer');
+    });
+    </script>
+    </body></html>

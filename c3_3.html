@@ -1,0 +1,711 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+    
+    :root {
+      --slide-w: 210mm;
+      --slide-h: auto;
+      --slide-min-h: auto;
+      --slide-padding: 3rem 3.5rem;
+      --body-bg: #d0d0d0;
+      --slide-bg: #ffffff;
+      --accent: #2563eb;
+      --accent2: #7c3aed;
+      --text: #1e293b;
+      --border: #cbd5e1;
+      --slide-gap: 20px;
+    }
+    
+    body.landscape {
+      --slide-w: 100vw;
+      --slide-min-h: auto;
+      --slide-padding: 4rem 5rem;
+      --body-bg: #111827;
+      --slide-bg: #1e2436;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --text: #f1f5f9;
+      --border: #2d3748;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans TC', sans-serif; line-height: 1.7; margin: 0; padding: 0; background: var(--body-bg); color: var(--text); }
+    
+    .slide-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: var(--slide-gap) 1rem; }
+    .slide { position: relative; overflow: hidden; background: var(--slide-bg); width: var(--slide-w); min-height: var(--slide-min-h); height: auto; padding: var(--slide-padding); border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); color: var(--text); }
+    
+    body.landscape .slide-wrapper { padding: var(--slide-gap) 0; }
+    body.landscape .slide { border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; }
+    
+    .slide.cover { min-height: unset !important; height: auto !important; padding-bottom: 2rem; }
+    .slide.cover h1 { font-size: 3rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border-bottom: none; }
+    
+    .slide h1 { font-size: 2.2rem; font-weight: 700; color: var(--accent); border-bottom: 2px solid var(--accent); margin-bottom: 1rem; padding-bottom: 0.5rem; }
+    .slide h2 { font-size: 1.5rem; font-weight: 600; color: var(--accent); margin: 1.5rem 0 0.75rem; border-bottom: 2px solid var(--accent); }
+    .slide p { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+    
+    .slide ul, .slide ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    .slide li { font-size: 1rem; margin-bottom: 0.35rem; color: var(--text); }
+    .slide li::marker { color: var(--accent); }
+    
+    .slide table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.9rem; }
+    .slide th { background: var(--accent); color: #fff; padding: 0.5rem; text-align: left; }
+    .slide td { padding: 0.45rem; border-bottom: 1px solid var(--border); color: var(--text); }
+    body.portrait .slide tr:nth-child(even) td { background: #f8fafc; }
+    body.landscape .slide tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+    
+    .slide-figure { text-align: center; margin: 1rem 0; }
+    .slide-figure img { max-width: 100%; border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); display: inline-block; }
+    .slide-number { position: absolute; bottom: 1rem; right: 1.25rem; font-size: 0.72rem; color: var(--text); opacity: 0.6; font-family: monospace; }
+    
+    .adm { border-radius: 8px; margin: 0.75rem 0; border: 1px solid var(--border); overflow: hidden;}
+    .adm-header { padding: 0.45rem 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.45rem; }
+    .adm-body { padding: 0.6rem 1rem; color: #1e293b; }
+    .adm-body p, .adm-body ul, .adm-body ol { margin-bottom: 0.4rem; }
+    .adm-body p:last-child { margin-bottom: 0; }
+    body.portrait .adm-info { background: #eff6ff; border-color: #bfdbfe; color: #1e3a5f; } 
+    body.portrait .adm-info .adm-header { background: #dbeafe; color: #1e40af; }
+    body.portrait .adm-warning { background: #fffbeb; border-color: #fde68a; color: #451a03; } 
+    body.portrait .adm-warning .adm-header { background: #fef3c7; color: #92400e; }
+    body.portrait .adm-danger { background: #fff1f2; border-color: #fecdd3; color: #4c0519; } 
+    body.portrait .adm-danger .adm-header { background: #ffe4e6; color: #9f1239; }
+    body.portrait .adm-success { background: #f0fdf4; border-color: #bbf7d0; color: #052e16; } 
+    body.portrait .adm-success .adm-header { background: #dcfce7; color: #166534; }
+    
+    pre.code-block { border-radius: 6px; padding: 1rem; overflow-x: auto; font-family: monospace; font-size: 0.9rem; margin:0;}
+    body.portrait pre.code-block { background: #f8f8f8; border: 1px solid #e2e8f0; }
+    body.landscape pre.code-block { background: #0d1117; border: 1px solid #2d3748; }
+    body.landscape .code-block.code-light { display: none; }
+    body.portrait .code-block.code-dark { display: none; }
+    
+    .code-wrap { position: relative; margin: 0.75rem 0; border-radius: 6px; overflow: hidden; }
+    .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 0.78rem; padding: 0.2rem 0.55rem; border-radius: 4px; cursor: pointer; opacity: 0; transition: opacity 0.15s, background 0.15s; font-family: monospace; }
+    .code-wrap:hover .copy-btn { opacity: 1; }
+    .copy-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+    .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+    body.portrait .copy-btn { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); color: rgba(0,0,0,0.45); }
+    body.portrait .copy-btn:hover { background: rgba(0,0,0,0.1); color: var(--accent); }
+    body.portrait .copy-btn.copied { color: #16a34a; border-color: #16a34a; }
+
+    /* ── Toolbar ── */
+    .toolbar { position: fixed; top: 1rem; right: 1rem; z-index: 100; display: flex; gap: 0.5rem; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 0.4rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+    .toolbar button { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.78rem; padding: 0.3rem 0.6rem; border-radius: 4px; transition: background 0.15s, color 0.15s; font-family: monospace; }
+    .toolbar button:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .toolbar .sep { width: 1px; background: rgba(255,255,255,0.15); margin: 0.2rem 0; }
+    .toolbar .slide-counter { color: rgba(255,255,255,0.45); font-size: 0.72rem; align-self: center; padding: 0 0.4rem; font-family: monospace; }
+    /* ── TOC dropdown ── */
+    .toc-wrap { position: relative; display: flex; align-items: center; }
+    #btn-toc { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.78rem; padding: 0.3rem 0.6rem; border-radius: 4px; transition: background 0.15s, color 0.15s; font-family: monospace; }
+    #btn-toc:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .toc-menu { display: none; position: absolute; top: calc(100% + 0.5rem); right: 0; min-width: 220px; max-width: 320px; max-height: 70vh; overflow-y: auto; background: rgba(15,15,25,0.96); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 0.4rem 0; z-index: 200; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .toc-menu.open { display: block; }
+    .toc-menu a { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.45rem 1rem; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.8rem; line-height: 1.4; transition: background 0.1s, color 0.1s; cursor: pointer; }
+    .toc-menu a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .toc-menu a .toc-num { font-family: monospace; font-size: 0.68rem; color: rgba(255,255,255,0.35); min-width: 1.8em; text-align: right; flex-shrink: 0; }
+    .toc-menu a .toc-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    @media print {
+        body { background: white !important; }
+        .toolbar { display: none !important; }
+        .slide-wrapper { padding: 0 !important; page-break-after: always; break-after: page; height: auto !important; min-height: auto !important;}
+        .slide { width: 100% !important; height: auto !important; min-height: auto !important; box-shadow: none !important; border-radius: 0 !important; }
+        .copy-btn { display: none !important; }
+    }
+    pre { line-height: 125%; }
+td.linenos .normal { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #6e7681; background-color: #0d1117; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #e6edf3; background-color: #6e7681; padding-left: 5px; padding-right: 5px; }
+.code-dark .hll { background-color: #6e7681 }
+.code-dark { background: #0d1117; color: #e6edf3 }
+.code-dark .c { color: #8b949e; font-style: italic } /* Comment */
+.code-dark .err { color: #f85149 } /* Error */
+.code-dark .esc { color: #e6edf3 } /* Escape */
+.code-dark .g { color: #e6edf3 } /* Generic */
+.code-dark .k { color: #ff7b72 } /* Keyword */
+.code-dark .l { color: #a5d6ff } /* Literal */
+.code-dark .n { color: #e6edf3 } /* Name */
+.code-dark .o { color: #ff7b72; font-weight: bold } /* Operator */
+.code-dark .x { color: #e6edf3 } /* Other */
+.code-dark .p { color: #e6edf3 } /* Punctuation */
+.code-dark .ch { color: #8b949e; font-style: italic } /* Comment.Hashbang */
+.code-dark .cm { color: #8b949e; font-style: italic } /* Comment.Multiline */
+.code-dark .cp { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Preproc */
+.code-dark .cpf { color: #8b949e; font-style: italic } /* Comment.PreprocFile */
+.code-dark .c1 { color: #8b949e; font-style: italic } /* Comment.Single */
+.code-dark .cs { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Special */
+.code-dark .gd { color: #ffa198; background-color: #490202 } /* Generic.Deleted */
+.code-dark .ge { color: #e6edf3; font-style: italic } /* Generic.Emph */
+.code-dark .ges { color: #e6edf3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.code-dark .gr { color: #ffa198 } /* Generic.Error */
+.code-dark .gh { color: #79c0ff; font-weight: bold } /* Generic.Heading */
+.code-dark .gi { color: #56d364; background-color: #0f5323 } /* Generic.Inserted */
+.code-dark .go { color: #8b949e } /* Generic.Output */
+.code-dark .gp { color: #8b949e } /* Generic.Prompt */
+.code-dark .gs { color: #e6edf3; font-weight: bold } /* Generic.Strong */
+.code-dark .gu { color: #79c0ff } /* Generic.Subheading */
+.code-dark .gt { color: #ff7b72 } /* Generic.Traceback */
+.code-dark .g-Underline { color: #e6edf3; text-decoration: underline } /* Generic.Underline */
+.code-dark .kc { color: #79c0ff } /* Keyword.Constant */
+.code-dark .kd { color: #ff7b72 } /* Keyword.Declaration */
+.code-dark .kn { color: #ff7b72 } /* Keyword.Namespace */
+.code-dark .kp { color: #79c0ff } /* Keyword.Pseudo */
+.code-dark .kr { color: #ff7b72 } /* Keyword.Reserved */
+.code-dark .kt { color: #ff7b72 } /* Keyword.Type */
+.code-dark .ld { color: #79c0ff } /* Literal.Date */
+.code-dark .m { color: #a5d6ff } /* Literal.Number */
+.code-dark .s { color: #a5d6ff } /* Literal.String */
+.code-dark .na { color: #e6edf3 } /* Name.Attribute */
+.code-dark .nb { color: #e6edf3 } /* Name.Builtin */
+.code-dark .nc { color: #f0883e; font-weight: bold } /* Name.Class */
+.code-dark .no { color: #79c0ff; font-weight: bold } /* Name.Constant */
+.code-dark .nd { color: #d2a8ff; font-weight: bold } /* Name.Decorator */
+.code-dark .ni { color: #ffa657 } /* Name.Entity */
+.code-dark .ne { color: #f0883e; font-weight: bold } /* Name.Exception */
+.code-dark .nf { color: #d2a8ff; font-weight: bold } /* Name.Function */
+.code-dark .nl { color: #79c0ff; font-weight: bold } /* Name.Label */
+.code-dark .nn { color: #ff7b72 } /* Name.Namespace */
+.code-dark .nx { color: #e6edf3 } /* Name.Other */
+.code-dark .py { color: #79c0ff } /* Name.Property */
+.code-dark .nt { color: #7ee787 } /* Name.Tag */
+.code-dark .nv { color: #79c0ff } /* Name.Variable */
+.code-dark .ow { color: #ff7b72; font-weight: bold } /* Operator.Word */
+.code-dark .pm { color: #e6edf3 } /* Punctuation.Marker */
+.code-dark .w { color: #6e7681 } /* Text.Whitespace */
+.code-dark .mb { color: #a5d6ff } /* Literal.Number.Bin */
+.code-dark .mf { color: #a5d6ff } /* Literal.Number.Float */
+.code-dark .mh { color: #a5d6ff } /* Literal.Number.Hex */
+.code-dark .mi { color: #a5d6ff } /* Literal.Number.Integer */
+.code-dark .mo { color: #a5d6ff } /* Literal.Number.Oct */
+.code-dark .sa { color: #79c0ff } /* Literal.String.Affix */
+.code-dark .sb { color: #a5d6ff } /* Literal.String.Backtick */
+.code-dark .sc { color: #a5d6ff } /* Literal.String.Char */
+.code-dark .dl { color: #79c0ff } /* Literal.String.Delimiter */
+.code-dark .sd { color: #a5d6ff } /* Literal.String.Doc */
+.code-dark .s2 { color: #a5d6ff } /* Literal.String.Double */
+.code-dark .se { color: #79c0ff } /* Literal.String.Escape */
+.code-dark .sh { color: #79c0ff } /* Literal.String.Heredoc */
+.code-dark .si { color: #a5d6ff } /* Literal.String.Interpol */
+.code-dark .sx { color: #a5d6ff } /* Literal.String.Other */
+.code-dark .sr { color: #79c0ff } /* Literal.String.Regex */
+.code-dark .s1 { color: #a5d6ff } /* Literal.String.Single */
+.code-dark .ss { color: #a5d6ff } /* Literal.String.Symbol */
+.code-dark .bp { color: #e6edf3 } /* Name.Builtin.Pseudo */
+.code-dark .fm { color: #d2a8ff; font-weight: bold } /* Name.Function.Magic */
+.code-dark .vc { color: #79c0ff } /* Name.Variable.Class */
+.code-dark .vg { color: #79c0ff } /* Name.Variable.Global */
+.code-dark .vi { color: #79c0ff } /* Name.Variable.Instance */
+.code-dark .vm { color: #79c0ff } /* Name.Variable.Magic */
+.code-dark .il { color: #a5d6ff } /* Literal.Number.Integer.Long */
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.code-light .hll { background-color: #ffffcc }
+.code-light { background: #ffffff; }
+.code-light .c { color: #177500 } /* Comment */
+.code-light .err { color: #000000 } /* Error */
+.code-light .k { color: #A90D91 } /* Keyword */
+.code-light .l { color: #1C01CE } /* Literal */
+.code-light .n { color: #000000 } /* Name */
+.code-light .o { color: #000000 } /* Operator */
+.code-light .ch { color: #177500 } /* Comment.Hashbang */
+.code-light .cm { color: #177500 } /* Comment.Multiline */
+.code-light .cp { color: #633820 } /* Comment.Preproc */
+.code-light .cpf { color: #177500 } /* Comment.PreprocFile */
+.code-light .c1 { color: #177500 } /* Comment.Single */
+.code-light .cs { color: #177500 } /* Comment.Special */
+.code-light .kc { color: #A90D91 } /* Keyword.Constant */
+.code-light .kd { color: #A90D91 } /* Keyword.Declaration */
+.code-light .kn { color: #A90D91 } /* Keyword.Namespace */
+.code-light .kp { color: #A90D91 } /* Keyword.Pseudo */
+.code-light .kr { color: #A90D91 } /* Keyword.Reserved */
+.code-light .kt { color: #A90D91 } /* Keyword.Type */
+.code-light .ld { color: #1C01CE } /* Literal.Date */
+.code-light .m { color: #1C01CE } /* Literal.Number */
+.code-light .s { color: #C41A16 } /* Literal.String */
+.code-light .na { color: #836C28 } /* Name.Attribute */
+.code-light .nb { color: #A90D91 } /* Name.Builtin */
+.code-light .nc { color: #3F6E75 } /* Name.Class */
+.code-light .no { color: #000000 } /* Name.Constant */
+.code-light .nd { color: #000000 } /* Name.Decorator */
+.code-light .ni { color: #000000 } /* Name.Entity */
+.code-light .ne { color: #000000 } /* Name.Exception */
+.code-light .nf { color: #000000 } /* Name.Function */
+.code-light .nl { color: #000000 } /* Name.Label */
+.code-light .nn { color: #000000 } /* Name.Namespace */
+.code-light .nx { color: #000000 } /* Name.Other */
+.code-light .py { color: #000000 } /* Name.Property */
+.code-light .nt { color: #000000 } /* Name.Tag */
+.code-light .nv { color: #000000 } /* Name.Variable */
+.code-light .ow { color: #000000 } /* Operator.Word */
+.code-light .mb { color: #1C01CE } /* Literal.Number.Bin */
+.code-light .mf { color: #1C01CE } /* Literal.Number.Float */
+.code-light .mh { color: #1C01CE } /* Literal.Number.Hex */
+.code-light .mi { color: #1C01CE } /* Literal.Number.Integer */
+.code-light .mo { color: #1C01CE } /* Literal.Number.Oct */
+.code-light .sa { color: #C41A16 } /* Literal.String.Affix */
+.code-light .sb { color: #C41A16 } /* Literal.String.Backtick */
+.code-light .sc { color: #2300CE } /* Literal.String.Char */
+.code-light .dl { color: #C41A16 } /* Literal.String.Delimiter */
+.code-light .sd { color: #C41A16 } /* Literal.String.Doc */
+.code-light .s2 { color: #C41A16 } /* Literal.String.Double */
+.code-light .se { color: #C41A16 } /* Literal.String.Escape */
+.code-light .sh { color: #C41A16 } /* Literal.String.Heredoc */
+.code-light .si { color: #C41A16 } /* Literal.String.Interpol */
+.code-light .sx { color: #C41A16 } /* Literal.String.Other */
+.code-light .sr { color: #C41A16 } /* Literal.String.Regex */
+.code-light .s1 { color: #C41A16 } /* Literal.String.Single */
+.code-light .ss { color: #C41A16 } /* Literal.String.Symbol */
+.code-light .bp { color: #5B269A } /* Name.Builtin.Pseudo */
+.code-light .fm { color: #000000 } /* Name.Function.Magic */
+.code-light .vc { color: #000000 } /* Name.Variable.Class */
+.code-light .vg { color: #000000 } /* Name.Variable.Global */
+.code-light .vi { color: #000000 } /* Name.Variable.Instance */
+.code-light .vm { color: #000000 } /* Name.Variable.Magic */
+.code-light .il { color: #1C01CE } /* Literal.Number.Integer.Long */</style>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true,
+        tags: 'ams'
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      svg: { fontCache: 'global' }
+    };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+    </head><body class="portrait">
+    <nav class="toolbar">
+      <button id="btn-prev" title="上一頁">&#8592;</button>
+      <span class="slide-counter">1 / 10</span>
+      <button id="btn-next" title="下一頁">&#8594;</button>
+      <div class="sep"></div>
+      <div class="toc-wrap">
+        <button id="btn-toc" title="目錄">☰</button>
+        <div class="toc-menu" id="toc-menu"><a onclick="goSlide(1)" title="APCS 觀念題"><span class="toc-num">1</span><span class="toc-title">APCS 觀念題</span></a><a onclick="goSlide(2)" title="ASCII：字元就是數字"><span class="toc-num">2</span><span class="toc-title">ASCII：字元就是數字</span></a><a onclick="goSlide(3)" title="ASCII 位移計算"><span class="toc-num">3</span><span class="toc-title">ASCII 位移計算</span></a><a onclick="goSlide(4)" title="對應表加密：建表是關鍵"><span class="toc-num">4</span><span class="toc-title">對應表加密：建表是關鍵</span></a><a onclick="goSlide(5)" title="對應表解密：逐字元還原"><span class="toc-num">5</span><span class="toc-title">對應表解密：逐字元還原</span></a><a onclick="goSlide(6)" title="迴文判斷：邊界條件要精確"><span class="toc-num">6</span><span class="toc-title">迴文判斷：邊界條件要精確</span></a><a onclick="goSlide(7)" title="迴文判斷：奇偶長度的差異"><span class="toc-num">7</span><span class="toc-title">迴文判斷：奇偶長度的差異</span></a><a onclick="goSlide(8)" title="本節觀念整理"><span class="toc-num">8</span><span class="toc-title">本節觀念整理</span></a><a onclick="goSlide(9)" title="隨堂練習"><span class="toc-num">9</span><span class="toc-title">隨堂練習</span></a></div>
+      </div>
+    </nav>
+    <div class="slide-wrapper" id="slide-0"><div class="slide cover"><p>title: 3-3 字串與 ASCII 運算</p>
+<div class="slide-number">1 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-1"><div class="slide"><h1>APCS 觀念題</h1>
+<h2>單元三：進階應用</h2>
+<h3>3-3 字串與 ASCII 運算</h3>
+<div class="adm adm-info"><div class="adm-header">💡 <span>本節學習目標</span></div><div class="adm-body">
+
+<ul>
+<li>熟悉關鍵 ASCII 值與字元位移計算</li>
+<li>建立對應表解讀加密/解密程式</li>
+<li>判斷迴文函式的正確邊界條件</li>
+<li>理解字串傳址：函式內修改影響原字串</li>
+</ul>
+</div></div>
+
+<div class="slide-number">2 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-2"><div class="slide"><h1>ASCII：字元就是數字</h1>
+<h2>關鍵對照表（務必背起來）</h2>
+<table>
+<thead>
+<tr>
+  <th>字元</th>
+  <th>ASCII</th>
+  <th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>'0'</code></td>
+  <td><strong>48</strong></td>
+  <td>數字 0</td>
+</tr>
+<tr>
+  <td><code>'9'</code></td>
+  <td><strong>57</strong></td>
+  <td>數字 9</td>
+</tr>
+<tr>
+  <td><code>'A'</code></td>
+  <td><strong>65</strong></td>
+  <td>大寫 A</td>
+</tr>
+<tr>
+  <td><code>'Z'</code></td>
+  <td><strong>90</strong></td>
+  <td>大寫 Z</td>
+</tr>
+<tr>
+  <td><code>'a'</code></td>
+  <td><strong>97</strong></td>
+  <td>小寫 a</td>
+</tr>
+<tr>
+  <td><code>'z'</code></td>
+  <td><strong>122</strong></td>
+  <td>小寫 z</td>
+</tr>
+</tbody>
+</table>
+<div class="adm adm-success"><div class="adm-header">✅ <span>兩個最重要的差值</span></div><div class="adm-body">
+
+<p><code>'a' - 'A' = 97 - 65 = 32</code>（大小寫差 32）</p>
+<p><code>'A' + 25 = 'Z'</code>（大寫共 26 個字母，A~Z 連續）</p>
+</div></div>
+
+<div class="slide-number">3 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-3"><div class="slide"><h1>ASCII 位移計算</h1>
+<h2>字元 + 整數 = 往後移幾格</h2>
+<div class="code-wrap" data-code="char c = &#x27;A&#x27;;
+printf(&quot;%c\n&quot;, c + 3);    // &#x27;A&#x27;+3 = 68 = &#x27;D&#x27;
+printf(&quot;%c\n&quot;, c + 25);   // &#x27;A&#x27;+25 = 90 = &#x27;Z&#x27;
+printf(&quot;%c\n&quot;, c + 26);   // &#x27;A&#x27;+26 = 91 = &#x27;[&#x27;（超出大寫範圍！）
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">    </span><span class="c1">// &#39;A&#39;+3 = 68 = &#39;D&#39;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">25</span><span class="p">);</span><span class="w">   </span><span class="c1">// &#39;A&#39;+25 = 90 = &#39;Z&#39;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">26</span><span class="p">);</span><span class="w">   </span><span class="c1">// &#39;A&#39;+26 = 91 = &#39;[&#39;（超出大寫範圍！）</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">    </span><span class="c1">// &#39;A&#39;+3 = 68 = &#39;D&#39;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">25</span><span class="p">);</span><span class="w">   </span><span class="c1">// &#39;A&#39;+25 = 90 = &#39;Z&#39;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">26</span><span class="p">);</span><span class="w">   </span><span class="c1">// &#39;A&#39;+26 = 91 = &#39;[&#39;（超出大寫範圍！）</span>
+</code></pre></div><div class="adm adm-warning"><div class="adm-header">⚠️ <span>超出範圍的陷阱</span></div><div class="adm-body">
+
+<p><code>'Z' + 1 = '['</code>（不是 'A'！）</p>
+<p>C 語言字元加法<strong>不會自動循環</strong>，超出 A-Z 範圍就變成其他字元。
+APCS 愛在這裡出選項陷阱。</p>
+</div></div>
+
+<div class="code-wrap" data-code="char a[5] = {&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;,&#x27;e&#x27;};
+for (int i = 0; i &lt; 5; i++)
+    a[i] = a[i] + i * 2;
+// i=0: &#x27;a&#x27;+0 = &#x27;a&#x27;
+// i=1: &#x27;b&#x27;+2 = &#x27;d&#x27;
+// i=2: &#x27;c&#x27;+4 = &#x27;g&#x27;
+// i=3: &#x27;d&#x27;+6 = &#x27;j&#x27;
+// i=4: &#x27;e&#x27;+8 = &#x27;m&#x27;
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="sc">&#39;b&#39;</span><span class="p">,</span><span class="sc">&#39;c&#39;</span><span class="p">,</span><span class="sc">&#39;d&#39;</span><span class="p">,</span><span class="sc">&#39;e&#39;</span><span class="p">};</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="c1">// i=0: &#39;a&#39;+0 = &#39;a&#39;</span>
+<span class="c1">// i=1: &#39;b&#39;+2 = &#39;d&#39;</span>
+<span class="c1">// i=2: &#39;c&#39;+4 = &#39;g&#39;</span>
+<span class="c1">// i=3: &#39;d&#39;+6 = &#39;j&#39;</span>
+<span class="c1">// i=4: &#39;e&#39;+8 = &#39;m&#39;</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="sc">&#39;b&#39;</span><span class="p">,</span><span class="sc">&#39;c&#39;</span><span class="p">,</span><span class="sc">&#39;d&#39;</span><span class="p">,</span><span class="sc">&#39;e&#39;</span><span class="p">};</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="c1">// i=0: &#39;a&#39;+0 = &#39;a&#39;</span>
+<span class="c1">// i=1: &#39;b&#39;+2 = &#39;d&#39;</span>
+<span class="c1">// i=2: &#39;c&#39;+4 = &#39;g&#39;</span>
+<span class="c1">// i=3: &#39;d&#39;+6 = &#39;j&#39;</span>
+<span class="c1">// i=4: &#39;e&#39;+8 = &#39;m&#39;</span>
+</code></pre></div><div class="slide-number">4 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-4"><div class="slide"><h1>對應表加密：建表是關鍵</h1>
+<h2>解題核心：逆查對應表</h2>
+<div class="code-wrap" data-code="void encrypt(char *s) {
+    char mp[] = &quot;IEFGHDJKLMNOPCRSTUVWXYZABQ&quot;;
+    //  索引：    0123456789012345678901234 5
+    //  (對應 A  B C D E F G H I J K L M ...)
+    for (int i = 0; i &lt; strlen(s); i++) {
+        int c = s[i] - &#x27;A&#x27;;       // 取得索引（A→0, B→1 ...）
+        printf(&quot;%c&quot;, mp[c]);       // 查對應表輸出
+    }
+}
+// 輸入 &quot;CAT&quot; → mp[2]=&#x27;F&#x27;, mp[0]=&#x27;I&#x27;, mp[19]=&#x27;V&#x27; → 輸出 &quot;FIV&quot;
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">void</span><span class="w"> </span><span class="nf">encrypt</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">mp</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IEFGHDJKLMNOPCRSTUVWXYZABQ&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//  索引：    0123456789012345678901234 5</span>
+<span class="w">    </span><span class="c1">//  (對應 A  B C D E F G H I J K L M ...)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w">       </span><span class="c1">// 取得索引（A→0, B→1 ...）</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mp</span><span class="p">[</span><span class="n">c</span><span class="p">]);</span><span class="w">       </span><span class="c1">// 查對應表輸出</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// 輸入 &quot;CAT&quot; → mp[2]=&#39;F&#39;, mp[0]=&#39;I&#39;, mp[19]=&#39;V&#39; → 輸出 &quot;FIV&quot;</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">void</span><span class="w"> </span><span class="nf">encrypt</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">mp</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IEFGHDJKLMNOPCRSTUVWXYZABQ&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//  索引：    0123456789012345678901234 5</span>
+<span class="w">    </span><span class="c1">//  (對應 A  B C D E F G H I J K L M ...)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w">       </span><span class="c1">// 取得索引（A→0, B→1 ...）</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mp</span><span class="p">[</span><span class="n">c</span><span class="p">]);</span><span class="w">       </span><span class="c1">// 查對應表輸出</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// 輸入 &quot;CAT&quot; → mp[2]=&#39;F&#39;, mp[0]=&#39;I&#39;, mp[19]=&#39;V&#39; → 輸出 &quot;FIV&quot;</span>
+</code></pre></div><div class="adm adm-tip"><div class="adm-header">🔖 <span>正向加密 vs 逆向解密</span></div><div class="adm-body">
+
+<p><strong>加密</strong>：字母 → 索引 → mp[索引] → 輸出</p>
+<p><strong>解密（逆查）</strong>：已知輸出字母，在 mp[] 中找它的<strong>位置</strong>，
+位置就是原始字母距 'A' 的偏移量。</p>
+</div></div>
+
+<div class="slide-number">5 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-5"><div class="slide"><h1>對應表解密：逐字元還原</h1>
+<h2>已知加密輸出，反推原文</h2>
+<div class="code-wrap" data-code="mp[] = &quot;IEFGHDJKLMNOPCRSTUVWXYZABQ&quot;
+       A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+       0 1 2 3 4 5 6 7 8 9 ...
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-text">mp[] = &quot;IEFGHDJKLMNOPCRSTUVWXYZABQ&quot;
+       A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+       0 1 2 3 4 5 6 7 8 9 ...
+</code></pre><pre class="code-block code-light"><code class="language-text">mp[] = &quot;IEFGHDJKLMNOPCRSTUVWXYZABQ&quot;
+       A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+       0 1 2 3 4 5 6 7 8 9 ...
+</code></pre></div><p>已知輸出為 <code>&quot;FIV&quot;</code>，求原始輸入：</p>
+<table>
+<thead>
+<tr>
+  <th>輸出字元</th>
+  <th>在 mp[] 中的位置</th>
+  <th>原始字母（'A'+位置）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>F</td>
+  <td>mp[2]='F' → 位置 2</td>
+  <td>'A'+2 = <strong>'C'</strong></td>
+</tr>
+<tr>
+  <td>I</td>
+  <td>mp[0]='I' → 位置 0</td>
+  <td>'A'+0 = <strong>'A'</strong></td>
+</tr>
+<tr>
+  <td>V</td>
+  <td>mp[19]='V' → 位置 19</td>
+  <td>'A'+19 = <strong>'T'</strong></td>
+</tr>
+</tbody>
+</table>
+<p>原始輸入：<code>&quot;CAT&quot;</code> ✓</p>
+<div class="adm adm-danger"><div class="adm-header">🚨 <span>解密步驟</span></div><div class="adm-body">
+
+<ol>
+<li>找輸出字元在 mp[] 中的索引位置（<strong>不是</strong>它的 ASCII 值！）</li>
+<li>索引值 + 'A' = 原始字母</li>
+</ol>
+</div></div>
+
+<div class="slide-number">6 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-6"><div class="slide"><h1>迴文判斷：邊界條件要精確</h1>
+<h2>正確的迴文檢查</h2>
+<div class="code-wrap" data-code="int isPalindrome(char s[], int len) {
+    for (int i = 0; i &lt; len / 2; i++) {   // ← 關鍵：i &lt; len/2
+        if (s[i] != s[len - 1 - i])
+            return 0;
+    }
+    return 1;
+}
+// &quot;abcba&quot;：len=5, len/2=2
+// i=0: s[0]=&#x27;a&#x27; vs s[4]=&#x27;a&#x27; ✓
+// i=1: s[1]=&#x27;b&#x27; vs s[3]=&#x27;b&#x27; ✓
+// i=2: i&lt;2 不成立，停止 ✓（中間字元不需比較）
+"><button class="copy-btn" onclick="copyCode(this)" title="複製">⎘</button><pre class="code-block code-dark"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="nf">isPalindrome</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// ← 關鍵：i &lt; len/2</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">])</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// &quot;abcba&quot;：len=5, len/2=2</span>
+<span class="c1">// i=0: s[0]=&#39;a&#39; vs s[4]=&#39;a&#39; ✓</span>
+<span class="c1">// i=1: s[1]=&#39;b&#39; vs s[3]=&#39;b&#39; ✓</span>
+<span class="c1">// i=2: i&lt;2 不成立，停止 ✓（中間字元不需比較）</span>
+</code></pre><pre class="code-block code-light"><code class="language-cpp"><span class="kt">int</span><span class="w"> </span><span class="nf">isPalindrome</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// ← 關鍵：i &lt; len/2</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">])</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// &quot;abcba&quot;：len=5, len/2=2</span>
+<span class="c1">// i=0: s[0]=&#39;a&#39; vs s[4]=&#39;a&#39; ✓</span>
+<span class="c1">// i=1: s[1]=&#39;b&#39; vs s[3]=&#39;b&#39; ✓</span>
+<span class="c1">// i=2: i&lt;2 不成立，停止 ✓（中間字元不需比較）</span>
+</code></pre></div><div class="adm adm-warning"><div class="adm-header">⚠️ <span>邊界錯誤分析</span></div><div class="adm-body">
+
+<p><code>i &lt; len/2 - 1</code>：少比一對 → 某些非迴文字串會誤判為迴文</p>
+<p><code>i &lt;= len/2</code>：多比一對（中間字元與自己比）→ 不影響結果但多做無用功</p>
+<p><code>i &lt; len</code>：比較重複對 → 不影響結果但效率差</p>
+</div></div>
+
+<div class="slide-number">7 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-7"><div class="slide"><h1>迴文判斷：奇偶長度的差異</h1>
+<h2>len/2 自動處理奇偶</h2>
+<table>
+<thead>
+<tr>
+  <th>字串</th>
+  <th>len</th>
+  <th>len/2</th>
+  <th>需比較的對</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>&quot;abba&quot;</code></td>
+  <td>4</td>
+  <td>2</td>
+  <td>(0,3), (1,2)</td>
+</tr>
+<tr>
+  <td><code>&quot;abcba&quot;</code></td>
+  <td>5</td>
+  <td>2</td>
+  <td>(0,4), (1,3)（中間 c 不比）</td>
+</tr>
+<tr>
+  <td><code>&quot;ab&quot;</code></td>
+  <td>2</td>
+  <td>1</td>
+  <td>(0,1)</td>
+</tr>
+<tr>
+  <td><code>&quot;a&quot;</code></td>
+  <td>1</td>
+  <td>0</td>
+  <td>（不比，單字元一定是迴文）</td>
+</tr>
+</tbody>
+</table>
+<div class="adm adm-success"><div class="adm-header">✅ <span>整數除法的妙用</span></div><div class="adm-body">
+
+<p><code>len/2</code> 的整數除法自動跳過奇數長度的中間字元，
+不需要特別處理奇偶。</p>
+</div></div>
+
+<div class="slide-number">8 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-8"><div class="slide"><h1>本節觀念整理</h1>
+<div class="adm adm-success"><div class="adm-header">✅ <span>三大解題技巧</span></div><div class="adm-body">
+
+<ol>
+<li><strong>ASCII 位移</strong>：字元是數字，加整數就往後移；超出範圍不循環</li>
+<li><strong>對應表解密</strong>：找輸出字元在 mp[] 中的<strong>索引位置</strong>，加 'A' 得原始字母</li>
+<li><strong>迴文邊界</strong>：<code>i &lt; len/2</code>，整數除法自動跳過奇數中間字元</li>
+</ol>
+</div></div>
+
+<div class="adm adm-warning"><div class="adm-header">⚠️ <span>三大陷阱</span></div><div class="adm-body">
+
+<ul>
+<li><code>'Z'+1</code> 不是 <code>'A'</code>，是 <code>'['</code></li>
+<li>解密時查的是「在 mp[] 中的位置」，不是字元的 ASCII 值</li>
+<li>迴圈範圍少一 <code>i &lt; len/2 - 1</code> 會漏掉最後一對比較</li>
+</ul>
+</div></div>
+
+<div class="slide-number">9 / 10</div></div></div>
+<div class="slide-wrapper" id="slide-9"><div class="slide"><h1>隨堂練習</h1>
+<p>請拿出今天的練習題 Quiz 3-3，作答時間 5 分鐘。</p>
+<div class="adm adm-tip"><div class="adm-header">🔖 <span>解題提示</span></div><div class="adm-body">
+
+<ul>
+<li>ASCII 位移題：在草稿紙上逐字元計算，不要心算</li>
+<li>對應表題：先把 mp[] 陣列寫出「索引→字元」的對應，再逆查</li>
+<li>迴文題：代入一個偶數長度和一個奇數長度的例子驗算</li>
+</ul>
+</div></div>
+
+<div class="slide-number">10 / 10</div></div></div>
+    <script>
+    // ── 前後頁導覽 ──
+    (function() {
+      const wrappers = document.querySelectorAll('.slide-wrapper');
+      const counter  = document.querySelector('.slide-counter');
+      const total    = wrappers.length;
+
+      function currentIndex() {
+        let best = 0, bestDist = Infinity;
+        wrappers.forEach((el, i) => {
+          const dist = Math.abs(el.getBoundingClientRect().top);
+          if (dist < bestDist) { bestDist = dist; best = i; }
+        });
+        return best;
+      }
+      function updateCounter() {
+        if (counter) counter.textContent = (currentIndex() + 1) + ' / ' + total;
+      }
+      window.addEventListener('scroll', updateCounter, { passive: true });
+      updateCounter();
+
+      document.addEventListener('keydown', function(e) {
+        const idx = currentIndex();
+        if (['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key) && idx < total - 1) {
+          e.preventDefault(); wrappers[idx + 1].scrollIntoView({ behavior: 'smooth' });
+        }
+        if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key) && idx > 0) {
+          e.preventDefault(); wrappers[idx - 1].scrollIntoView({ behavior: 'smooth' });
+        }
+        if (e.key === 'Home') { e.preventDefault(); wrappers[0].scrollIntoView({ behavior: 'smooth' }); }
+        if (e.key === 'End')  { e.preventDefault(); wrappers[total-1].scrollIntoView({ behavior: 'smooth' }); }
+      });
+
+      document.getElementById('btn-prev').addEventListener('click', () => {
+        const idx = currentIndex();
+        if (idx > 0) wrappers[idx - 1].scrollIntoView({ behavior: 'smooth' });
+      });
+      document.getElementById('btn-next').addEventListener('click', () => {
+        const idx = currentIndex();
+        if (idx < total - 1) wrappers[idx + 1].scrollIntoView({ behavior: 'smooth' });
+      });
+    })();
+
+    // ── 目錄跳頁 ──
+    (function() {
+      const btn  = document.getElementById('btn-toc');
+      const menu = document.getElementById('toc-menu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+      });
+      // 點選單以外的地方關閉
+      document.addEventListener('click', function(e) {
+        if (!menu.contains(e.target) && e.target !== btn) {
+          menu.classList.remove('open');
+        }
+      });
+    })();
+
+    function goSlide(idx) {
+      const target = document.getElementById('slide-' + idx);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      const menu = document.getElementById('toc-menu');
+      if (menu) menu.classList.remove('open');
+    }
+
+    // ── 複製程式碼 ──
+    function copyCode(btn) {
+      const wrap = btn.closest('.code-wrap');
+      const code = wrap.dataset.code || '';
+      function onSuccess() {
+        btn.textContent = '✓'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 1500);
+      }
+      function fallback() {
+        const ta = document.createElement('textarea');
+        ta.value = code; ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        try { document.execCommand('copy'); onSuccess(); }
+        catch (e) { btn.textContent = '✗'; setTimeout(() => btn.textContent = '⎘', 1500); }
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(onSuccess).catch(fallback);
+      } else { fallback(); }
+    }
+
+    // ── 超連結開新分頁 ──
+    document.addEventListener('click', function(e) {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#')) return;
+      e.preventDefault();
+      window.open(href, '_blank', 'noopener,noreferrer');
+    });
+    </script>
+    </body></html>
