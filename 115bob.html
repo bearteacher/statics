@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>專題：學期規劃與評分說明</title>
+<style>
+:root{
+  --paper:#FCFBF8;--field:#E7EDF0;--ink:#2B3945;--sub:#5E7686;--pale:#C4D6DE;
+  --soft:#E6EEF2;--rule:#D3DEE4;--akane:#B7282E;
+  --serif:"Noto Serif TC","Songti TC","Source Han Serif TC","Yu Mincho","MS Mincho",serif;
+  --sans:"Noto Sans TC","PingFang TC","Hiragino Sans","Microsoft JhengHei",sans-serif;
+  --mono:"JetBrains Mono","Cascadia Mono","Consolas","Menlo","Courier New",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--field);color:var(--ink);font-family:var(--sans);
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.stage{--pw:min(88vw, calc(96vh * 0.7071));}
+.paper{display:none;position:relative;width:var(--pw);
+  height:calc(var(--pw) * 297 / 210);aspect-ratio:210/297;background:var(--paper);
+  border:1px solid var(--rule);box-shadow:0 1px 2px rgba(43,57,69,.06),0 18px 44px rgba(43,57,69,.14);
+  font-size:clamp(10px, calc(var(--pw)/40), 17px);padding:2.9em 2.6em 2.7em;
+  animation:rise .3s ease both;--accent:var(--sub);--tint:var(--soft)}
+.paper.active{display:flex;flex-direction:column}
+.paper::before{content:"";position:absolute;left:0;top:0;bottom:0;width:9px;background:var(--accent)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.paper{animation:none}}
+
+.side{position:absolute;top:2.8em;right:.9em;display:flex;flex-direction:column;align-items:center;
+  font-family:var(--serif);font-size:.88em;color:var(--accent);opacity:.9}
+.side span{line-height:1.42;display:block}
+.side span.dot{font-size:.55em;line-height:2.2;opacity:.7}
+.side::after{content:"";display:block;margin-top:.5em;width:1px;height:3em;background:var(--accent);opacity:.4}
+.folio{position:absolute;bottom:1.5em;right:1.9em;font-family:var(--serif);color:var(--sub);
+  font-size:.74em;letter-spacing:.2em}
+.folio b{font-weight:400;font-size:1.6em;color:var(--ink);margin:0 .18em}
+
+.eyebrow{font-size:.82em;letter-spacing:.4em;color:var(--accent);font-weight:700;
+  padding-bottom:.65em;border-bottom:2px solid var(--accent);margin-right:2.2em}
+h1{font-family:var(--serif);font-size:2em;line-height:1.32;font-weight:700;
+  margin:.55em 1.8em .3em 0;letter-spacing:.03em}
+
+.body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-evenly;
+  gap:1.15em;min-height:0}
+figure{margin:0;display:flex;align-items:center;justify-content:center;min-height:0}
+figure img{display:block;width:100%;max-height:100%;object-fit:contain}
+
+ul.items{list-style:none;margin:0;padding:0}
+ul.items li{position:relative;padding:.55em 0 .55em 1.5em;font-size:1.02em;line-height:1.75;
+  border-top:1px solid var(--rule)}
+ul.items li:last-child{border-bottom:1px solid var(--rule)}
+ul.items li::before{content:"";position:absolute;left:.1em;top:1.25em;width:.5em;height:.5em;background:var(--accent)}
+ul.items li b{color:var(--accent)}
+
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.2em;
+  font-size:1.02em;line-height:1.65;border-bottom:1px solid var(--rule)}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.62em;width:1.5em;height:1.5em;
+  line-height:1.5em;text-align:center;background:var(--accent);color:var(--paper);
+  font-family:var(--serif);font-size:.85em}
+ol.steps li b{color:var(--accent)}
+
+.foot{margin-top:.7em;background:var(--tint);border-left:5px solid var(--accent);
+  padding:.75em 1em;font-size:1em;line-height:1.65;flex:0 0 auto}
+.foot b{color:var(--accent)}
+.warn{background:var(--akane);color:var(--paper);font-family:var(--serif);font-weight:700;
+  font-size:1.05em;padding:.5em .85em;text-align:center;letter-spacing:.05em}
+
+table{border-collapse:collapse;width:100%;font-size:.98em}
+th,td{border:1px solid var(--rule);padding:.62em .75em;text-align:left;line-height:1.6}
+th{background:var(--tint);color:var(--accent);font-weight:700;font-size:.95em}
+td:first-child{font-family:var(--mono);font-weight:700;color:var(--accent);white-space:nowrap}
+tbody tr:nth-child(even){background:#FAFCFD}
+
+/* 程式碼 */
+.code{position:relative;background:#F6F8F6;border:1px solid #DDE4E2;border-left:4px solid var(--accent);
+  padding:.7em .95em .75em}
+.c-label{font-size:.82em;color:var(--sub);letter-spacing:.06em;margin-bottom:.35em;
+  font-family:var(--serif)}
+pre{margin:0;font-family:var(--mono);font-size:1.06em;line-height:1.75;white-space:pre-wrap;
+  word-break:break-word}
+.c-src{color:#2B3945}
+.c-kw{color:#B7282E;font-weight:700}
+.c-fn{color:#2E6F9E;font-weight:700}
+.c-str{color:#3F9A63}
+.c-num{color:#C8922A;font-weight:700}
+.c-com{color:#93A2AC;font-style:italic}
+.c-out{margin-top:.5em;padding-top:.45em;border-top:1px dashed #C9D5D2;color:#4C5B66;font-size:.94em}
+.c-out::before{content:"▸ 執行結果";display:block;font-family:var(--sans);font-size:.8em;
+  color:var(--sub);letter-spacing:.12em;margin-bottom:.25em}
+.c-out.err{color:#B7282E}
+.c-out.err::before{content:"▸ 錯誤訊息";color:#B7282E}
+.copy{position:absolute;top:.45em;right:.5em;font-family:var(--sans);font-size:.76em;
+  letter-spacing:.1em;color:var(--sub);background:var(--paper);border:1px solid var(--rule);
+  border-radius:3px;padding:.2em .55em;cursor:pointer}
+.copy:hover{background:var(--soft);color:var(--ink)}
+.copy.done{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+
+/* 圖 + 程式 對照 */
+.split{display:grid;grid-template-columns:38% 1fr;gap:1em;align-items:center}
+.split.narrow{grid-template-columns:31% 1fr}
+.split.narrow pre{font-size:.97em}
+.split.stack{grid-template-columns:1fr;gap:.6em}
+.split.big{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;gap:.7em;flex:1 1 auto;min-height:0}
+.split.big .fc{min-height:0}
+.split.big .fc img{width:auto;height:auto;max-width:100%;max-height:23em}
+.split.stack .fc img{max-height:9em;width:auto;margin:0 auto}
+.split .fc{border:1px dashed var(--pale);background:#FBFCFD;padding:.4em;display:flex;
+  align-items:center;justify-content:center}
+.split .fc img{width:100%;max-height:100%;display:block}
+.split .cap{grid-column:1/-1;font-size:.85em;color:var(--sub);font-family:var(--serif);
+  letter-spacing:.1em;margin-bottom:-.35em}
+
+/* 練習頁 */
+.file{position:absolute;top:2.4em;right:2.9em;font-family:var(--serif);font-size:.86em;
+  font-weight:700;color:var(--accent);border:2px solid var(--accent);padding:.2em .6em;background:var(--paper)}
+.task{background:var(--tint);border:2px solid var(--accent);padding:.9em 1em;
+  font-size:1.15em;line-height:1.8}
+.task b{color:var(--accent)}
+.task .ex{display:block;margin-top:.4em;font-size:.85em;color:var(--sub)}
+.hint{margin-top:.6em;border-top:2px solid var(--accent);padding-top:.5em}
+.hint h4{font-family:var(--serif);font-size:.98em;margin:0 0 .3em;color:var(--accent);letter-spacing:.16em}
+.hint ol{list-style:none;margin:0;padding:0;counter-reset:h}
+.hint ol li{counter-increment:h;position:relative;padding:.28em 0 .28em 1.8em;font-size:.98em;line-height:1.6}
+.hint ol li::before{content:counter(h);position:absolute;left:0;top:.38em;width:1.25em;height:1.25em;
+  line-height:1.25em;text-align:center;background:var(--accent);color:var(--paper);
+  font-size:.78em;font-family:var(--serif)}
+.hint ol li b{color:var(--accent)}
+
+/* 封面 */
+.paper.cover{padding-top:4em}
+.cover .seal{position:absolute;top:2.6em;right:2.8em;width:3.1em;height:3.1em;
+  border:2.5px solid var(--akane);border-radius:3px;color:var(--akane);font-family:var(--serif);
+  font-size:1em;font-weight:700;display:flex;align-items:center;justify-content:center;
+  line-height:1.05;text-align:center;transform:rotate(-4deg)}
+.cover .mark{font-family:var(--serif);font-size:.85em;letter-spacing:.5em;color:var(--sub)}
+.cover h1{font-size:3em;line-height:1.24;margin:.6em 1.4em .3em 0}
+.cover .sub{font-family:var(--serif);font-size:1.15em;letter-spacing:.22em;color:var(--accent);font-weight:600}
+.cover .rule{height:2px;background:var(--accent);margin:1.1em 2em 1.1em 0;opacity:.5}
+.cover .lead{font-size:1.1em;line-height:1.9;background:var(--tint);border-left:6px solid var(--accent);
+  padding:.9em 1em;margin-right:1em}
+.cover .lead b{color:var(--accent)}
+
+@media (max-width:640px){.stage{--pw:min(88vw, calc(94vh * 0.7071));}
+  .split{grid-template-columns:1fr}}
+
+.menu-btn{position:fixed;top:1.1rem;right:1.1rem;z-index:30;background:var(--paper);
+  border:1px solid var(--rule);border-radius:2px;color:var(--ink);font-family:var(--serif);
+  font-size:.9rem;letter-spacing:.24em;padding:.6rem 1rem;cursor:pointer;box-shadow:0 2px 10px rgba(43,57,69,.1)}
+.menu-btn:hover{background:var(--soft)}
+.menu-btn:focus-visible,.nav button:focus-visible,.toc li:focus-visible,.copy:focus-visible{outline:2px solid var(--sub);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(43,57,69,.22);opacity:0;pointer-events:none;transition:opacity .25s;z-index:31}
+.scrim.on{opacity:1;pointer-events:auto}
+.toc{position:fixed;top:0;right:0;height:100%;width:min(23rem,88vw);z-index:32;background:var(--paper);
+  border-left:1px solid var(--rule);transform:translateX(101%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  padding:2.5rem 1.4rem;overflow-y:auto}
+.toc.on{transform:none}
+.toc h2{font-family:var(--serif);font-size:1rem;letter-spacing:.5em;font-weight:600;color:var(--sub);
+  margin:0 0 1.1rem;padding-bottom:.8rem;border-bottom:1px solid var(--rule)}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc li{display:flex;gap:.7rem;align-items:baseline;cursor:pointer;padding:.55rem .5rem;
+  border-bottom:1px solid var(--rule);font-size:.9rem;border-left:5px solid var(--accent,var(--pale))}
+.toc li:hover{background:var(--soft)}
+.toc li.cur{background:var(--soft)}
+.toc .n{font-family:var(--serif);color:var(--accent,var(--sub));min-width:2.4em;font-weight:700;font-size:.85rem}
+.toc .close{position:absolute;top:.9rem;right:1rem;background:none;border:0;font-size:1.3rem;color:var(--sub);cursor:pointer;line-height:1}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:1.1rem;z-index:25;display:flex;
+  align-items:center;gap:.5rem;background:var(--paper);border:1px solid var(--rule);border-radius:999px;
+  padding:.34rem .5rem;box-shadow:0 2px 12px rgba(43,57,69,.12)}
+.nav button{border:0;background:none;cursor:pointer;color:var(--ink);font-size:1rem;padding:.35rem .7rem;border-radius:999px}
+.nav button:hover:not(:disabled){background:var(--soft)}
+.nav button:disabled{color:var(--pale);cursor:default}
+.nav .pos{font-family:var(--serif);font-size:.88rem;color:var(--sub);letter-spacing:.1em;min-width:6.5rem;text-align:center}
+.print{position:fixed;left:1.1rem;bottom:1.1rem;z-index:25;background:none;border:1px solid var(--rule);
+  border-radius:2px;color:var(--sub);font-size:.8rem;letter-spacing:.2em;padding:.5rem .8rem;cursor:pointer;font-family:var(--serif)}
+.print:hover{background:var(--paper)}
+
+
+/* ---------- 右側控制列（大綱／翻頁／列印） ---------- */
+.menu-btn{display:none!important}
+.rail{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);z-index:30;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.rail button{width:2.4rem;height:2.4rem;display:flex;align-items:center;justify-content:center;
+  background:var(--paper);border:1px solid var(--rule);border-radius:6px;color:var(--sub);
+  font-size:1rem;line-height:1;cursor:pointer;padding:0;font-family:var(--sans);
+  box-shadow:0 1px 6px rgba(43,57,69,.1)}
+.rail button:hover:not(:disabled){background:var(--soft);color:var(--ink)}
+.rail button:disabled{color:var(--pale);cursor:default}
+.rail button:focus-visible{outline:2px solid var(--sub);outline-offset:2px}
+.pager{display:flex;flex-direction:column;align-items:center;background:var(--paper);
+  border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(43,57,69,.1)}
+.pager button{border:0;border-radius:0;box-shadow:none;height:2rem;font-size:.8rem}
+.pager .pos{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;min-width:2.4rem;padding:.3rem 0;font-family:var(--serif);color:var(--sub);
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);line-height:1.15}
+.pager .pos b{font-weight:600;font-size:.82rem;color:var(--ink)}
+.pager .pos i{font-style:normal;font-size:.66rem}
+.pager .pos s{display:block;width:1.05rem;height:1px;background:var(--rule);margin:.15rem 0;
+  text-decoration:none}
+@media (max-width:640px){.rail{right:.4rem;gap:.35rem}
+  .rail button{width:2.1rem;height:2.1rem}}
+@media print{.rail{display:none!important}}
+
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body{background:#fff;display:block;overflow:visible}
+  .menu-btn,.toc,.scrim,.nav,.print,.copy{display:none!important}
+  .stage{--pw:210mm}
+  .paper{display:flex!important;flex-direction:column;width:210mm;height:297mm;aspect-ratio:auto;
+    font-size:11.5pt;border:0;box-shadow:none;page-break-after:always;animation:none}
+  .paper:last-child{page-break-after:auto}
+}
+</style>
+</head>
+<body>
+<div class="scrim" id="scrim"></div>
+<nav class="toc" id="toc" aria-label="頁面大綱">
+  <button class="close" id="close" aria-label="關閉大綱">×</button>
+  <h2>目次</h2>
+  <ul><li style="--accent:#B7282E"><span class="n">扉</span><span class="t">專題：學期規劃</span></li><li style="--accent:#B7282E"><span class="n">一</span><span class="t">當天｜專題課當天，交規劃、當場討論</span></li><li style="--accent:#2E6F9E"><span class="n">二</span><span class="t">內容｜規劃書要寫哪些東西</span></li><li style="--accent:#C8922A"><span class="n">三</span><span class="t">研究規劃｜怎麼寫才算「具體」</span></li><li style="--accent:#2E6F9E"><span class="n">四</span><span class="t">能力規劃｜解題能力進展怎麼寫</span></li><li style="--accent:#2F8F76"><span class="n">五</span><span class="t">合作研究｜有合作的人，分工要寫清楚</span></li><li style="--accent:#3F9A63"><span class="n">六</span><span class="t">參考範例｜範例一：以競賽解題為主</span></li><li style="--accent:#3F9A63"><span class="n">七</span><span class="t">參考範例｜範例二：以 APCS 檢測為主</span></li><li style="--accent:#3F9A63"><span class="n">八</span><span class="t">參考範例｜範例三：合作研究（有分工）</span></li><li style="--accent:#2E6F9E"><span class="n">九</span><span class="t">評分｜成績看這三個部分</span></li><li style="--accent:#2F8F76"><span class="n">十</span><span class="t">TOI｜TOI 練習賽，這學期只有三場</span></li><li style="--accent:#2F8F76"><span class="n">十一</span><span class="t">TOI｜潛力組要練什麼</span></li><li style="--accent:#B7282E"><span class="n">十二</span><span class="t">評分｜這學期的評分，不會像高一那麼寬鬆</span></li><li style="--accent:#B7282E"><span class="n">十三</span><span class="t">評分｜我會看這四件事</span></li><li style="--accent:#2E6F9E"><span class="n">十四</span><span class="t">一對一｜當場討論，我會問你這三個問題</span></li><li style="--accent:#2F8F76"><span class="n">十五</span><span class="t">當天｜來上課之前，自己先檢查一次</span></li></ul>
+</nav>
+<main class="stage">
+<article class="paper cover" data-folio="扉" style="--accent:#B7282E;--tint:#F7E6E6"><div class="seal">專題</div><div class="side"><span>專</span><span>題</span></div><div class="mark">校園資訊教育</div><h1>專題：<br>學期規劃</h1><div class="sub">資優班　資訊科技組</div><div class="rule"></div><div class="body"><div class="code" data-code="# 專題課當天要交的東西
+研究規劃 = &quot;我這學期要研究什麼&quot;
+能力規劃 = &quot;解題與 APCS 要進展到哪裡&quot;
+我的分工 = &quot;團隊題目裡，我負責哪一塊&quot;"><div class="c-label">第一個程式</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-com"># 專題課當天要交的東西</span>
+研究規劃 = <span class="c-str">&quot;我這學期要研究什麼&quot;</span>
+能力規劃 = <span class="c-str">&quot;解題與 APCS 要進展到哪裡&quot;</span>
+我的分工 = <span class="c-str">&quot;團隊題目裡，我負責哪一塊&quot;</span></pre><pre class="c-out">→ 一份文件，當天交、當場討論</pre></div></div><p class="lead">專題課當天，每個人交一份規劃，<b>我會當場一個一個跟你討論</b>。<br>先想清楚兩件事：<b>這學期我要研究什麼、解題與檢測要走到哪裡。</b></p><div class="folio" style="letter-spacing:.34em">扉頁</div></article>
+<article class="paper" data-folio="一" style="--accent:#B7282E;--tint:#F7E6E6"><div class="side"><span>要</span><span>交</span></div><div class="eyebrow">當天</div><h1>專題課當天，交規劃、當場討論</h1><div class="body"><figure><img alt="說明圖" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgMzMwIj48ZGVmcz48bWFya2VyIGlkPSJhaCIgdmlld0JveD0iMCAwIDEyIDEyIiByZWZYPSIxMC41IiByZWZZPSI2IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTSAxIDEgTCAxMSA2IEwgMSAxMSB6IiBmaWxsPSIjMkIzOTQ1Ii8+PC9tYXJrZXI+PC9kZWZzPjxwYXRoIGQ9Ik0gNjAgMTUwIEggODQwIiBzdHJva2U9IiM1RTc2ODYiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0gODMyIDE1MCBsIDEyIDAgbCAtMTIgLTggdiAxNiB6IiBmaWxsPSIjNUU3Njg2Ii8+PGNpcmNsZSBjeD0iMTUwIiBjeT0iMTUwIiByPSIxNSIgZmlsbD0iI0ZDRkJGOCIgc3Ryb2tlPSIjQjcyODJFIiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSIxNTAiIGN5PSIxNTAiIHI9IjYiIGZpbGw9IiNCNzI4MkUiLz48dGV4dCB4PSIxNTAuMCIgeT0iMTA0LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNCNzI4MkUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPuWwiOmhjOiqsueVtuWkqTwvdGV4dD48dGV4dCB4PSIxNTAuMCIgeT0iMTMwLjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMyQjM5NDUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuS6pOWHuuimj+WKgzwvdGV4dD48Y2lyY2xlIGN4PSIzNTAiIGN5PSIxNTAiIHI9IjE1IiBmaWxsPSIjRkNGQkY4IiBzdHJva2U9IiMyRTZGOUUiIHN0cm9rZS13aWR0aD0iNCIvPjxjaXJjbGUgY3g9IjM1MCIgY3k9IjE1MCIgcj0iNiIgZmlsbD0iIzJFNkY5RSIvPjx0ZXh0IHg9IjM1MC4wIiB5PSIyMTIuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzJFNkY5RSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+5ZCM5LiA56+A6KqyPC90ZXh0Pjx0ZXh0IHg9IjM1MC4wIiB5PSIyMzguMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjQwMCI+55W25aC05LiA5bCN5LiAPC90ZXh0Pjx0ZXh0IHg9IjM1MC4wIiB5PSIyNjIuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjQwMCI+6KiO6KuW5Y+v6KGM5oCnPC90ZXh0PjxjaXJjbGUgY3g9IjU1MCIgY3k9IjE1MCIgcj0iMTUiIGZpbGw9IiNGQ0ZCRjgiIHN0cm9rZT0iI0M4OTIyQSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNTUwIiBjeT0iMTUwIiByPSI2IiBmaWxsPSIjQzg5MjJBIi8+PHRleHQgeD0iNTUwLjAiIHk9IjIxMi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmaWxsPSIjQzg5MjJBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7mnJ/kuK08L3RleHQ+PHRleHQgeD0iNTUwLjAiIHk9IjIzOC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7mqqLmoLjpgLLluqY8L3RleHQ+PHRleHQgeD0iNTUwLjAiIHk9IjI2Mi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7nnIvlr6bpmpvnlKLlh7o8L3RleHQ+PGNpcmNsZSBjeD0iNzYwIiBjeT0iMTUwIiByPSIxNSIgZmlsbD0iI0ZDRkJGOCIgc3Ryb2tlPSIjMkY4Rjc2IiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSI3NjAiIGN5PSIxNTAiIHI9IjYiIGZpbGw9IiMyRjhGNzYiLz48dGV4dCB4PSI3NjAuMCIgeT0iMTA0LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMyRjhGNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPuacn+acqzwvdGV4dD48dGV4dCB4PSI3NjAuMCIgeT0iMTMwLjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMyQjM5NDUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuS4iemgheaIkOe4vue2nOWQiOipleWIhjwvdGV4dD48dGV4dCB4PSI0NTAuMCIgeT0iMzE4LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPuimj+WKg+S4jeaYr+Wvq+WujOWwsee1kOadn++8jOacg+S4gOi3r+iiq+aqouaguOWIsOacn+acqzwvdGV4dD48L3N2Zz4="></figure><ul class="items"><li><b>打字</b>成一份文件，<b>專題課當天帶來交</b>，不收手寫。</li><li>交完<b>同一節課就開始一對一討論</b>，所以請先想過，不要到現場才寫。</li><li>規劃會被沿用到期中檢核與期末評分，<b>不是寫完就收起來的作文</b>。</li></ul></div><div class="foot">當天要討論的人很多，<b>你準備得愈清楚，能問到的東西就愈多</b>。</div><div class="folio">第<b>一</b>頁</div></article>
+<article class="paper" data-folio="二" style="--accent:#2E6F9E;--tint:#E4EDF4"><div class="side"><span>寫</span><span>什</span><span>麼</span></div><div class="eyebrow">內容</div><h1>規劃書要寫哪些東西</h1><div class="body"><table><thead><tr><th>項目</th><th>要寫清楚的內容</th></tr></thead><tbody><tr><td>研究題目</td><td>你要研究什麼？想解決或想知道什麼？</td></tr><tr><td>我的分工</td><td>如果和別人合作，<b>我負責哪一塊</b></td></tr><tr><td>解題能力</td><td>現在解到什麼程度、這學期要進展到哪裡</td></tr><tr><td>競賽與檢測</td><td>校內資訊能力競賽、<b>APCS</b>、<b>TOI 練習賽</b>的目標</td></tr><tr><td>驗證方式</td><td>怎麼證明你做到了（成績、題數、作品）</td></tr><tr><td>時間安排</td><td>期中之前做到哪、期末交出什麼</td></tr></tbody></table><ul class="items"><li>五項都要有，<b>寧可短，不要空</b>。</li><li>有困難或還沒想清楚的地方也寫出來，討論的時候可以一起解決。</li></ul></div><div class="folio">第<b>二</b>頁</div></article>
+<article class="paper" data-folio="三" style="--accent:#C8922A;--tint:#F7EEDA"><div class="side"><span>具</span><span>體</span></div><div class="eyebrow">研究規劃</div><h1>怎麼寫才算「具體」</h1><div class="body"><table><thead><tr><th>這樣寫不行</th><th>為什麼</th><th>改成這樣</th></tr></thead><tbody><tr><td>我要做 AI</td><td>沒有題目、沒有範圍</td><td>用影像辨識判斷校園垃圾分類是否正確</td></tr><tr><td>我要學 Python</td><td>看不出程度變化</td><td>從只會基本語法，到能自己寫資料前處理腳本</td></tr><tr><td>跟著組員一起做</td><td>看不出你做了什麼</td><td>我負責資料蒐集與標註，共約 500 筆</td></tr><tr><td>努力完成專題</td><td>沒有驗證方式</td><td>期中交出可跑的模型與訓練紀錄</td></tr></tbody></table></div><div class="foot">判斷標準很簡單：<b>別人看完，知不知道你「做完了沒有」？</b>寫得出檢核點，才叫具體。</div><div class="folio">第<b>三</b>頁</div></article>
+<article class="paper" data-folio="四" style="--accent:#2E6F9E;--tint:#E4EDF4"><div class="side"><span>能</span><span>力</span></div><div class="eyebrow">能力規劃</div><h1>解題能力進展怎麼寫</h1><div class="body"><div class="code" data-code="現在：  只會迴圈與條件，看到題目常不知從何下手
+目標：  能獨立解出排序、前綴和、二分搜的基礎題
+驗證：  APCS 實作題目標 3 級分
+        每週固定完成 3 題，並寫解題筆記
+        TOI 三場練習賽全部參加，每場寫檢討"><div class="c-label">寫成「現在 → 目標 → 驗證」</div><button class="copy" type="button">複製</button><pre class="c-src">現在：  只會迴圈與條件，看到題目常不知從何下手
+目標：  能獨立解出排序、前綴和、二分搜的基礎題
+驗證：  APCS 實作題目標 <span class="c-num">3</span> 級分
+        每週固定完成 <span class="c-num">3</span> 題，並寫解題筆記
+        TOI 三場練習賽全部參加，每場寫檢討</pre></div><ul class="items"><li><b>起點要誠實</b>。寫得太高，討論時會被問出來，也對你沒好處。</li><li>目標要能<b>在這學期達成</b>，級分、題數、場次都寫成數字。</li><li>驗證方式盡量用<b>拿得出來的東西</b>：成績單、題數紀錄、解題筆記。</li></ul></div><div class="folio">第<b>四</b>頁</div></article>
+<article class="paper" data-folio="五" style="--accent:#2F8F76;--tint:#E2F0EB"><div class="side"><span>分</span><span>工</span></div><div class="eyebrow">合作研究</div><h1>有合作的人，分工要寫清楚</h1><div class="body"><figure><img alt="說明圖" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4NjAgMzQwIj48ZGVmcz48bWFya2VyIGlkPSJhaCIgdmlld0JveD0iMCAwIDEyIDEyIiByZWZYPSIxMC41IiByZWZZPSI2IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTSAxIDEgTCAxMSA2IEwgMSAxMSB6IiBmaWxsPSIjMkIzOTQ1Ii8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHg9IjMwIiB5PSI0MCIgd2lkdGg9IjUwMCIgaGVpZ2h0PSIyNDAiIHJ4PSIxNCIgZmlsbD0iI0VBRjFGNyIgc3Ryb2tlPSIjMkU2RjlFIiBzdHJva2Utd2lkdGg9IjMuNSIvPjx0ZXh0IHg9IjI4MC4wIiB5PSI3OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmaWxsPSIjMkU2RjlFIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7lnJjpmornmoTnoJTnqbbpoYznm648L3RleHQ+PHRleHQgeD0iMjgwLjAiIHk9IjEwNi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7vvIjlpKflrrblhbHlkIznmoTnm67mqJnvvIk8L3RleHQ+PHJlY3QgeD0iNDAuMCIgeT0iMTMwLjAiIHdpZHRoPSIxNjAuMCIgaGVpZ2h0PSIxMjAuMCIgcng9IjMiIGZpbGw9IiNGQ0ZCRjgiIHN0cm9rZT0iIzVFNzY4NiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHRleHQgeD0iMTIwLjAiIHk9IjE2Mi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE5IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7ntYTlk6EgQTwvdGV4dD48dGV4dCB4PSIxMjAuMCIgeT0iMTk2LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuiyoOiyrOeahDwvdGV4dD48dGV4dCB4PSIxMjAuMCIgeT0iMjIwLjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuW3peS9nOmgheebrjwvdGV4dD48cmVjdCB4PSIyMDAuMCIgeT0iMTMwLjAiIHdpZHRoPSIxNjAuMCIgaGVpZ2h0PSIxMjAuMCIgcng9IjMiIGZpbGw9IiNGQkVERUQiIHN0cm9rZT0iI0I3MjgyRSIgc3Ryb2tlLXdpZHRoPSIzIi8+PHRleHQgeD0iMjgwLjAiIHk9IjE2Mi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE5IiBmaWxsPSIjQjcyODJFIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7miJE8L3RleHQ+PHRleHQgeD0iMjgwLjAiIHk9IjE5Ni4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7osqDosqznmoQ8L3RleHQ+PHRleHQgeD0iMjgwLjAiIHk9IjIyMC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7lt6XkvZzpoIXnm648L3RleHQ+PHJlY3QgeD0iMzYwLjAiIHk9IjEzMC4wIiB3aWR0aD0iMTYwLjAiIGhlaWdodD0iMTIwLjAiIHJ4PSIzIiBmaWxsPSIjRkNGQkY4IiBzdHJva2U9IiM1RTc2ODYiIHN0cm9rZS13aWR0aD0iMyIvPjx0ZXh0IHg9IjQ0MC4wIiB5PSIxNjIuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzVFNzY4NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+57WE5ZOhIEI8L3RleHQ+PHRleHQgeD0iNDQwLjAiIHk9IjE5Ni4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7osqDosqznmoQ8L3RleHQ+PHRleHQgeD0iNDQwLjAiIHk9IjIyMC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7lt6XkvZzpoIXnm648L3RleHQ+PHRleHQgeD0iMjgwLjAiIHk9IjMwNi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjQjcyODJFIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7lr6vmuIXmpZrvvJrpgJnlgIvpoYznm67oo6HvvIzlk6rkuIDloYrmmK/miJHlgZrnmoQ8L3RleHQ+PHJlY3QgeD0iNTcwIiB5PSI0MCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIyNDAiIHJ4PSIxNCIgZmlsbD0iI0UyRjBFQiIgc3Ryb2tlPSIjMkY4Rjc2IiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMTAgNyIvPjx0ZXh0IHg9IjcwMC4wIiB5PSI3OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmaWxsPSIjMkY4Rjc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7miJHnmoTnjajnq4vnoJTnqbY8L3RleHQ+PHRleHQgeD0iNzAwLjAiIHk9IjEwNi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7vvIjlj6/liqDvvIzkuI3lvLfliLbvvIk8L3RleHQ+PHRleHQgeD0iNzAwLjAiIHk9IjE1Mi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7oh6rlt7HmnInoiIjotqPnmoQ8L3RleHQ+PHRleHQgeD0iNzAwLjAiIHk9IjE4MC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7os4foqIrnp5HmioDpoYznm648L3RleHQ+PHRleHQgeD0iNzAwLjAiIHk9IjIyNC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7lsI/kuIDpu57mspLpl5zkv4I8L3RleHQ+PHRleHQgeD0iNzAwLjAiIHk9IjI0OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7kvYbopoHog73lgZrlrow8L3RleHQ+PHRleHQgeD0iNzAwLjAiIHk9IjMwNi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMkY4Rjc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7liqDliIbpoIXvvIzkuI3mmK/lv4Xloas8L3RleHQ+PC9zdmc+"></figure><ul class="items"><li>共同的題目寫一次就好，<b>重點是你負責的那一塊</b>。</li><li>分工要寫得<b>可以被檢查</b>：做什麼、做多少、什麼時候交。</li><li>除了團隊的部分，你也可以另外加入<b>自己有興趣的獨立研究</b>。</li></ul></div><div class="foot">組內每個人的規劃書都會分開看。<b>「我跟著組員做」不是分工。</b></div><div class="folio">第<b>五</b>頁</div></article>
+<article class="paper" data-folio="六" style="--accent:#3F9A63;--tint:#E5F1EA"><div class="side"><span>例</span><span>一</span></div><div class="eyebrow">參考範例</div><h1>範例一：以競賽解題為主</h1><div class="body"><div class="code" data-code="研究方向：演算法解題（以圖論與貪心為主）
+團隊分工：無，獨立練習
+解題能力：現在只會模擬與暴力解
+          → 目標能獨立寫出 BFS/DFS 與最短路徑
+競賽目標：校內資訊能力競賽進入前段；
+          TOI 潛力組三場全部參加，目標穩定解出 2 題
+驗證方式：每週 3 題 + 解題筆記；每場練習賽寫一份檢討
+時間安排：10 月基礎題型、11 月圖論、12 月綜合模擬"><div class="c-label">解題型：用題數與場次當檢核點</div><button class="copy" type="button">複製</button><pre class="c-src">研究方向：演算法解題（以圖論與貪心為主）
+團隊分工：無，獨立練習
+解題能力：現在只會模擬與暴力解
+          → 目標能獨立寫出 BFS/DFS 與最短路徑
+競賽目標：校內資訊能力競賽進入前段；
+          TOI 潛力組三場全部參加，目標穩定解出 <span class="c-num">2</span> 題
+驗證方式：每週 <span class="c-num">3</span> 題 + 解題筆記；每場練習賽寫一份檢討
+時間安排：<span class="c-num">10</span> 月基礎題型、<span class="c-num">11</span> 月圖論、<span class="c-num">12</span> 月綜合模擬</pre></div><ul class="items"><li>解題型的規劃，<b>把「每週幾題」寫出來</b>最實在。</li></ul></div><div class="folio">第<b>六</b>頁</div></article>
+<article class="paper" data-folio="七" style="--accent:#3F9A63;--tint:#E5F1EA"><div class="side"><span>例</span><span>二</span></div><div class="eyebrow">參考範例</div><h1>範例二：以 APCS 檢測為主</h1><div class="body"><div class="code" data-code="研究方向：APCS 實作題型整理與練習
+團隊分工：無，獨立練習
+解題能力：現在 APCS 實作 2 級分，第三題常常寫不完
+          → 目標熟練陣列、字串處理與基本資料結構
+檢測目標：本次 APCS 實作題 3 級分以上、觀念題 4 級分
+驗證方式：整理一份「題型 → 解法」對照筆記；
+          考前完成 3 次完整模擬並計時
+時間安排：10 月補基礎、11 月題型整理、12 月模擬與檢討"><div class="c-label">檢測型：級分就是最明確的目標</div><button class="copy" type="button">複製</button><pre class="c-src">研究方向：APCS 實作題型整理與練習
+團隊分工：無，獨立練習
+解題能力：現在 APCS 實作 <span class="c-num">2</span> 級分，第三題常常寫不完
+          → 目標熟練陣列、字串處理與基本資料結構
+檢測目標：本次 APCS 實作題 <span class="c-num">3</span> 級分以上、觀念題 <span class="c-num">4</span> 級分
+驗證方式：整理一份「題型 → 解法」對照筆記；
+          考前完成 <span class="c-num">3</span> 次完整模擬並計時
+時間安排：<span class="c-num">10</span> 月補基礎、<span class="c-num">11</span> 月題型整理、<span class="c-num">12</span> 月模擬與檢討</pre></div><ul class="items"><li>寫上<b>目前級分</b>和<b>目標級分</b>，進步幅度一眼就看得出來。</li></ul></div><div class="folio">第<b>七</b>頁</div></article>
+<article class="paper" data-folio="八" style="--accent:#3F9A63;--tint:#E5F1EA"><div class="side"><span>例</span><span>三</span></div><div class="eyebrow">參考範例</div><h1>範例三：合作研究（有分工）</h1><div class="body"><div class="code" data-code="研究題目：用影像辨識判斷校園垃圾是否分類正確
+團隊分工：三人；我負責 資料蒐集、標註與訓練流程
+我的分工：拍攝並標註 500 張照片，建立訓練/測試集
+解題能力：同時維持每週 2 題解題練習，不因專題中斷
+競賽目標：校內資訊能力競賽仍參加；APCS 維持 3 級分
+驗證方式：期中交出可跑的模型 + 訓練紀錄
+時間安排：10 月完成資料集、11 月訓練、12 月調參與報告"><div class="c-label">研究型：分工要寫到數量與時間</div><button class="copy" type="button">複製</button><pre class="c-src">研究題目：用影像辨識判斷校園垃圾是否分類正確
+團隊分工：三人；我負責 資料蒐集、標註與訓練流程
+我的分工：拍攝並標註 <span class="c-num">500</span> 張照片，建立訓練/測試集
+解題能力：同時維持每週 <span class="c-num">2</span> 題解題練習，不因專題中斷
+競賽目標：校內資訊能力競賽仍參加；APCS 維持 <span class="c-num">3</span> 級分
+驗證方式：期中交出可跑的模型 + 訓練紀錄
+時間安排：<span class="c-num">10</span> 月完成資料集、<span class="c-num">11</span> 月訓練、<span class="c-num">12</span> 月調參與報告</pre></div><ul class="items"><li>做研究的人也<b>不要停掉解題練習</b>——三項成績還是會一起看。</li></ul></div><div class="folio">第<b>八</b>頁</div></article>
+<article class="paper" data-folio="九" style="--accent:#2E6F9E;--tint:#E4EDF4"><div class="side"><span>來</span><span>源</span></div><div class="eyebrow">評分</div><h1>成績看這三個部分</h1><div class="body"><figure><img alt="說明圖" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4NjAgMzg2Ij48ZGVmcz48bWFya2VyIGlkPSJhaCIgdmlld0JveD0iMCAwIDEyIDEyIiByZWZYPSIxMC41IiByZWZZPSI2IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTSAxIDEgTCAxMSA2IEwgMSAxMSB6IiBmaWxsPSIjMkIzOTQ1Ii8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHg9IjMwLjAiIHk9IjQwLjAiIHdpZHRoPSIzODAuMCIgaGVpZ2h0PSI4MC4wIiByeD0iOCIgZmlsbD0iI0VBRjFGNyIgc3Ryb2tlPSIjMkU2RjlFIiBzdHJva2Utd2lkdGg9IjMuNSIvPjx0ZXh0IHg9IjYwLjAiIHk9Ijc2LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMyRTZGOUUiIHRleHQtYW5jaG9yPSJzdGFydCIgZm9udC13ZWlnaHQ9IjcwMCI+5qCh5YWn6LOH6KiK6IO95Yqb56u26LO9PC90ZXh0Pjx0ZXh0IHg9IjYwLjAiIHk9IjEwNC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGZvbnQtd2VpZ2h0PSI0MDAiPuagoeWFp+aOkuWQjeiIh+W+l+WIhjwvdGV4dD48cGF0aCBkPSJNIDQxNCA4MCBIIDUwMCBWIDE5MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNUU3Njg2IiBzdHJva2Utd2lkdGg9IjMiLz48cmVjdCB4PSIzMC4wIiB5PSIxNTAuMCIgd2lkdGg9IjM4MC4wIiBoZWlnaHQ9IjgwLjAiIHJ4PSI4IiBmaWxsPSIjRkJGMkRGIiBzdHJva2U9IiNDODkyMkEiIHN0cm9rZS13aWR0aD0iMy41Ii8+PHRleHQgeD0iNjAuMCIgeT0iMTg2LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNDODkyMkEiIHRleHQtYW5jaG9yPSJzdGFydCIgZm9udC13ZWlnaHQ9IjcwMCI+QVBDUyDmqqLmuKw8L3RleHQ+PHRleHQgeD0iNjAuMCIgeT0iMjE0LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJzdGFydCIgZm9udC13ZWlnaHQ9IjQwMCI+6KeA5b+16aGM6IiH5a+m5L2c6aGM57Sa5YiGPC90ZXh0PjxwYXRoIGQ9Ik0gNDE0IDE5MCBIIDUwMCBWIDE5MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNUU3Njg2IiBzdHJva2Utd2lkdGg9IjMiLz48cmVjdCB4PSIzMC4wIiB5PSIyNjAuMCIgd2lkdGg9IjM4MC4wIiBoZWlnaHQ9IjgwLjAiIHJ4PSI4IiBmaWxsPSIjRTJGMEVCIiBzdHJva2U9IiMyRjhGNzYiIHN0cm9rZS13aWR0aD0iMy41Ii8+PHRleHQgeD0iNjAuMCIgeT0iMjk2LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMyRjhGNzYiIHRleHQtYW5jaG9yPSJzdGFydCIgZm9udC13ZWlnaHQ9IjcwMCI+VE9JIOa9m+WKm+e1hOe3tOe/kuizvTwvdGV4dD48dGV4dCB4PSI2MC4wIiB5PSIzMjQuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzVFNzY4NiIgdGV4dC1hbmNob3I9InN0YXJ0IiBmb250LXdlaWdodD0iNDAwIj7kuIDlrbjmnJ/kuInloLTvvIzmr4/loLTpg73nrpc8L3RleHQ+PHBhdGggZD0iTSA0MTQgMzAwIEggNTAwIFYgMTkwIiBmaWxsPSJub25lIiBzdHJva2U9IiM1RTc2ODYiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0gNTAwIDE1MCBWIDE5MCBIIDU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNUU3Njg2IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNIDU0MC4wIDE5MC4wIEwgNTc2LjAgMTkwLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJCMzk0NSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI2FoKSIvPjxyZWN0IHg9IjU4MC4wIiB5PSIxMjAuMCIgd2lkdGg9IjI1MC4wIiBoZWlnaHQ9IjE0MC4wIiByeD0iMTAiIGZpbGw9IiNGQkVERUQiIHN0cm9rZT0iI0I3MjgyRSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHRleHQgeD0iNzA1LjAiIHk9IjE2OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI2IiBmaWxsPSIjQjcyODJFIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7lrbjmnJ/miJDnuL48L3RleHQ+PHRleHQgeD0iNzA1LjAiIHk9IjIwNC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7kuInpoIXntpzlkIjoqZXliKQ8L3RleHQ+PHRleHQgeD0iNzA1LjAiIHk9IjIzMi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7nnIvooajnj77vvIzkuZ/nnIvpgLLmraU8L3RleHQ+PHRleHQgeD0iMjIwLjAiIHk9IjM3Mi4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7kuInpoIXpg73mnIPntI3lhaXvvIzkuI3mmK/lj6rnnIvllq7kuIDmrKHogIPoqaY8L3RleHQ+PC9zdmc+"></figure><ul class="items"><li><b>校內資訊能力競賽</b>、<b>APCS 檢測</b>、<b>TOI 潛力組練習賽（一學期三場）</b>——三項綜合評判。</li><li>不是只看某一次考壞或考好，<b>整學期的表現與進步都算</b>。</li><li>所以規劃裡要寫清楚：這三項<b>你各自的目標是什麼</b>。</li></ul></div><div class="foot">沒有參加、沒有紀錄，就沒有東西可以評——<b>該報名的、該練的，不要漏掉</b>。</div><div class="folio">第<b>九</b>頁</div></article>
+<article class="paper" data-folio="十" style="--accent:#2F8F76;--tint:#E2F0EB"><div class="side"><span>練</span><span>習</span><span>賽</span></div><div class="eyebrow">TOI</div><h1>TOI 練習賽，這學期只有三場</h1><div class="body"><figure><img alt="說明圖" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4ODAgMzAwIj48ZGVmcz48bWFya2VyIGlkPSJhaCIgdmlld0JveD0iMCAwIDEyIDEyIiByZWZYPSIxMC41IiByZWZZPSI2IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTSAxIDEgTCAxMSA2IEwgMSAxMSB6IiBmaWxsPSIjMkIzOTQ1Ii8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHg9IjMwLjAiIHk9IjQwLjAiIHdpZHRoPSIyNDAuMCIgaGVpZ2h0PSIxODAuMCIgcng9IjEwIiBmaWxsPSIjRUFGMUY3IiBzdHJva2U9IiMyRTZGOUUiIHN0cm9rZS13aWR0aD0iMy41Ii8+PHRleHQgeD0iMTUwLjAiIHk9Ijc4LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMyRTZGOUUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPuesrCAxIOWgtDwvdGV4dD48dGV4dCB4PSIxNTAuMCIgeT0iMTA4LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyQjM5NDUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPueCuuacn+S4gOmAsTwvdGV4dD48cGF0aCBkPSJNIDYwIDEzMiBIIDI0MCIgc3Ryb2tlPSIjMkU2RjlFIiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iIzJFNkY5RSIvPjxjaXJjbGUgY3g9IjEwNSIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iIzJFNkY5RSIvPjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iIzJFNkY5RSIvPjxjaXJjbGUgY3g9IjE5NSIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iIzJFNkY5RSIvPjxjaXJjbGUgY3g9IjI0MCIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iIzJFNkY5RSIvPjx0ZXh0IHg9IjYwLjAiIHk9IjE2MC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7kuIAgMDg6MDA8L3RleHQ+PHRleHQgeD0iMjQwLjAiIHk9IjE2MC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNUU3Njg2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7kupQgMjA6MDA8L3RleHQ+PHJlY3QgeD0iMTAwLjAiIHk9IjE3Ni4wIiB3aWR0aD0iMTAwLjAiIGhlaWdodD0iMzIuMCIgcng9IjE2IiBmaWxsPSIjRkNGQkY4IiBzdHJva2U9IiMyRTZGOUUiIHN0cm9rZS13aWR0aD0iMi41Ii8+PHRleHQgeD0iMTUwLjAiIHk9IjE5OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMkU2RjlFIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7kvZznrZQgOTAg5YiGPC90ZXh0PjxyZWN0IHg9IjMyMC4wIiB5PSI0MC4wIiB3aWR0aD0iMjQwLjAiIGhlaWdodD0iMTgwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZCRjJERiIgc3Ryb2tlPSIjQzg5MjJBIiBzdHJva2Utd2lkdGg9IjMuNSIvPjx0ZXh0IHg9IjQ0MC4wIiB5PSI3OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSIjQzg5MjJBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7nrKwgMiDloLQ8L3RleHQ+PHRleHQgeD0iNDQwLjAiIHk9IjEwOC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNDAwIj7ngrrmnJ/kuIDpgLE8L3RleHQ+PHBhdGggZD0iTSAzNTAgMTMyIEggNTMwIiBzdHJva2U9IiNDODkyMkEiIHN0cm9rZS13aWR0aD0iNCIvPjxjaXJjbGUgY3g9IjM1MCIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iI0M4OTIyQSIvPjxjaXJjbGUgY3g9IjM5NSIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iI0M4OTIyQSIvPjxjaXJjbGUgY3g9IjQ0MCIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iI0M4OTIyQSIvPjxjaXJjbGUgY3g9IjQ4NSIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iI0M4OTIyQSIvPjxjaXJjbGUgY3g9IjUzMCIgY3k9IjEzMiIgcj0iNiIgZmlsbD0iI0M4OTIyQSIvPjx0ZXh0IHg9IjM1MC4wIiB5PSIxNjAuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzVFNzY4NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjQwMCI+5LiAIDA4OjAwPC90ZXh0Pjx0ZXh0IHg9IjUzMC4wIiB5PSIxNjAuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzVFNzY4NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjQwMCI+5LqUIDIwOjAwPC90ZXh0PjxyZWN0IHg9IjM5MC4wIiB5PSIxNzYuMCIgd2lkdGg9IjEwMC4wIiBoZWlnaHQ9IjMyLjAiIHJ4PSIxNiIgZmlsbD0iI0ZDRkJGOCIgc3Ryb2tlPSIjQzg5MjJBIiBzdHJva2Utd2lkdGg9IjIuNSIvPjx0ZXh0IHg9IjQ0MC4wIiB5PSIxOTguMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNSIgZmlsbD0iI0M4OTIyQSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+5L2c562UIDkwIOWIhjwvdGV4dD48cmVjdCB4PSI2MTAuMCIgeT0iNDAuMCIgd2lkdGg9IjI0MC4wIiBoZWlnaHQ9IjE4MC4wIiByeD0iMTAiIGZpbGw9IiNFMkYwRUIiIHN0cm9rZT0iIzJGOEY3NiIgc3Ryb2tlLXdpZHRoPSIzLjUiLz48dGV4dCB4PSI3MzAuMCIgeT0iNzguMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzJGOEY3NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+56ysIDMg5aC0PC90ZXh0Pjx0ZXh0IHg9IjczMC4wIiB5PSIxMDguMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjQwMCI+54K65pyf5LiA6YCxPC90ZXh0PjxwYXRoIGQ9Ik0gNjQwIDEzMiBIIDgyMCIgc3Ryb2tlPSIjMkY4Rjc2IiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSI2NDAiIGN5PSIxMzIiIHI9IjYiIGZpbGw9IiMyRjhGNzYiLz48Y2lyY2xlIGN4PSI2ODUiIGN5PSIxMzIiIHI9IjYiIGZpbGw9IiMyRjhGNzYiLz48Y2lyY2xlIGN4PSI3MzAiIGN5PSIxMzIiIHI9IjYiIGZpbGw9IiMyRjhGNzYiLz48Y2lyY2xlIGN4PSI3NzUiIGN5PSIxMzIiIHI9IjYiIGZpbGw9IiMyRjhGNzYiLz48Y2lyY2xlIGN4PSI4MjAiIGN5PSIxMzIiIHI9IjYiIGZpbGw9IiMyRjhGNzYiLz48dGV4dCB4PSI2NDAuMCIgeT0iMTYwLjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuS4gCAwODowMDwvdGV4dD48dGV4dCB4PSI4MjAuMCIgeT0iMTYwLjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuS6lCAyMDowMDwvdGV4dD48cmVjdCB4PSI2ODAuMCIgeT0iMTc2LjAiIHdpZHRoPSIxMDAuMCIgaGVpZ2h0PSIzMi4wIiByeD0iMTYiIGZpbGw9IiNGQ0ZCRjgiIHN0cm9rZT0iIzJGOEY3NiIgc3Ryb2tlLXdpZHRoPSIyLjUiLz48dGV4dCB4PSI3MzAuMCIgeT0iMTk4LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMyRjhGNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPuS9nOetlCA5MCDliIY8L3RleHQ+PHRleHQgeD0iNDQwLjAiIHk9IjI1OC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmaWxsPSIjQjcyODJFIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7kuIDlrbjmnJ/lsLHpgJnkuInmrKHvvIzml6XmnJ/lrbjmnJ/liJ3lhazlkYrlnKggVE9JIOWumOe2sjwvdGV4dD48dGV4dCB4PSI0NDAuMCIgeT0iMjg4LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1RTc2ODYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI0MDAiPuacn+mWk+WFp+iHquW3seaMkeaZgumWk+eZu+WFpemWi+Wni++8jOmWi+Wni+W+jCA5MCDliIbpkJjlhaflrozmiJA8L3RleHQ+PC9zdmc+"></figure><ul class="items"><li><b>一學期只辦三次</b>，每次為期一週（週一 08:00 到週五 20:00）。</li><li>期間內自己挑時間登入開始，<b>作答時間 90 分鐘</b>，開始了就不能中斷。</li><li><b>三場都要參加</b>——錯過一場，這學期就少掉三分之一的紀錄。</li></ul></div><div class="foot">日期會在<b>學期初公告在 TOI 官網</b>，公告後我會提醒，但<b>請自己也記在行事曆上</b>。</div><div class="folio">第<b>十</b>頁</div></article>
+<article class="paper" data-folio="十一" style="--accent:#2F8F76;--tint:#E2F0EB"><div class="side"><span>潛</span><span>力</span><span>組</span></div><div class="eyebrow">TOI</div><h1>潛力組要練什麼</h1><div class="body"><table><thead><tr><th>主題</th><th>為什麼要先練</th></tr></thead><tbody><tr><td>排序、貪心</td><td>最常出現，也是其他題型的基礎</td></tr><tr><td>堆疊、佇列</td><td>資料結構的入門，題目常拿來當工具</td></tr><tr><td>樹、DFS、BFS</td><td>圖論的核心，幾乎每次都會碰到</td></tr><tr><td>分治 D&amp;C、基礎 DP</td><td>難度較高，留到後面再攻</td></tr></tbody></table><ul class="items"><li>這是<b>潛力組的命題範圍</b>，你的解題規劃可以照這個順序排。</li><li>線上賽開放語言是 <b>C / C++</b>，平常練習就要用得順手。</li><li>報名時<b>記得填老師代碼</b>：不發個人成績證明，成績是彙整後寄給指導老師。</li></ul></div><div class="foot">規劃裡寫「我要練 TOI」太空泛，<b>寫成「第一場前練完排序與貪心」</b>才叫規劃。</div><div class="folio">第<b>十一</b>頁</div></article>
+<article class="paper" data-folio="十二" style="--accent:#B7282E;--tint:#F7E6E6"><div class="side"><span>評</span><span>分</span></div><div class="eyebrow">評分</div><h1>這學期的評分，不會像高一那麼寬鬆</h1><div class="body"><figure><img alt="說明圖" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MjAgMzAwIj48ZGVmcz48bWFya2VyIGlkPSJhaCIgdmlld0JveD0iMCAwIDEyIDEyIiByZWZYPSIxMC41IiByZWZZPSI2IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTSAxIDEgTCAxMSA2IEwgMSAxMSB6IiBmaWxsPSIjMkIzOTQ1Ii8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHg9IjU1LjAiIHk9IjkyIiB3aWR0aD0iMzY2LjAiIGhlaWdodD0iNjAiIGZpbGw9IiNEOUUwRTQiIHN0cm9rZT0iIzVFNzY4NiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iMjM4LjAiIHk9IjEyOS4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7kuI3lj4rmoLw8L3RleHQ+PHJlY3QgeD0iNDIxLjAiIHk9IjkyIiB3aWR0aD0iMTIyLjAiIGhlaWdodD0iNjAiIGZpbGw9IiNGQkYyREYiIHN0cm9rZT0iIzVFNzY4NiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNDgyLjAiIHk9IjEyOS4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7ooajnj77kuI3otrM8L3RleHQ+PHJlY3QgeD0iNTQzLjAiIHk9IjkyIiB3aWR0aD0iNjEuMCIgaGVpZ2h0PSI2MCIgZmlsbD0iI0VBRjFGNyIgc3Ryb2tlPSIjNUU3Njg2IiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI1NzMuNSIgeT0iMTI5LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMyQjM5NDUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPumBlOaomTwvdGV4dD48cmVjdCB4PSI2MDQuMCIgeT0iOTIiIHdpZHRoPSI2MS4wIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRTJGMEVCIiBzdHJva2U9IiM1RTc2ODYiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjYzNC41IiB5PSIxMjkuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+5YSq55WwPC90ZXh0PjxwYXRoIGQ9Ik0gNTUuMCAxNTIgdiAxMCIgc3Ryb2tlPSIjNUU3Njg2IiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI1NS4wIiB5PSIxODQuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+MDwvdGV4dD48cGF0aCBkPSJNIDQyMS4wIDE1MiB2IDEwIiBzdHJva2U9IiM1RTc2ODYiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjQyMS4wIiB5PSIxODQuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+NjA8L3RleHQ+PHBhdGggZD0iTSA1NDMuMCAxNTIgdiAxMCIgc3Ryb2tlPSIjNUU3Njg2IiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI1NDMuMCIgeT0iMTg0LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMyQjM5NDUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSI3MDAiPjgwPC90ZXh0PjxwYXRoIGQ9Ik0gNjA0LjAgMTUyIHYgMTAiIHN0cm9rZT0iIzVFNzY4NiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNjA0LjAiIHk9IjE4NC4wIiBmb250LWZhbWlseT0iJ05vdG8gU2FucyBUQycsJ1BpbmdGYW5nIFRDJywnTWljcm9zb2Z0IEpoZW5nSGVpJyxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMkIzOTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj45MDwvdGV4dD48cGF0aCBkPSJNIDY2NS4wIDE1MiB2IDEwIiBzdHJva2U9IiM1RTc2ODYiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjY2NS4wIiB5PSIxODQuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+MTAwPC90ZXh0Pjx0ZXh0IHg9IjU1LjAiIHk9IjY2LjAiIGZvbnQtZmFtaWx5PSInTm90byBTYW5zIFRDJywnUGluZ0ZhbmcgVEMnLCdNaWNyb3NvZnQgSmhlbmdIZWknLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM4QTlBQTYiIHRleHQtYW5jaG9yPSJzdGFydCIgZm9udC13ZWlnaHQ9IjQwMCI+6auY5LiA77ya5aSa5Y2K6JC95Zyo6YCZ5LiA5q615Lul5LiKPC90ZXh0PjxwYXRoIGQ9Ik0gNTQzLjAgNzYgSCA2NjUuMCIgc3Ryb2tlPSIjOEE5QUE2IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1kYXNoYXJyYXk9IjggNiIvPjxyZWN0IHg9IjU1LjAiIHk9Ijg2IiB3aWR0aD0iNDg4LjAiIGhlaWdodD0iNzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0I3MjgyRSIgc3Ryb2tlLXdpZHRoPSI0IiByeD0iNCIvPjx0ZXh0IHg9IjI5OS4wIiB5PSIyMjYuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMSIgZmlsbD0iI0I3MjgyRSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+5pys5a245pyf77ya6KGo54++5LiN5aW977yM55yf55qE5pyD6JC95Zyo6YCZ5LiA5q61PC90ZXh0Pjx0ZXh0IHg9IjM2MC4wIiB5PSIyNjAuMCIgZm9udC1mYW1pbHk9IidOb3RvIFNhbnMgVEMnLCdQaW5nRmFuZyBUQycsJ01pY3Jvc29mdCBKaGVuZ0hlaScsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzJCMzk0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjcwMCI+5YiG5pW45L6d5a+m6Zqb6KGo54++57Wm77yM5LiN5piv5b6eIDgwIOWIhumWi+Wni+aJozwvdGV4dD48L3N2Zz4="></figure><ul class="items"><li><b>分數依實際表現給</b>，不是每個人都從 80 分起跳。</li><li>表現不好，<b>會給到 80 分以下</b>，這一點請先知道。</li><li>看的是<b>三項成績的表現與進步</b>，以及你自己的規劃有沒有做到。</li></ul></div><div class="foot">規劃寫得務實、進度跟得上、東西真的做出來——分數自然不會差。</div><div class="folio">第<b>十二</b>頁</div></article>
+<article class="paper" data-folio="十三" style="--accent:#B7282E;--tint:#F7E6E6"><div class="side"><span>看</span><span>什</span><span>麼</span></div><div class="eyebrow">評分</div><h1>我會看這四件事</h1><div class="body"><table><thead><tr><th>面向</th><th>我會問的問題</th></tr></thead><tbody><tr><td>三項成績</td><td>校內競賽、APCS、TOI 練習賽的實際表現</td></tr><tr><td>進步幅度</td><td>比學期初進步了多少？拿得出紀錄嗎？</td></tr><tr><td>規劃達成</td><td>當初說要做的，期中期末做到了嗎？</td></tr><tr><td>投入程度</td><td>有沒有持續練題、主動問問題、按時參加</td></tr></tbody></table><ul class="items"><li>規劃可以調整，<b>但要主動來談</b>，不能默默放掉。</li><li>卡住不是問題，<b>卡住又不講</b>才是問題。</li></ul></div><div class="folio">第<b>十三</b>頁</div></article>
+<article class="paper" data-folio="十四" style="--accent:#2E6F9E;--tint:#E4EDF4"><div class="side"><span>討</span><span>論</span></div><div class="eyebrow">一對一</div><h1>當場討論，我會問你這三個問題</h1><div class="body"><ul class="items"><li><b>① 這個題目，你打算怎麼開始？</b>第一週要做的第一件事是什麼？</li><li><b>② 你怎麼知道自己做完了？</b>拿什麼東西證明？</li><li><b>③ 如果做不出來，備案是什麼？</b>題目可以縮小到什麼程度？</li></ul><ul class="items"><li>這三題答得出來，代表你的規劃是真的想過的。</li><li>答不出來也沒關係——<b>我們就是為了這個才要討論</b>。</li></ul></div><div class="foot">當天帶著規劃書來，我們一起把它改成<b>做得完</b>的版本。</div><div class="folio">第<b>十四</b>頁</div></article>
+<article class="paper" data-folio="十五" style="--accent:#2F8F76;--tint:#E2F0EB"><div class="side"><span>檢</span><span>查</span></div><div class="eyebrow">當天</div><h1>來上課之前，自己先檢查一次</h1><div class="body"><ol class="steps"><li>研究題目寫清楚了，別人看得懂我要做什麼。</li><li>有合作的話，<b>我負責的部分</b>寫出來了，而且有數量或時間。</li><li>解題能力寫成「<b>現在 → 目標 → 驗證</b>」三行。</li><li><b>校內競賽、APCS、TOI 練習賽</b>三項的目標都寫了。</li><li>每個目標都寫得出<b>怎麼證明做到了</b>。</li><li>期中、期末各要交出什麼，寫進時間安排。</li><li>檔案已經<b>打字完成</b>，專題課當天可以直接交。</li></ol></div><div class="foot">全部打勾，當天的討論就會很有效率。<b>加油，這學期認真做，是做給自己的。</b></div><div class="folio">第<b>十五</b>頁</div></article>
+
+</main>
+<aside class="rail">
+  <button class="rail-btn" id="menu" aria-label="開啟大綱" title="大綱">☰</button>
+  <div class="pager">
+    <button id="prev" aria-label="上一頁" title="上一頁">▲</button>
+    <span class="pos" id="pos"></span>
+    <button id="next" aria-label="下一頁" title="下一頁">▼</button>
+  </div>
+  <button class="rail-btn" id="print" aria-label="列印" title="列印">⎙</button>
+</aside>
+<script>
+const papers=[...document.querySelectorAll('.paper')];
+const tocItems=[...document.querySelectorAll('.toc li')];
+const pos=document.getElementById('pos');
+const prev=document.getElementById('prev'), next=document.getElementById('next');
+const toc=document.getElementById('toc'), scrim=document.getElementById('scrim');
+const HAN=papers.map(p=>p.dataset.folio), LAST=HAN[HAN.length-1];
+let i=0;
+function show(n){
+  i=Math.max(0,Math.min(papers.length-1,n));
+  papers.forEach((p,k)=>p.classList.toggle('active',k===i));
+  tocItems.forEach((t,k)=>t.classList.toggle('cur',k===i));
+  pos.innerHTML='<b>'+HAN[i]+'</b><s></s><i>'+LAST+'</i>';
+  prev.disabled=i===0; next.disabled=i===papers.length-1;
+  location.hash='p'+(i+1);
+}
+function openToc(o){toc.classList.toggle('on',o);scrim.classList.toggle('on',o);}
+prev.onclick=()=>show(i-1); next.onclick=()=>show(i+1);
+document.getElementById('menu').onclick=()=>openToc(true);
+document.getElementById('close').onclick=()=>openToc(false);
+scrim.onclick=()=>openToc(false);
+tocItems.forEach((t,k)=>{t.onclick=()=>{show(k);openToc(false);};
+  t.tabIndex=0;t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();}};});
+document.getElementById('print').onclick=()=>window.print();
+addEventListener('keydown',e=>{
+  if(e.target.classList&&e.target.classList.contains('copy'))return;
+  if(e.key==='ArrowRight'||e.key==='PageDown')show(i+1);
+  else if(e.key==='ArrowLeft'||e.key==='PageUp')show(i-1);
+  else if(e.key==='Escape')openToc(false);
+  else if(e.key==='Home')show(0);
+  else if(e.key==='End')show(papers.length-1);
+});
+document.querySelectorAll('.copy').forEach(btn=>{
+  btn.addEventListener('click',async()=>{
+    const code=btn.parentElement.dataset.code||'';
+    let ok=true;
+    try{ await navigator.clipboard.writeText(code); }
+    catch(err){
+      try{
+        const ta=document.createElement('textarea');
+        ta.value=code; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+      }catch(e2){ ok=false; }
+    }
+    btn.textContent = ok ? '已複製' : '請手動選取';
+    btn.classList.toggle('done',ok);
+    setTimeout(()=>{btn.textContent='複製';btn.classList.remove('done');},1500);
+  });
+});
+const h=parseInt((location.hash||'').replace('#p',''),10);
+show(isNaN(h)?0:h-1);
+</script>
+</body>
+</html>
