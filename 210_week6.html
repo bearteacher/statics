@@ -1,0 +1,437 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>210 第六週｜多聲部：同時響</title><style>
+:root{
+  --paper:#FCFBF8;--field:#E7EDF0;--ink:#203246;--sub:#536C80;--pale:#C4D6DE;
+  --soft:#E6EEF2;--rule:#B4C9D9;--akane:#C52832;
+  --serif:"Noto Serif TC","Songti TC","Source Han Serif TC","Yu Mincho","MS Mincho",serif;
+  --sans:"Noto Sans TC","PingFang TC","Hiragino Sans","Microsoft JhengHei",sans-serif;
+  --mono:"JetBrains Mono","Cascadia Mono","Consolas","Menlo","Courier New",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--field);color:var(--ink);font-family:var(--sans);
+  padding:2.2rem 0 4rem}
+.stage{--pw:min(92vw, 790px);display:flex;flex-direction:column;
+  align-items:center;gap:1.8rem}
+.paper{display:flex;flex-direction:column;position:relative;width:var(--pw);
+  min-height:22em;height:auto;background:var(--paper);
+  border:1px solid var(--rule);box-shadow:0 1px 2px rgba(43,57,69,.06),0 18px 44px rgba(43,57,69,.14);
+  font-size:clamp(12px, calc(var(--pw)/46), 17px);padding:2.9em 2.6em 3.4em;
+  scroll-margin-top:1.6rem;--accent:var(--sub);--tint:var(--soft)}
+.paper::before{content:"";position:absolute;left:0;top:0;bottom:0;width:9px;background:var(--accent)}
+@media (max-width:640px){.stage{--pw:94vw}}
+
+.side{position:absolute;top:2.8em;right:.9em;display:flex;flex-direction:column;align-items:center;
+  font-family:var(--serif);font-size:.88em;color:var(--accent);opacity:.9}
+.side span{line-height:1.42;display:block}
+.side span.dot{font-size:.55em;line-height:2.2;opacity:.7}
+.side::after{content:"";display:block;margin-top:.5em;width:1px;height:3em;background:var(--accent);opacity:.4}
+.folio{position:absolute;bottom:1.1em;right:1.9em;font-family:var(--serif);color:var(--sub);
+  font-size:.74em;letter-spacing:.2em}
+.folio b{font-weight:400;font-size:1.6em;color:var(--ink);margin:0 .18em}
+
+.eyebrow{font-size:.82em;letter-spacing:.4em;color:var(--accent);font-weight:700;
+  padding-bottom:.65em;border-bottom:2px solid var(--accent);margin-right:2.2em}
+h1{font-family:var(--serif);font-size:2em;line-height:1.32;font-weight:700;
+  margin:.55em 1.8em .3em 0;letter-spacing:.03em}
+
+.body{display:flex;flex-direction:column;gap:1.15em}
+figure{margin:0;display:flex;align-items:center;justify-content:center}
+figure img{display:block;width:100%;height:auto}
+
+ul.items{list-style:none;margin:0;padding:0}
+ul.items li{position:relative;padding:.55em 0 .55em 1.5em;font-size:1.02em;line-height:1.75;
+  border-top:1px solid var(--rule)}
+ul.items li:last-child{border-bottom:1px solid var(--rule)}
+ul.items li::before{content:"";position:absolute;left:.1em;top:1.25em;width:.5em;height:.5em;background:var(--accent)}
+ul.items li b{color:var(--accent)}
+
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.2em;
+  font-size:1.02em;line-height:1.65;border-bottom:1px solid var(--rule)}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.62em;width:1.5em;height:1.5em;
+  line-height:1.5em;text-align:center;background:var(--accent);color:var(--paper);
+  font-family:var(--serif);font-size:.85em}
+ol.steps li b{color:var(--accent)}
+
+.foot{margin-top:.7em;background:var(--tint);border-left:5px solid var(--accent);
+  padding:.75em 1em;font-size:1em;line-height:1.65;flex:0 0 auto}
+.foot b{color:var(--accent)}
+.warn{background:var(--akane);color:var(--paper);font-family:var(--serif);font-weight:700;
+  font-size:1.05em;padding:.5em .85em;text-align:center;letter-spacing:.05em}
+
+table{border-collapse:collapse;width:100%;font-size:.98em}
+th,td{border:1px solid var(--rule);padding:.62em .75em;text-align:left;line-height:1.6}
+th{background:var(--tint);color:var(--accent);font-weight:700;font-size:.95em}
+td:first-child{font-family:var(--mono);font-weight:700;color:var(--accent);white-space:nowrap}
+tbody tr:nth-child(even){background:#FAFCFD}
+
+/* 程式碼 */
+.code{position:relative;background:#F6F8F6;border:1px solid #DDE4E2;border-left:4px solid var(--accent);
+  padding:.7em .95em .75em}
+.c-label{font-size:.82em;color:var(--sub);letter-spacing:.06em;margin-bottom:.35em;
+  font-family:var(--serif)}
+pre{margin:0;font-family:var(--mono);font-size:1.06em;line-height:1.75;white-space:pre-wrap;
+  word-break:break-word}
+.c-src{color:#203246}
+.c-kw{color:#C52832;font-weight:700}
+.c-fn{color:#0868B2;font-weight:700}
+.c-str{color:#008451}
+.c-num{color:#B87905;font-weight:700}
+.c-com{color:#93A2AC;font-style:italic}
+.c-out{margin-top:.5em;padding-top:.45em;border-top:1px dashed #C9D5D2;color:#4C5B66;font-size:.94em}
+.c-out::before{content:"▸ 執行結果";display:block;font-family:var(--sans);font-size:.8em;
+  color:var(--sub);letter-spacing:.12em;margin-bottom:.25em}
+.c-out.err{color:#C52832}
+.c-out.err::before{content:"▸ 錯誤訊息";color:#C52832}
+.copy{position:absolute;top:.45em;right:.5em;font-family:var(--sans);font-size:.76em;
+  letter-spacing:.1em;color:var(--sub);background:var(--paper);border:1px solid var(--rule);
+  border-radius:3px;padding:.2em .55em;cursor:pointer}
+.copy:hover{background:var(--soft);color:var(--ink)}
+.copy.done{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+
+/* 圖 + 程式 對照 */
+.split{display:grid;grid-template-columns:38% 1fr;gap:1em;align-items:center}
+.split.narrow{grid-template-columns:31% 1fr}
+.split.narrow pre{font-size:.97em}
+.split.stack{grid-template-columns:1fr;gap:.6em}
+.split.big{grid-template-columns:1fr;gap:.7em}
+.split.big{grid-template-rows:auto auto auto}
+.split.big .fc img{width:auto;height:auto;max-width:100%;max-height:26em}
+.split.stack .fc img{max-height:12em;width:auto;margin:0 auto}
+.split .fc{border:1px dashed var(--pale);background:#FBFCFD;padding:.4em;display:flex;
+  align-items:center;justify-content:center}
+.split .fc img{width:100%;max-height:100%;display:block}
+.split .cap{grid-column:1/-1;font-size:.85em;color:var(--sub);font-family:var(--serif);
+  letter-spacing:.1em;margin-bottom:-.35em}
+
+/* 練習操作頁（drill） */
+.drill-time{display:flex;align-items:center;gap:.7em;background:var(--accent);
+  color:var(--paper);padding:.65em 1.1em;margin:.2em 0 .1em}
+.drill-time b{font-family:var(--serif);font-size:3.4em;line-height:.85;font-weight:700}
+.drill-time .u{font-size:1.15em;font-weight:700;letter-spacing:.08em}
+.drill-time .t{margin-left:auto;text-align:right;font-size:.95em;line-height:1.55;opacity:.95}
+.drill-time .t b{font-family:var(--sans);font-size:1em;font-weight:700;line-height:1.55}
+.dsec{margin-top:.2em}
+.dsec h4{font-family:var(--serif);font-size:1.05em;letter-spacing:.2em;margin:0 0 .45em;
+  color:var(--accent);padding-bottom:.3em;border-bottom:2px solid var(--accent)}
+.dsec ol.steps li{font-size:1.12em;padding:.6em 0 .6em 2.3em}
+.dsec ol.steps li::before{top:.72em;width:1.6em;height:1.6em;line-height:1.6em;font-size:.88em}
+.note{background:var(--tint);border-left:5px solid var(--accent);padding:.75em 1em}
+.note h4{font-family:var(--serif);font-size:1em;letter-spacing:.2em;margin:0 0 .35em;color:var(--accent)}
+.note ul{list-style:none;margin:0;padding:0}
+.note li{position:relative;padding:.3em 0 .3em 1.3em;font-size:1.02em;line-height:1.7}
+.note li::before{content:"";position:absolute;left:.1em;top:1.02em;width:.45em;height:.45em;
+  background:var(--accent)}
+.note li b{color:var(--accent)}
+.dex{border:1.6px dashed var(--accent);background:#FBFCFD;padding:.65em .9em}
+.dex h4{font-family:var(--serif);font-size:1em;letter-spacing:.2em;margin:0 0 .4em;color:var(--accent)}
+.dex .row{display:grid;grid-template-columns:auto 1fr;gap:.3em .9em;
+  font-size:1em;line-height:1.65}
+.dex .k{color:var(--accent);font-weight:700;white-space:nowrap}
+.dex .v b{color:var(--ink)}
+
+/* 練習頁 */
+.file{position:absolute;top:2.4em;right:2.9em;font-family:var(--serif);font-size:.86em;
+  font-weight:700;color:var(--accent);border:2px solid var(--accent);padding:.2em .6em;background:var(--paper)}
+.task{background:var(--tint);border:2px solid var(--accent);padding:.9em 1em;
+  font-size:1.15em;line-height:1.8}
+.task b{color:var(--accent)}
+.task .ex{display:block;margin-top:.4em;font-size:.85em;color:var(--sub)}
+.hint{margin-top:.6em;border-top:2px solid var(--accent);padding-top:.5em}
+.hint h4{font-family:var(--serif);font-size:.98em;margin:0 0 .3em;color:var(--accent);letter-spacing:.16em}
+.hint ol{list-style:none;margin:0;padding:0;counter-reset:h}
+.hint ol li{counter-increment:h;position:relative;padding:.28em 0 .28em 1.8em;font-size:.98em;line-height:1.6}
+.hint ol li::before{content:counter(h);position:absolute;left:0;top:.38em;width:1.25em;height:1.25em;
+  line-height:1.25em;text-align:center;background:var(--accent);color:var(--paper);
+  font-size:.78em;font-family:var(--serif)}
+.hint ol li b{color:var(--accent)}
+
+/* 封面 */
+.paper.cover{padding-top:4em}
+.cover .seal{position:absolute;top:2.6em;right:2.8em;width:3.1em;height:3.1em;
+  border:2.5px solid var(--akane);border-radius:3px;color:var(--akane);font-family:var(--serif);
+  font-size:1em;font-weight:700;display:flex;align-items:center;justify-content:center;
+  line-height:1.05;text-align:center;transform:rotate(-4deg)}
+.cover .mark{font-family:var(--serif);font-size:.85em;letter-spacing:.5em;color:var(--sub)}
+.cover h1{font-size:3em;line-height:1.24;margin:.6em 1.4em .3em 0}
+.cover .sub{font-family:var(--serif);font-size:1.15em;letter-spacing:.22em;color:var(--accent);font-weight:600}
+.cover .rule{height:2px;background:var(--accent);margin:1.1em 2em 1.1em 0;opacity:.5}
+.cover .lead{font-size:1.1em;line-height:1.9;background:var(--tint);border-left:6px solid var(--accent);
+  padding:.9em 1em;margin-right:1em}
+.cover .lead b{color:var(--accent)}
+
+@media (max-width:640px){.split{grid-template-columns:1fr}}
+
+.menu-btn{position:fixed;top:1.1rem;right:1.1rem;z-index:30;background:var(--paper);
+  border:1px solid var(--rule);border-radius:2px;color:var(--ink);font-family:var(--serif);
+  font-size:.9rem;letter-spacing:.24em;padding:.6rem 1rem;cursor:pointer;box-shadow:0 2px 10px rgba(43,57,69,.1)}
+.menu-btn:hover{background:var(--soft)}
+.menu-btn:focus-visible,.nav button:focus-visible,.toc li:focus-visible,.copy:focus-visible{outline:2px solid var(--sub);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(43,57,69,.22);opacity:0;pointer-events:none;transition:opacity .25s;z-index:31}
+.scrim.on{opacity:1;pointer-events:auto}
+.toc{position:fixed;top:0;right:0;height:100%;width:min(23rem,88vw);z-index:32;background:var(--paper);
+  border-left:1px solid var(--rule);transform:translateX(101%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  padding:2.5rem 1.4rem;overflow-y:auto}
+.toc.on{transform:none}
+.toc h2{font-family:var(--serif);font-size:1rem;letter-spacing:.5em;font-weight:600;color:var(--sub);
+  margin:0 0 1.1rem;padding-bottom:.8rem;border-bottom:1px solid var(--rule)}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc li{display:flex;gap:.7rem;align-items:baseline;cursor:pointer;padding:.55rem .5rem;
+  border-bottom:1px solid var(--rule);font-size:.9rem;border-left:5px solid var(--accent,var(--pale))}
+.toc li:hover{background:var(--soft)}
+.toc li.cur{background:var(--soft)}
+.paper.cur{box-shadow:0 1px 2px rgba(43,57,69,.06),0 18px 44px rgba(43,57,69,.14),
+  0 0 0 2px var(--accent)}
+.toc .n{font-family:var(--serif);color:var(--accent,var(--sub));min-width:2.4em;font-weight:700;font-size:.85rem}
+.toc .close{position:absolute;top:.9rem;right:1rem;background:none;border:0;font-size:1.3rem;color:var(--sub);cursor:pointer;line-height:1}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:1.1rem;z-index:25;display:flex;
+  align-items:center;gap:.5rem;background:var(--paper);border:1px solid var(--rule);border-radius:999px;
+  padding:.34rem .5rem;box-shadow:0 2px 12px rgba(43,57,69,.12)}
+.nav button{border:0;background:none;cursor:pointer;color:var(--ink);font-size:1rem;padding:.35rem .7rem;border-radius:999px}
+.nav button:hover:not(:disabled){background:var(--soft)}
+.nav button:disabled{color:var(--pale);cursor:default}
+.nav .pos{font-family:var(--serif);font-size:.88rem;color:var(--sub);letter-spacing:.1em;min-width:6.5rem;text-align:center}
+.print{position:fixed;left:1.1rem;bottom:1.1rem;z-index:25;background:none;border:1px solid var(--rule);
+  border-radius:2px;color:var(--sub);font-size:.8rem;letter-spacing:.2em;padding:.5rem .8rem;cursor:pointer;font-family:var(--serif)}
+.print:hover{background:var(--paper)}
+
+
+/* ---------- 右側控制列（大綱／翻頁／列印） ---------- */
+.menu-btn{display:none!important}
+.rail{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);z-index:30;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.rail button{width:2.4rem;height:2.4rem;display:flex;align-items:center;justify-content:center;
+  background:var(--paper);border:1px solid var(--rule);border-radius:6px;color:var(--sub);
+  font-size:1rem;line-height:1;cursor:pointer;padding:0;font-family:var(--sans);
+  box-shadow:0 1px 6px rgba(43,57,69,.1)}
+.rail button:hover:not(:disabled){background:var(--soft);color:var(--ink)}
+.rail button:disabled{color:var(--pale);cursor:default}
+.rail button:focus-visible{outline:2px solid var(--sub);outline-offset:2px}
+.pager{display:flex;flex-direction:column;align-items:center;background:var(--paper);
+  border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(43,57,69,.1)}
+.pager button{border:0;border-radius:0;box-shadow:none;height:2rem;font-size:.8rem}
+.pager .pos{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;min-width:2.4rem;padding:.3rem 0;font-family:var(--serif);color:var(--sub);
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);line-height:1.15}
+.pager .pos b{font-weight:600;font-size:.82rem;color:var(--ink)}
+.pager .pos i{font-style:normal;font-size:.66rem}
+.pager .pos s{display:block;width:1.05rem;height:1px;background:var(--rule);margin:.15rem 0;
+  text-decoration:none}
+@media (max-width:640px){.rail{right:.4rem;gap:.35rem}
+  .rail button{width:2.1rem;height:2.1rem}}
+@media print{.rail{display:none!important}}
+
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body{background:#fff;display:block;overflow:visible}
+  .menu-btn,.toc,.scrim,.nav,.print,.copy{display:none!important}
+  .stage{--pw:210mm}
+  .stage{--pw:210mm;gap:0}
+  .paper{display:flex!important;flex-direction:column;width:210mm;min-height:0;height:auto;
+    font-size:11.5pt;border:0;box-shadow:none;page-break-after:always;
+    padding:16mm 15mm 14mm}
+  .paper.cur{box-shadow:none}
+  .paper:last-child{page-break-after:auto}
+}
+
+.stage{--pw:790px}.paper{width:790px;min-height:1117px;padding:45px 55px 57px;font-size:15px}.paper h1{font-size:33px;margin:.48em 15px .3em 0;line-height:1.32}.paper .body{gap:14px}.eyebrow{font-size:12px;font-weight:800;border-bottom-width:3px}.side{font-size:12px;top:55px}.deck{line-height:1.75;color:var(--sub);margin:0 0 16px}.topic{font-family:var(--serif);font-size:20px;color:var(--accent);margin:0 0 9px;font-weight:700}.diagram{background:#FBFCFD;border:1px solid #A7C8DF;padding:10px 13px 8px;margin:0}.diagram svg{display:block;width:100%;height:auto}.diagram figcaption{color:var(--sub);font-size:11px;line-height:1.6;margin-top:4px}.task-grid{display:grid;grid-template-columns:282px 1fr;gap:19px;align-items:start}.task-grid .code{padding:12px 12px 13px;border-left-width:5px}.task-grid pre{font-size:14px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal}.c-label{font-size:11px;margin-bottom:8px;padding-right:40px}.c-fn{color:#0868B2}.c-num{color:#A36400}.c-com{color:#536C80}.variation{border-top:1px solid var(--rule);padding:8px 0;font-size:13px;line-height:1.75}.variation:first-child{border-top:0;padding-top:0}.variation b{color:var(--accent)}.listen-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.listen-grid>div{border-top:3px solid var(--accent);padding-top:8px;font-size:13px;line-height:1.7}.listen-grid b{display:block;color:var(--accent);margin-bottom:4px}.record-link{font-size:11px;color:var(--sub);margin:0}.mini-code{font-family:var(--mono);color:#0868B2;background:#EAF3FA;padding:1px 4px}.overview{display:grid;grid-template-columns:1fr 1fr;gap:14px}.overview div{border-top:3px solid var(--accent);background:var(--tint);padding:14px;line-height:1.8}.overview b{display:block;color:var(--accent)}.body p{line-height:1.8;margin:.1em 0}.paper.cover h1{font-size:49px;margin-right:40px}.cover .lead{font-size:17px}.code-full pre{font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.code-full{padding:15px 18px}.step-label{font-size:12px;color:var(--accent);letter-spacing:.1em}.notes-list{padding-left:20px;margin:0}.notes-list li{line-height:1.8;margin:7px 0}.folio{font-size:11px}.pair-time{background:var(--accent);color:#fff;padding:9px 12px;font-size:12px;line-height:1.7}.paper td:first-child{white-space:normal;font-family:var(--sans)}.paper th{background:#0868B2;color:white}.paper table{font-size:13px}.cover .seal{border-color:#B87905;color:#B87905}.paper .foot{font-size:13px}.rail{right:1rem}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.toc{width:min(27rem,92vw)}
+@media screen and (max-width:850px){.stage{--pw:94vw}.paper{width:94vw;min-height:0;padding:32px 36px 50px 27px}.paper h1{font-size:28px}.paper.cover h1{font-size:39px}.side{display:none}.task-grid,.overview,.listen-grid{grid-template-columns:1fr}.task-grid pre{font-size:14px}.diagram{padding:8px}.rail{right:4px}.paper .body{gap:13px}}
+@media print{.stage{--pw:210mm;gap:0}.paper{width:210mm;min-height:0;height:auto;padding:13mm 14mm 17mm;font-size:10pt;break-after:page;overflow:visible}.paper h1{font-size:25pt}.paper .body{gap:10px}.deck{font-size:10pt;margin-bottom:10px}.eyebrow{font-size:9pt}.task-grid{grid-template-columns:74mm 1fr;gap:5mm}.task-grid pre{font-size:9.3pt;line-height:1.55}.variation{font-size:9pt;padding:6px 0;line-height:1.65}.listen-grid>div{font-size:9pt}.diagram{break-inside:avoid}.diagram figcaption{font-size:8pt}.code{break-inside:avoid}.code-full pre{font-size:9.2pt;line-height:1.55}.folio{bottom:5mm}.overview{break-inside:avoid}.rail{display:none!important}.paper.cover{min-height:297mm}.paper:last-child{break-after:auto}.side{display:none}.copy{display:none}.record-link{font-size:8pt}}
+
+.diagram{display:block}@media print{body{padding:0!important;margin:0}.paper.cover{min-height:295mm}}
+
+.paper,.paper.cover{min-height:0;height:auto}.paper.cover{padding-top:45px}.paper{padding-bottom:60px}.paper h1{font-size:32px}.diagram{display:block}.optional{border:1px solid var(--rule);padding:12px 14px;background:#F5FAF7}.optional summary{cursor:pointer;color:var(--accent);font-weight:bold;font-size:15px;line-height:1.7}.optional[open] summary{margin-bottom:12px}.optional .code{margin-top:10px}.optional p{font-size:14px;line-height:1.8}.record-link{font-size:14px;line-height:1.8}.core{background:var(--tint);border-left:5px solid var(--accent);padding:11px 14px;font-size:15px;line-height:1.8}.step-label{font-size:14px}.folio{font-size:12px}@media print{.paper,.paper.cover{min-height:0;height:auto}.optional{display:none}.paper{break-after:page}.record-link{font-size:10pt}.core{font-size:10pt}.paper h1{font-size:25pt}.paper:last-child{break-after:auto}}
+</style></head><body><div class="scrim" id="scrim"></div><nav class="toc" id="toc" aria-label="頁面大綱"><button class="close" id="close" aria-label="關閉大綱">×</button><h2>目次</h2><ul><li style="--accent:#0868B2"><span class="n">扉</span><span class="t">多聲部：同時響</span></li><li style="--accent:#B87905"><span class="n">一</span><span class="t">語法工具箱</span></li><li style="--accent:#B87905"><span class="n">二</span><span class="t">多聲部的四個觀念</span></li><li style="--accent:#B87905"><span class="n">三</span><span class="t">請 AI 幫忙</span></li><li style="--accent:#B87905"><span class="n">四</span><span class="t">流程與每題三步</span></li><li style="--accent:#008451"><span class="n">五</span><span class="t">01　兩個聲部同時開始</span></li><li style="--accent:#008451"><span class="n">六</span><span class="t">02　一直反覆的聲部</span></li><li style="--accent:#008451"><span class="n">七</span><span class="t">03　好幾個聲部疊在一起</span></li><li style="--accent:#B87905"><span class="n">八</span><span class="t">in_thread 和 live_loop 怎麼選</span></li><li style="--accent:#008451"><span class="n">九</span><span class="t">04　聲部依序進場＋錄音</span></li><li style="--accent:#B87905"><span class="n">十</span><span class="t">完成與繳交</span></li></ul></nav><main class="stage"><article id="p1" data-folio="扉" class="paper cover" style="--accent:#0868B2;--tint:#D8EBFA"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">210 班　／　第六週</div><h1>多聲部：同時響</h1><div class="body"><p>到第五週為止，程式都是一行接一行、一個聲音接一個聲音。這週讓好幾個聲部<b>同時</b>進行——就像總譜上的鼓、低音、旋律一起演奏。四題各練一個觀念，一步一步來。</p><div class="core"><b>這週只有 4 題，一節課 2 題。</b><br>每題三步：跑範例 → 仿照改 → 自己做。仿照改都在動「聲部」；之前學過的語法放在聲部裡當材料，想換就換。</div><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 184" role="img" aria-label="三個 live_loop 疊成多聲部" style="font-family:Microsoft JhengHei,sans-serif"><title>三個 live_loop 疊成多聲部</title><line x1="110.0" y1="18" x2="110.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="176.2" y1="18" x2="176.2" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="441.2" y1="18" x2="441.2" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><text x="8" y="48" font-size="13" fill="#008451" text-anchor="start" font-weight="700">鼓 :drums</text><rect x="111.5" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="143.125" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="177.75" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="209.375" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="244.0" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="275.625" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="310.25" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="341.875" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="376.5" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="408.125" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="442.75" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="474.375" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="509.0" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="540.625" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="575.25" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="606.875" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><text x="8" y="92" font-size="13" fill="#B87905" text-anchor="start" font-weight="700">低音 :bass</text><rect x="111.5" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="176.25" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><rect x="244.0" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="308.75" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><rect x="376.5" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="441.25" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><rect x="509.0" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="573.75" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><text x="8" y="136" font-size="13" fill="#0868B2" text-anchor="start" font-weight="700">旋律 :melody</text><rect x="111.5" y="112" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="242.5" y="134" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">4 拍</text><rect x="376.5" y="112" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="507.5" y="134" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">4 拍</text><text x="375" y="172" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">每圈 1、2、4 拍都能整除 4，所以每 4 拍三個聲部一起重新開始</text></svg></figure><p style="text-align:center;color:#0868B2;font-weight:700">每個聲部各寫一段，讓它們一起響</p></div></article><article id="p2" data-folio="一" class="paper " style="--accent:#B87905;--tint:#FFF0CB"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">卡住時查這一頁</div><h1>語法工具箱</h1><div class="body"><p class="deck">先想「我想要什麼聲音」，再從這張表找語法。</p><table><thead><tr><th style="white-space:normal">我想要……</th><th style="white-space:normal">就用這個</th><th>學過</th></tr></thead><tbody><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">彈一個音</td><td style="white-space:normal"><b>play 60</b></td><td>第二週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">決定等多久</td><td style="white-space:normal"><b>sleep 1</b></td><td>第二週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">一次寫一串音</td><td style="white-space:normal"><b>play_pattern_timed [60, 64], 1</b></td><td>第二週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">換樂器</td><td style="white-space:normal"><b>use_synth :piano</b></td><td>第三週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">用鼓或錄音</td><td style="white-space:normal"><b>sample :bd_haus</b></td><td>第三週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">大聲／小聲</td><td style="white-space:normal"><b>amp: 0.5</b></td><td>第三週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">放左耳／右耳</td><td style="white-space:normal"><b>pan: -1（左）～ 1（右）</b></td><td>第三週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">尾音長／短</td><td style="white-space:normal"><b>release: 2</b></td><td>第三週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">整首移調</td><td style="white-space:normal"><b>root = 60　→　play root + 4</b></td><td>第四週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">整首變快變慢</td><td style="white-space:normal"><b>use_bpm 120</b></td><td>第四週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">寫筆記（不出聲）</td><td style="white-space:normal"><b># 這是註解</b></td><td>第四週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">重複一段</td><td style="white-space:normal"><b>4.times do … end</b></td><td>第五週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">每一圈都不一樣</td><td style="white-space:normal"><b>4.times do |i| … end</b></td><td>第五週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">另一個聲部同時開始</td><td style="white-space:normal"><b>in_thread do … end</b></td><td>第六週</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">一直反覆的聲部</td><td style="white-space:normal"><b>live_loop :名字 do … end</b></td><td>第六週</td></tr></tbody></table><div class="foot"><b>加旋鈕的規則</b>　amp、pan、release、rate 都加在 play 或 sample 的後面，用逗號隔開。例如：<b>play 60, amp: 0.5, pan: -1</b>。</div></div><div class="folio">第<b>一</b>頁</div></article><article id="p3" data-folio="二" class="paper " style="--accent:#B87905;--tint:#FFF0CB"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">這週的新語法</div><h1>多聲部的四個觀念</h1><div class="body"><p class="deck">程式平常是一行做完才做下一行。想讓兩個聲部同時響，就要把其中一個「另開一條線」。</p><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 96" role="img" aria-label="先後" style="font-family:Microsoft JhengHei,sans-serif"><title>先後</title><line x1="110.0" y1="18" x2="110.0" y2="66" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="176.2" y1="18" x2="176.2" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="66" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="441.2" y1="18" x2="441.2" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="66" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><text x="8" y="48" font-size="13" fill="#B87905" text-anchor="start" font-weight="700">沒有 in_thread</text><rect x="111.5" y="24" width="262.0" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="242.5" y="46" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">伴奏 4 拍</text><rect x="376.5" y="24" width="262.0" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="507.5" y="46" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">旋律 4 拍</text><text x="375" y="84" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700"></text></svg></figure><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 140" role="img" aria-label="同時" style="font-family:Microsoft JhengHei,sans-serif"><title>同時</title><line x1="110.0" y1="18" x2="110.0" y2="110" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="176.2" y1="18" x2="176.2" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="110" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="441.2" y1="18" x2="441.2" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="110" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><text x="8" y="48" font-size="13" fill="#008451" text-anchor="start" font-weight="700">伴奏</text><rect x="111.5" y="24" width="262.0" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="242.5" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">伴奏 4 拍</text><text x="8" y="92" font-size="13" fill="#0868B2" text-anchor="start" font-weight="700">旋律</text><rect x="111.5" y="68" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="242.5" y="90" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">旋律 4 拍</text><text x="375" y="128" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">有 in_thread：兩個聲部同時開始，4 拍就結束</text></svg></figure><table><thead><tr><th>練習</th><th style="white-space:normal">觀念</th><th style="white-space:normal">像音樂裡的</th><th style="white-space:normal">一句話</th></tr></thead><tbody><tr><td>練習一</td><td style="white-space:normal"><b>in_thread：兩個聲部同時開始</b></td><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">二聲部</td><td style="white-space:normal">先後是相加，同時是取最長</td></tr><tr><td>練習二</td><td style="white-space:normal"><b>live_loop：一直反覆的聲部</b></td><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">頑固伴奏、即興</td><td style="white-space:normal">一直跑，播放中可以直接改</td></tr><tr><td>練習三</td><td style="white-space:normal"><b>好幾個 live_loop 疊在一起</b></td><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">總譜、複節奏</td><td style="white-space:normal">每圈拍數決定聲部什麼時候對齊</td></tr><tr><td>練習四</td><td style="white-space:normal"><b>安排聲部進場</b></td><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400">卡農、賦格的進場</td><td style="white-space:normal">開頭先休息，聲部一個一個進來</td></tr></tbody></table><h2 class="topic">三個規則</h2><ol class="steps"><li><b>do 配 end</b>　in_thread 和 live_loop 一樣要有 do 和 end，裡面再放迴圈時，end 的數量要對。</li><li><b>live_loop 一定要有 sleep</b>　沒有 sleep 它不知道一圈多長，會出現紅字。</li><li><b>同時響時，全長取最長</b>　先後的聲部拍數要相加；同時的聲部，全長等於最長那一個。</li></ol></div><div class="folio">第<b>二</b>頁</div></article><article id="p4" data-folio="三" class="paper " style="--accent:#B87905;--tint:#FFF0CB"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">和 AI 分工</div><h1>這週怎麼請 AI 幫忙</h1><div class="body"><p class="deck">先自己預測、自己算；卡住了再問 AI。問之前先說「我在用 Sonic Pi」。</p><div class="warn">AI 幫你看懂和找錯，聲部要你自己安排。</div><h2 class="topic">四種好問法</h2><ul class="items"><li><b>看懂範例</b>　「我在用 Sonic Pi。請解釋這段程式（貼上）有幾個聲部、哪些是同時響、哪些是先後響。」</li><li><b>算拍數</b>　「我在用 Sonic Pi。請算這段程式每個聲部各幾拍、全長幾拍，列出算式。」</li><li><b>列出進場時間</b>　「我在用 Sonic Pi。請列出每個聲部從第幾拍進場、第幾拍結束。」</li><li><b>找錯</b>　「我在用 Sonic Pi。這段跑出紅字（貼上程式和錯誤訊息），請指出是哪一行、哪裡錯，不要整段重寫。」</li></ul><div class="foot"><b>✗ 不要這樣問</b>　「幫我寫一首三個聲部的歌。」——這樣你沒有練到聲部安排，作品也不是你的。</div></div><div class="folio">第<b>三</b>頁</div></article><article id="p5" data-folio="四" class="paper " style="--accent:#B87905;--tint:#FFF0CB"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">兩節課・四題</div><h1>流程與每題三步</h1><div class="body"><table><thead><tr><th>節次</th><th style="white-space:normal">內容</th><th>分鐘</th></tr></thead><tbody><tr><td>第一節</td><td style="white-space:normal">老師示範：in_thread 讓兩個聲部同時響</td><td>5</td></tr><tr><td>第一節</td><td style="white-space:normal">練習一　兩個聲部同時開始</td><td>20</td></tr><tr><td>第一節</td><td style="white-space:normal">練習二　一直反覆的聲部</td><td>20</td></tr><tr><td>第一節</td><td style="white-space:normal">存檔、填紀錄</td><td>5</td></tr><tr><td>第二節</td><td style="white-space:normal">老師示範：三個 live_loop 疊在一起</td><td>5</td></tr><tr><td>第二節</td><td style="white-space:normal">練習三　好幾個聲部疊在一起</td><td>20</td></tr><tr><td>第二節</td><td style="white-space:normal">練習四　聲部依序進場＋錄音</td><td>20</td></tr><tr><td>第二節</td><td style="white-space:normal">存檔、繳交</td><td>5</td></tr></tbody></table><h2 class="topic">每題三步（約 20 分鐘）</h2><ol class="steps"><li><b>跑範例</b>（5 分）　複製、Run、聽。先找出有幾個聲部，各從哪裡開始。</li><li><b>仿照改</b>（8 分）　三個改法都在動聲部。改之前先<b>預測</b>會聽到什麼，改完 Run 驗證。</li><li><b>自己做</b>（7 分）　照範例的骨架做出自己的版本，寫下各聲部的拍數。</li></ol><div class="foot"><b>live_loop 會一直響</b>　練習二、三的程式不會自己停，聽完請按 <b>Stop</b>。</div></div><div class="folio">第<b>四</b>頁</div></article><article id="p6" data-folio="五" class="paper " style="--accent:#008451;--tint:#DCF2E5"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">W6-01　／　範例 → 仿照改 → 自己做</div><h1>01　兩個聲部同時開始</h1><div class="body"><div class="core"><b>這題練的觀念：</b>把一個聲部放進 in_thread，它就會和後面的聲部同時開始——像二聲部。</div><p class="deck">沒有 in_thread 時，伴奏彈完才輪到旋律；有了 in_thread，兩個聲部一起開始。</p><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 96" role="img" aria-label="先後" style="font-family:Microsoft JhengHei,sans-serif"><title>先後</title><line x1="110.0" y1="18" x2="110.0" y2="66" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="176.2" y1="18" x2="176.2" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="66" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="441.2" y1="18" x2="441.2" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="66" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="66" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><text x="8" y="48" font-size="13" fill="#B87905" text-anchor="start" font-weight="700">沒有 in_thread</text><rect x="111.5" y="24" width="262.0" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="242.5" y="46" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">伴奏 4 拍</text><rect x="376.5" y="24" width="262.0" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="507.5" y="46" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">旋律 4 拍</text><text x="375" y="84" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700"></text></svg></figure><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 140" role="img" aria-label="同時" style="font-family:Microsoft JhengHei,sans-serif"><title>同時</title><line x1="110.0" y1="18" x2="110.0" y2="110" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="176.2" y1="18" x2="176.2" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="110" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="441.2" y1="18" x2="441.2" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="110" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="110" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><text x="8" y="48" font-size="13" fill="#008451" text-anchor="start" font-weight="700">伴奏</text><rect x="111.5" y="24" width="262.0" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="242.5" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">伴奏 4 拍</text><text x="8" y="92" font-size="13" fill="#0868B2" text-anchor="start" font-weight="700">旋律</text><rect x="111.5" y="68" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="242.5" y="90" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">旋律 4 拍</text><text x="375" y="128" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">有 in_thread：兩個聲部同時開始，4 拍就結束</text></svg></figure><div class="task-grid"><div class="code" data-code="use_synth :piano
+in_thread do            # 聲部一：伴奏，另開一條線
+  4.times do
+    play 48, amp: 0.5
+    sleep 1
+  end
+end
+4.times do |i|          # 聲部二：旋律，和伴奏同時開始
+  play 60 + i * 2
+  sleep 1
+end
+# 兩個聲部各 4 拍，同時開始 → 全長 4 拍"><div class="c-label">① 範例（可直接跑）</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-fn">use_synth</span> <span class="c-str">:piano</span>
+<span class="c-fn">in_thread</span> <span class="c-fn">do</span>            <span class="c-com"># 聲部一：伴奏，另開一條線</span>
+  <span class="c-num">4.</span><span class="c-fn">times</span> <span class="c-fn">do</span>
+    <span class="c-fn">play</span> <span class="c-num">48</span>, amp: <span class="c-num">0.5</span>
+    <span class="c-fn">sleep</span> <span class="c-num">1</span>
+  <span class="c-fn">end</span>
+<span class="c-fn">end</span>
+<span class="c-num">4.</span><span class="c-fn">times</span> <span class="c-fn">do</span> |i|          <span class="c-com"># 聲部二：旋律，和伴奏同時開始</span>
+  <span class="c-fn">play</span> <span class="c-num">60</span> + i * <span class="c-num">2</span>
+  <span class="c-fn">sleep</span> <span class="c-num">1</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 兩個聲部各 4 拍，同時開始 → 全長 4 拍</span></pre></div><div><h2 class="topic">② 仿照改（先預測，再 Run）</h2><div class="variation"><b>易</b>　把 <b>in_thread do</b> 和它最後的 <b>end</b> 刪掉（共兩行）。預測：兩個聲部變成同時還是先後？全長幾拍？</div><div class="variation"><b>中</b>　改回來後，把伴奏的 4.times 改成 8.times。預測：哪個聲部先結束？全長幾拍？</div><div class="variation"><b>難</b>　在旋律前面再加一個 in_thread，裡面放 <b>2.times do</b>、<b>play 72, amp: 0.3</b>、<b>sleep 2</b>、<b>end</b>。預測：現在有幾個聲部？全長幾拍？</div></div></div><p style="color:#536C80">聲部裡的材料：use_synth、amp（第三週），4.times、|i|（第五週）——想換就換，不是這題的重點。</p><h2 class="topic">③ 自己做</h2><p>做兩個同時開始的聲部：一個伴奏（低音或鼓），一個旋律，各 4～8 拍。寫下每個聲部的拍數和全長。</p><div class="note"><h4>自己核對</h4><ul><li>同時響的聲部，全長＝最長那一個的拍數，不是相加。</li></ul></div><p class="record-link">紀錄要寫：拍數算式、我改了哪裡、聽起來差在哪、自己的版本，並貼上「自己做」的程式碼。</p></div><div class="folio">第<b>五</b>頁</div></article><article id="p7" data-folio="六" class="paper " style="--accent:#008451;--tint:#DCF2E5"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">W6-02　／　範例 → 仿照改 → 自己做</div><h1>02　一直反覆的聲部</h1><div class="body"><div class="core"><b>這題練的觀念：</b>live_loop 會一直反覆，不會自己停；播放中改程式再按 Run，下一圈就換成新版本——像現場指揮。</div><p class="deck">這題的節奏會一直響，聽完記得按 Stop。改程式時不用先停，直接改、直接按 Run。</p><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 170" role="img" aria-label="live_loop 一直反覆" style="font-family:Microsoft JhengHei,sans-serif"><title>live_loop 一直反覆</title><rect x="200" y="30" width="260" height="60" rx="5" fill="#008451" fill-opacity="0.16" stroke="#008451"/><text x="330" y="58" font-size="16" fill="#008451" text-anchor="middle" font-weight="700">live_loop :drums</text><text x="330" y="78" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">每圈 1 拍</text><path d="M200 60 C 120 60, 120 130, 330 130 C 540 130, 540 60, 460 60" fill="none" stroke="#008451" stroke-width="2.5"/><polygon points="460,54 460,66 470,60" fill="#008451"/><text x="330" y="126" font-size="14" fill="#008451" text-anchor="middle" font-weight="700">一直反覆，按 Stop 才停</text><text x="330" y="156" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">播放中改程式、再按 Run → 下一圈換成新版本，音樂不中斷</text></svg></figure><div class="task-grid"><div class="code" data-code="live_loop :drums do      # 名字叫 :drums，一直反覆
+  sample :bd_haus
+  sleep 0.5
+  sample :drum_cymbal_closed, amp: 0.4
+  sleep 0.5
+end
+# 每圈 1 拍；按 Stop 才會停"><div class="c-label">① 範例（可直接跑）</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-fn">live_loop</span> <span class="c-str">:drums</span> <span class="c-fn">do</span>      <span class="c-com"># 名字叫 :drums，一直反覆</span>
+  <span class="c-fn">sample</span> <span class="c-str">:bd_haus</span>
+  <span class="c-fn">sleep</span> <span class="c-num">0.5</span>
+  <span class="c-fn">sample</span> <span class="c-str">:drum_cymbal_closed</span>, amp: <span class="c-num">0.4</span>
+  <span class="c-fn">sleep</span> <span class="c-num">0.5</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 每圈 1 拍；按 Stop 才會停</span></pre></div><div><h2 class="topic">② 仿照改（先預測，再 Run）</h2><div class="variation"><b>易</b>　播放中把 amp: 0.4 改成 0.9，再按一次 Run。預測：音樂會停下來重來，還是接著變？</div><div class="variation"><b>中</b>　把兩個 sleep 0.5 都改成 0.25，再按 Run。預測：每圈變幾拍？聽起來變快還是變慢？</div><div class="variation"><b>難</b>　把兩個 sleep 都刪掉，再按 Run。預測：會發生什麼事？（看完記得把 sleep 加回去）</div></div></div><p style="color:#536C80">聲部裡的材料：sample、amp、pan（第三週）——想換就換，不是這題的重點。</p><h2 class="topic">③ 自己做</h2><p>做一個自己的 live_loop 節奏，播放中至少即時改兩次（換鼓、改 amp 或 pan），每次改完直接按 Run。寫下每圈拍數，以及你改了什麼。</p><div class="note"><h4>自己核對</h4><ul><li>每個 live_loop 裡一定要有 sleep；改完按 Run，新版本從下一圈開始。</li></ul></div><p class="record-link">紀錄要寫：拍數算式、我改了哪裡、聽起來差在哪、自己的版本，並貼上「自己做」的程式碼。</p></div><div class="folio">第<b>六</b>頁</div></article><article id="p8" data-folio="七" class="paper " style="--accent:#008451;--tint:#DCF2E5"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">W6-03　／　範例 → 仿照改 → 自己做</div><h1>03　好幾個聲部疊在一起</h1><div class="body"><div class="core"><b>這題練的觀念：</b>每個聲部寫成一個 live_loop，就能疊成總譜；每圈拍數決定它們什麼時候對齊。</div><p class="deck">三個 live_loop 同時跑：鼓每圈 1 拍、低音 2 拍、旋律 4 拍。改其中一個，其他照樣繼續。</p><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 184" role="img" aria-label="三個 live_loop 疊成多聲部" style="font-family:Microsoft JhengHei,sans-serif"><title>三個 live_loop 疊成多聲部</title><line x1="110.0" y1="18" x2="110.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="176.2" y1="18" x2="176.2" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="441.2" y1="18" x2="441.2" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><text x="8" y="48" font-size="13" fill="#008451" text-anchor="start" font-weight="700">鼓 :drums</text><rect x="111.5" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="143.125" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="177.75" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="209.375" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="244.0" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="275.625" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="310.25" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="341.875" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="376.5" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="408.125" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="442.75" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="474.375" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="509.0" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="540.625" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><rect x="575.25" y="24" width="63.25" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="606.875" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">1</text><text x="8" y="92" font-size="13" fill="#B87905" text-anchor="start" font-weight="700">低音 :bass</text><rect x="111.5" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="176.25" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><rect x="244.0" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="308.75" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><rect x="376.5" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="441.25" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><rect x="509.0" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="573.75" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">2 拍</text><text x="8" y="136" font-size="13" fill="#0868B2" text-anchor="start" font-weight="700">旋律 :melody</text><rect x="111.5" y="112" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="242.5" y="134" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">4 拍</text><rect x="376.5" y="112" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="507.5" y="134" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">4 拍</text><text x="375" y="172" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">每圈 1、2、4 拍都能整除 4，所以每 4 拍三個聲部一起重新開始</text></svg></figure><div class="task-grid"><div class="code" data-code="use_bpm 90
+live_loop :drums do      # 鼓：每圈 1 拍
+  sample :bd_haus
+  sleep 1
+end
+live_loop :bass do       # 低音：每圈 2 拍
+  use_synth :pluck
+  play 36, amp: 0.8
+  sleep 2
+end
+live_loop :melody do     # 旋律：每圈 4 拍
+  use_synth :pretty_bell
+  play_pattern_timed [72, 74, 76, 79], 1
+end"><div class="c-label">① 範例（可直接跑）</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-fn">use_bpm</span> <span class="c-num">90</span>
+<span class="c-fn">live_loop</span> <span class="c-str">:drums</span> <span class="c-fn">do</span>      <span class="c-com"># 鼓：每圈 1 拍</span>
+  <span class="c-fn">sample</span> <span class="c-str">:bd_haus</span>
+  <span class="c-fn">sleep</span> <span class="c-num">1</span>
+<span class="c-fn">end</span>
+<span class="c-fn">live_loop</span> <span class="c-str">:bass</span> <span class="c-fn">do</span>       <span class="c-com"># 低音：每圈 2 拍</span>
+  <span class="c-fn">use_synth</span> <span class="c-str">:pluck</span>
+  <span class="c-fn">play</span> <span class="c-num">36</span>, amp: <span class="c-num">0.8</span>
+  <span class="c-fn">sleep</span> <span class="c-num">2</span>
+<span class="c-fn">end</span>
+<span class="c-fn">live_loop</span> <span class="c-str">:melody</span> <span class="c-fn">do</span>     <span class="c-com"># 旋律：每圈 4 拍</span>
+  <span class="c-fn">use_synth</span> <span class="c-str">:pretty_bell</span>
+  <span class="c-fn">play_pattern_timed</span> [<span class="c-num">72</span>, <span class="c-num">74</span>, <span class="c-num">76</span>, <span class="c-num">79</span>], <span class="c-num">1</span>
+<span class="c-fn">end</span></pre></div><div><h2 class="topic">② 仿照改（先預測，再 Run）</h2><div class="variation"><b>易</b>　播放中只改 :melody 的四個音，再按 Run。預測：鼓和低音會停嗎？</div><div class="variation"><b>中</b>　把 :bass 的 sleep 2 改成 sleep 3。預測：低音和旋律要隔幾拍才會再一起開始？</div><div class="variation"><b>難</b>　加第四個 live_loop <b>:hats</b>：每 0.5 拍一個 <b>sample :drum_cymbal_closed, amp: 0.3, pan: 0.7</b>。名字不能和其他聲部重複。預測：:hats 每圈幾拍？</div></div></div><p style="color:#536C80">聲部裡的材料：use_bpm（第四週），use_synth（第三週），play_pattern_timed（第二週）——想換就換，不是這題的重點。</p><h2 class="topic">③ 自己做</h2><p>三個聲部各寫一個 live_loop，各自決定每圈拍數。選「對齊」（每圈拍數都能整除 4）或「錯開」（例如 3 對 4）其中一種。寫下各聲部每圈幾拍。</p><div class="note"><h4>自己核對</h4><ul><li>每個 live_loop 的名字都不一樣嗎？每圈拍數能整除 4，就會每 4 拍一起重新開始。</li></ul></div><p class="record-link">紀錄要寫：拍數算式、我改了哪裡、聽起來差在哪、自己的版本，並貼上「自己做」的程式碼。</p></div><div class="folio">第<b>七</b>頁</div></article><article id="p9" data-folio="八" class="paper " style="--accent:#B87905;--tint:#FFF0CB"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">練習四之前先看</div><h1>in_thread 和 live_loop 怎麼選</h1><div class="body"><p class="deck">兩個都能讓聲部同時響，差別在<b>會不會自己停</b>，以及<b>能不能邊播邊改</b>。</p><table><thead><tr><th></th><th style="white-space:normal">in_thread</th><th style="white-space:normal">live_loop</th></tr></thead><tbody><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>做什麼</b></td><td style="white-space:normal">另開一條線，讓一段程式和後面的程式同時開始</td><td style="white-space:normal">一個會一直反覆的聲部</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>會不會停</b></td><td style="white-space:normal">裡面的內容跑完就停</td><td style="white-space:normal">不會自己停，要按 Stop</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>重複</b></td><td style="white-space:normal">不會自動重複，要重複就在裡面寫 4.times do</td><td style="white-space:normal">本身就是無限反覆</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>一定要有 sleep 嗎</b></td><td style="white-space:normal">不一定</td><td style="white-space:normal">一定要有，否則出現紅字</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>播放中改程式</b></td><td style="white-space:normal">改了要從頭重跑</td><td style="white-space:normal">按 Run 後，下一圈換成新版本，音樂不中斷</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>要取名字嗎</b></td><td style="white-space:normal">不用</td><td style="white-space:normal">要，例如 :drums，名字不能重複</td></tr><tr><td style="white-space:normal;font-family:var(--sans);color:var(--ink);font-weight:400"><b>適合</b></td><td style="white-space:normal">有頭有尾、要錄音的作品，安排聲部進場</td><td style="white-space:normal">現場演奏、邊聽邊改的節奏或伴奏</td></tr></tbody></table><h2 class="topic">同一段鼓聲，兩種寫法</h2><div class="task-grid"><div class="code" data-code="in_thread do
+  4.times do
+    sample :bd_haus
+    sleep 1
+  end
+end
+# 打 4 下（4 拍）就停"><div class="c-label">in_thread：有頭有尾</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-fn">in_thread</span> <span class="c-fn">do</span>
+  <span class="c-num">4.</span><span class="c-fn">times</span> <span class="c-fn">do</span>
+    <span class="c-fn">sample</span> <span class="c-str">:bd_haus</span>
+    <span class="c-fn">sleep</span> <span class="c-num">1</span>
+  <span class="c-fn">end</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 打 4 下（4 拍）就停</span></pre></div><div class="code" data-code="live_loop :drums do
+  sample :bd_haus
+  sleep 1
+end
+# 一直打，按 Stop 才停"><div class="c-label">live_loop：一直反覆</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-fn">live_loop</span> <span class="c-str">:drums</span> <span class="c-fn">do</span>
+  <span class="c-fn">sample</span> <span class="c-str">:bd_haus</span>
+  <span class="c-fn">sleep</span> <span class="c-num">1</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 一直打，按 Stop 才停</span></pre></div></div><div class="core"><b>判斷原則：</b>要錄成作品、有開頭和結尾 → 用 <b>in_thread</b>；要一直跑、邊聽邊改 → 用 <b>live_loop</b>。</div><div class="foot"><b>用音樂的話說</b>　in_thread 像總譜上寫好長度的聲部，從第幾拍進來、演奏多久都決定好了；live_loop 像樂手一直重複同一段，指揮可以邊聽邊叫他改。</div></div><div class="folio">第<b>八</b>頁</div></article><article id="p10" data-folio="九" class="paper " style="--accent:#008451;--tint:#DCF2E5"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">W6-04　／　範例 → 仿照改 → 自己做</div><h1>04　聲部依序進場</h1><div class="body"><div class="core"><b>這題練的觀念：</b>用 in_thread 寫每個聲部，開頭先 sleep 休息，聲部就會一個一個進來——像卡農和賦格的進場。</div><p class="deck">live_loop 不會自己停，錄音不好收尾；這題改用 in_thread，每個聲部的「休息＋演奏」都一樣長，作品會整齊地一起結束。</p><figure class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 184" role="img" aria-label="聲部依序進場" style="font-family:Microsoft JhengHei,sans-serif"><title>聲部依序進場</title><line x1="110.0" y1="18" x2="110.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="110.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">0</text><line x1="143.1" y1="18" x2="143.1" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="176.2" y1="18" x2="176.2" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="209.4" y1="18" x2="209.4" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="242.5" y1="18" x2="242.5" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="242.5" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">4</text><line x1="275.6" y1="18" x2="275.6" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="308.8" y1="18" x2="308.8" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="341.9" y1="18" x2="341.9" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="375.0" y1="18" x2="375.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="375.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">8</text><line x1="408.1" y1="18" x2="408.1" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="441.2" y1="18" x2="441.2" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="474.4" y1="18" x2="474.4" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="507.5" y1="18" x2="507.5" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="507.5" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">12</text><line x1="540.6" y1="18" x2="540.6" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="573.8" y1="18" x2="573.8" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="606.9" y1="18" x2="606.9" y2="154" stroke="#D6DBDF" stroke-width="0.6"/><line x1="640.0" y1="18" x2="640.0" y2="154" stroke="#D6DBDF" stroke-width="1.6"/><text x="640.0" y="14" font-size="10" fill="#536C80" text-anchor="middle" font-weight="700">16</text><text x="8" y="48" font-size="13" fill="#008451" text-anchor="start" font-weight="700">鼓</text><rect x="111.5" y="24" width="527.0" height="34" rx="5" fill="#008451" fill-opacity="0.18" stroke="#008451"/><text x="375.0" y="46" font-size="11" fill="#008451" text-anchor="middle" font-weight="700">第 1 拍進場，16 拍</text><text x="8" y="92" font-size="13" fill="#B87905" text-anchor="start" font-weight="700">低音</text><rect x="111.5" y="68" width="129.5" height="34" rx="5" fill="#B87905" fill-opacity="0.03" stroke="#B87905" stroke-dasharray="4 3"/><text x="176.25" y="90" font-size="11" fill="#536C80" text-anchor="middle" font-weight="700">休息 4</text><rect x="244.0" y="68" width="394.5" height="34" rx="5" fill="#B87905" fill-opacity="0.18" stroke="#B87905"/><text x="441.25" y="90" font-size="11" fill="#B87905" text-anchor="middle" font-weight="700">第 5 拍進場，12 拍</text><text x="8" y="136" font-size="13" fill="#0868B2" text-anchor="start" font-weight="700">旋律</text><rect x="111.5" y="112" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.03" stroke="#0868B2" stroke-dasharray="4 3"/><text x="242.5" y="134" font-size="11" fill="#536C80" text-anchor="middle" font-weight="700">休息 8</text><rect x="376.5" y="112" width="262.0" height="34" rx="5" fill="#0868B2" fill-opacity="0.18" stroke="#0868B2"/><text x="507.5" y="134" font-size="11" fill="#0868B2" text-anchor="middle" font-weight="700">第 9 拍進場，8 拍</text><text x="375" y="172" font-size="12" fill="#536C80" text-anchor="middle" font-weight="700">每個聲部：開頭 sleep（休息）＋ 演奏拍數 ＝ 16 拍，三個聲部一起結束</text></svg></figure><div class="task-grid"><div class="code" data-code="use_bpm 100
+# 聲部一：鼓，第 1 拍進場，演奏 16 拍
+in_thread do
+  16.times do
+    sample :bd_haus
+    sleep 1
+  end
+end
+# 聲部二：低音，休息 4 拍，第 5 拍進場，演奏 12 拍
+in_thread do
+  sleep 4
+  use_synth :pluck
+  3.times do
+    play_pattern_timed [36, 36, 43, 41], 1
+  end
+end
+# 聲部三：旋律，休息 8 拍，第 9 拍進場，演奏 8 拍
+sleep 8
+use_synth :piano
+2.times do |i|
+  play_pattern_timed [60 + i * 2, 64 + i * 2, 67 + i * 2, 72], 1
+end
+# 每個聲部：休息＋演奏＝16 拍"><div class="c-label">① 範例（可直接跑）</div><button class="copy" type="button">複製</button><pre class="c-src"><span class="c-fn">use_bpm</span> <span class="c-num">100</span>
+<span class="c-com"># 聲部一：鼓，第 1 拍進場，演奏 16 拍</span>
+<span class="c-fn">in_thread</span> <span class="c-fn">do</span>
+  <span class="c-num">16.</span><span class="c-fn">times</span> <span class="c-fn">do</span>
+    <span class="c-fn">sample</span> <span class="c-str">:bd_haus</span>
+    <span class="c-fn">sleep</span> <span class="c-num">1</span>
+  <span class="c-fn">end</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 聲部二：低音，休息 4 拍，第 5 拍進場，演奏 12 拍</span>
+<span class="c-fn">in_thread</span> <span class="c-fn">do</span>
+  <span class="c-fn">sleep</span> <span class="c-num">4</span>
+  <span class="c-fn">use_synth</span> <span class="c-str">:pluck</span>
+  <span class="c-num">3.</span><span class="c-fn">times</span> <span class="c-fn">do</span>
+    <span class="c-fn">play_pattern_timed</span> [<span class="c-num">36</span>, <span class="c-num">36</span>, <span class="c-num">43</span>, <span class="c-num">41</span>], <span class="c-num">1</span>
+  <span class="c-fn">end</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 聲部三：旋律，休息 8 拍，第 9 拍進場，演奏 8 拍</span>
+<span class="c-fn">sleep</span> <span class="c-num">8</span>
+<span class="c-fn">use_synth</span> <span class="c-str">:piano</span>
+<span class="c-num">2.</span><span class="c-fn">times</span> <span class="c-fn">do</span> |i|
+  <span class="c-fn">play_pattern_timed</span> [<span class="c-num">60</span> + i * <span class="c-num">2</span>, <span class="c-num">64</span> + i * <span class="c-num">2</span>, <span class="c-num">67</span> + i * <span class="c-num">2</span>, <span class="c-num">72</span>], <span class="c-num">1</span>
+<span class="c-fn">end</span>
+<span class="c-com"># 每個聲部：休息＋演奏＝16 拍</span></pre></div><div><h2 class="topic">② 仿照改（先預測，再 Run）</h2><div class="variation"><b>易</b>　把旋律前面的 sleep 8 改成 sleep 4。預測：旋律第幾拍進場？最後 4 拍有哪些聲部在響？</div><div class="variation"><b>中</b>　把作品拉長到 24 拍，三個聲部一起結束。只改次數，預測：鼓、低音、旋律的次數各要改成多少？</div><div class="variation"><b>難</b>　加第四聲部 hi-hat：新的 in_thread，先 <b>sleep 12</b>，再用 <b>8.times</b> 每 0.5 拍打一下 <b>:drum_cymbal_closed, pan: 0.7</b>。預測：第幾拍進場？會不會和其他聲部一起結束？</div></div></div><p style="color:#536C80">聲部裡的材料：use_bpm（第四週），use_synth、sample（第三週），x.times、|i|（第五週）——想換就換，不是這題的重點。</p><h2 class="topic">③ 自己做</h2><p>三或四個聲部依序進場，總長 16～32 拍，每個聲部的「休息＋演奏」都相等。完成後按 Rec → Run → 作品自己結束後再按 Rec，存成 .wav。</p><div class="note"><h4>自己核對</h4><ul><li>每個聲部：開頭 sleep 的拍數＋演奏拍數，是不是都等於全長？</li></ul></div><p class="record-link">紀錄要寫：拍數算式、我改了哪裡、聽起來差在哪、自己的版本，並貼上「自己做」的程式碼。</p></div><div class="folio">第<b>九</b>頁</div></article><article id="p11" data-folio="十" class="paper " style="--accent:#B87905;--tint:#FFF0CB"><div class="side"><span>音</span><span>樂</span><span class="dot">・</span><span>程</span><span>式</span></div><div class="eyebrow">四題完成即可</div><h1>完成與繳交</h1><div class="body"><p>以 <b>210_座號_姓名_W6</b> 命名，交兩樣：<b>練習紀錄</b>（四題的程式碼都貼在裡面）和 <b>.wav 錄音</b>。</p><ul class="notes-list"><li>每題紀錄都要寫拍數算式。</li><li>練習四完成 16～32 拍、聲部依序進場的作品並錄音。</li><li>程式碼從 Sonic Pi 複製，貼進紀錄時選「只保留文字」（Ctrl＋Shift＋V）。</li><li>卡住先查「語法工具箱」，再問 AI。確認後上傳 Classroom。</li></ul><div class="foot">查語法可使用 Sonic Pi 內建 Help；本講義的圖解、樣式及操作功能均可離線使用。</div></div><div class="folio">第<b>十</b>頁</div></article></main><aside class="rail">
+  <button class="rail-btn" id="menu" aria-label="開啟大綱" title="大綱">☰</button>
+  <div class="pager">
+    <button id="prev" aria-label="上一頁" title="上一頁">▲</button>
+    <span class="pos" id="pos"></span>
+    <button id="next" aria-label="下一頁" title="下一頁">▼</button>
+  </div>
+  <button class="rail-btn" id="print" aria-label="列印" title="列印">⎙</button>
+</aside><script>
+const papers=[...document.querySelectorAll('.paper')];
+const tocItems=[...document.querySelectorAll('.toc li')];
+const pos=document.getElementById('pos');
+const prev=document.getElementById('prev'), next=document.getElementById('next');
+const toc=document.getElementById('toc'), scrim=document.getElementById('scrim');
+const HAN=papers.map(p=>p.dataset.folio), LAST=HAN[HAN.length-1];
+let i=0;
+function mark(n){
+  i=Math.max(0,Math.min(papers.length-1,n));
+  papers.forEach((p,k)=>p.classList.toggle('cur',k===i));
+  tocItems.forEach((t,k)=>t.classList.toggle('cur',k===i));
+  pos.innerHTML='<b>'+HAN[i]+'</b><s></s><i>'+LAST+'</i>';
+  prev.disabled=i===0; next.disabled=i===papers.length-1;
+}
+function go(n){
+  n=Math.max(0,Math.min(papers.length-1,n));
+  papers[n].scrollIntoView({behavior:'smooth',block:'start'});
+  history.replaceState(null,'','#p'+(n+1));
+  mark(n);
+}
+function openToc(o){toc.classList.toggle('on',o);scrim.classList.toggle('on',o);}
+prev.onclick=()=>go(i-1); next.onclick=()=>go(i+1);
+document.getElementById('menu').onclick=()=>openToc(true);
+document.getElementById('close').onclick=()=>openToc(false);
+scrim.onclick=()=>openToc(false);
+tocItems.forEach((t,k)=>{t.onclick=()=>{go(k);openToc(false);};
+  t.tabIndex=0;t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();}};});
+document.getElementById('print').onclick=()=>window.print();
+addEventListener('keydown',e=>{
+  if(e.target.classList&&e.target.classList.contains('copy'))return;
+  if(e.key==='PageDown'){e.preventDefault();go(i+1);}
+  else if(e.key==='PageUp'){e.preventDefault();go(i-1);}
+  else if(e.key==='ArrowRight'){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);}
+  else if(e.key==='Escape')openToc(false);
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(papers.length-1);}
+});
+// 捲動時更新目前頁
+let ticking=false;
+function onScroll(){
+  if(ticking)return; ticking=true;
+  requestAnimationFrame(()=>{
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-3){mark(papers.length-1);ticking=false;return;}
+    const mid=24;
+    let best=0,bd=Infinity;
+    papers.forEach((p,k)=>{
+      const r=p.getBoundingClientRect();
+      const d=Math.abs(r.top-mid);
+      if(r.bottom>0&&d<bd){bd=d;best=k;}
+    });
+    mark(best); ticking=false;
+  });
+}
+addEventListener('scroll',onScroll,{passive:true});
+const h=parseInt((location.hash||'').replace('#p',''),10);
+if(!isNaN(h)&&h>=1&&h<=papers.length){papers[h-1].scrollIntoView({block:'start'});mark(h-1);}else{mark(0);}
+
+document.querySelectorAll('.copy').forEach(b=>{b.onclick=async()=>{const text=b.closest('.code').dataset.code;try{await navigator.clipboard.writeText(text)}catch(e){const t=document.createElement('textarea');t.value=text;document.body.append(t);t.select();const ok=document.execCommand('copy');t.remove();if(!ok){b.textContent='請選取程式';return}}b.textContent='已複製';setTimeout(()=>b.textContent='複製',1200)}});
+</script></body></html>
